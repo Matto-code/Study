@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 9 Science Flashcards</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;padding:1rem}
+.wrap{max-width:680px;margin:0 auto;padding-bottom:3rem}
+
+.header{background:#085041;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.header h1{font-size:18px;font-weight:500;color:white;margin-bottom:2px}
+.header p{font-size:12px;color:rgba(255,255,255,0.75)}
+
+/* Filter rows */
+.filter-section{margin-bottom:0.6rem}
+.filter-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:5px}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.filter-btn{padding:5px 12px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s;white-space:nowrap}
+.filter-btn:hover:not(.active){background:#e8e6e0}
+.filter-btn.active{background:#085041;color:white;border-color:#085041}
+.filter-btn.active-needs{background:#A32D2D;color:white;border-color:#A32D2D}
+.filter-btn.active-knowit{background:#1D9E75;color:white;border-color:#1D9E75}
+.sub-divider{height:1px;background:#e0dfd8;margin:0.6rem 0}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem}
+.stat-box{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all 0.15s}
+.stat-box:hover{border-color:#aaa}
+.stat-num{font-size:22px;font-weight:500}
+.stat-lbl{font-size:11px;color:#5f5e5a;margin-top:2px}
+.sn-total{color:#085041}.sn-needs{color:#A32D2D}.sn-knowit{color:#1D9E75}
+
+/* Progress */
+.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.progress-bar{flex:1;height:6px;background:#e0dfd8;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:#1D9E75;border-radius:3px;transition:width 0.4s ease}
+.progress-label{font-size:12px;color:#5f5e5a;white-space:nowrap}
+.card-num{font-size:12px;color:#aaa;text-align:center;margin-bottom:0.5rem}
+
+/* Card flip */
+.card-area{perspective:1000px;margin-bottom:1rem}
+.card-inner{position:relative;width:100%;transition:transform 0.5s ease;transform-style:preserve-3d;cursor:default}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{background:white;border-radius:14px;border:1px solid #e0dfd8;padding:1.5rem 1.75rem;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:200px}
+.card-back{position:absolute;top:0;left:0;width:100%;transform:rotateY(180deg);background:white}
+.card-spacer{visibility:hidden;padding:1.5rem 1.75rem;pointer-events:none;border:1px solid transparent;border-radius:14px}
+
+.card-topic{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:inline-block;border-radius:4px;padding:2px 8px}
+.card-q{font-size:16px;font-weight:500;color:#2c2c2a;line-height:1.5;margin-bottom:1rem}
+
+/* Answer input on front */
+.answer-input-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;color:#aaa;margin-bottom:6px}
+.answer-input{width:100%;border:1px solid #e0dfd8;border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;color:#2c2c2a;background:#fafaf8;line-height:1.5;outline:none;transition:border-color 0.15s}
+.answer-input:focus{border-color:#085041;background:white}
+.flip-btn{margin-top:0.75rem;width:100%;padding:10px;background:#085041;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s}
+.flip-btn:hover{background:#0F6E56}
+
+/* Back face */
+.back-section{margin-bottom:1rem}
+.back-section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.your-answer-box{background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;color:#5f5e5a;line-height:1.6;min-height:40px;font-style:italic;border-left:3px solid #ccc;white-space:pre-wrap}
+.your-answer-box.empty{color:#bbb}
+.correct-answer-box{background:#E1F5EE;border-radius:8px;padding:10px 12px;font-size:13px;color:#2c2c2a;line-height:1.7;border-left:3px solid #1D9E75}
+.correct-answer-box strong{color:#085041;font-weight:500}
+.correct-answer-box ul{padding-left:1.1rem;margin-top:0.4rem}
+.correct-answer-box li{margin-bottom:3px}
+
+/* Rating — now lives inside the card */
+.rating-hint{font-size:11px;color:#aaa;text-align:center;margin-bottom:0.6rem;margin-top:0.75rem}
+.rating-row{display:flex;gap:8px;margin-top:0.5rem}
+.rating-btn{flex:1;padding:12px 8px;border:1.5px solid;border-radius:10px;font-size:13px;cursor:pointer;background:white;transition:all 0.15s;font-weight:500;line-height:1.3}
+.rating-btn.again{border-color:#A32D2D;color:#A32D2D}
+.rating-btn.again:hover{background:#FCEBEB}
+.rating-btn.good{border-color:#1D9E75;color:#1D9E75}
+.rating-btn.good:hover{background:#E1F5EE}
+
+/* Flip-back button on back face */
+.flip-back-btn{margin-top:0.75rem;width:100%;padding:9px;background:white;color:#5f5e5a;border:1px solid #ccc;border-radius:10px;font-size:13px;cursor:pointer;transition:all 0.15s}
+.flip-back-btn:hover{background:#f5f4f0;border-color:#aaa}
+
+/* Nav */
+.nav-row{display:flex;gap:8px;margin-top:1rem;margin-bottom:1rem}
+.nav-btn{flex:1;padding:10px;border:1px solid #ccc;border-radius:10px;font-size:13px;cursor:pointer;background:white;color:#2c2c2a;transition:all 0.15s;font-weight:500}
+.nav-btn:hover{background:#f5f4f0}
+.nav-btn:disabled{opacity:0.35;cursor:default}
+
+/* Done */
+.done-screen{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:2rem;text-align:center;display:none}
+.done-screen h2{font-size:20px;font-weight:500;margin-bottom:0.5rem}
+.done-screen p{font-size:14px;color:#5f5e5a;margin-bottom:1.5rem}
+.done-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.done-actions button{padding:9px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-weight:500;border:1px solid #ccc;background:white;color:#2c2c2a}
+.done-actions button.primary{background:#085041;color:white;border-color:#085041}
+
+/* Rating outline on card */
+.outline-again{outline:2px solid #A32D2D}
+.outline-good{outline:2px solid #1D9E75}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <h1>Year 9 Science Flashcards</h1>
+  <p>Write your answer, flip to compare, then rate yourself</p>
+</div>
+
+<!-- Topic filters -->
+<div class="filter-section">
+  <div class="filter-label">By topic</div>
+  <div class="filter-row" id="topic-filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All cards</button>
+    <button class="filter-btn" onclick="setFilter('neurons',this)">Neurons</button>
+    <button class="filter-btn" onclick="setFilter('cns',this)">CNS/PNS</button>
+    <button class="filter-btn" onclick="setFilter('brain',this)">Brain</button>
+    <button class="filter-btn" onclick="setFilter('endocrine',this)">Endocrine</button>
+    <button class="filter-btn" onclick="setFilter('homeostasis',this)">Homeostasis</button>
+    <button class="filter-btn" onclick="setFilter('thermo',this)">Endo/Ecto</button>
+  </div>
+</div>
+
+<div class="sub-divider"></div>
+
+<!-- Sub-category filters -->
+<div class="filter-section" style="margin-bottom:1rem">
+  <div class="filter-label">By difficulty</div>
+  <div class="filter-row">
+    <button class="filter-btn" id="btn-needs" onclick="setFilter('needs',this)">🔴 Needs work (<span id="needs-count">0</span>)</button>
+    <button class="filter-btn" id="btn-knowit" onclick="setFilter('knowit',this)">🟢 Know it! (<span id="knowit-count">0</span>)</button>
+    <button class="filter-btn" id="btn-unrated" onclick="setFilter('unrated',this)">⚪ Not yet rated (<span id="unrated-count">0</span>)</button>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-box" onclick="setFilter('all', document.querySelector('.filter-btn'))">
+    <div class="stat-num sn-total" id="st-total">0</div>
+    <div class="stat-lbl">Total rated</div>
+  </div>
+  <div class="stat-box" onclick="setFilter('needs', document.getElementById('btn-needs'))">
+    <div class="stat-num sn-needs" id="st-needs">0</div>
+    <div class="stat-lbl">🔴 Needs work</div>
+  </div>
+  <div class="stat-box" onclick="setFilter('knowit', document.getElementById('btn-knowit'))">
+    <div class="stat-num sn-knowit" id="st-knowit">0</div>
+    <div class="stat-lbl">🟢 Know it!</div>
+  </div>
+</div>
+
+<div class="progress-row">
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="progress-label" id="prog-label">0 / 0</div>
+</div>
+
+<div class="card-num" id="card-num"></div>
+
+<!-- Card -->
+<div class="card-area" id="card-area">
+  <div class="card-inner" id="card-inner">
+
+    <!-- Front -->
+    <div class="card-face" id="card-front">
+      <span class="card-topic" id="topic-badge"></span>
+      <div class="card-q" id="card-q"></div>
+      <div class="answer-input-label">Your answer</div>
+      <textarea class="answer-input" id="answer-input" placeholder="Type your answer here before flipping…" onclick="event.stopPropagation()"></textarea>
+      <button class="flip-btn" onclick="flipCard()">Flip to check answer →</button>
+    </div>
+
+    <!-- Back -->
+    <div class="card-face card-back" id="card-back">
+      <span class="card-topic" id="topic-badge-back"></span>
+
+      <div class="back-section">
+        <div class="back-section-label" style="color:#5f5e5a">Your answer</div>
+        <div class="your-answer-box" id="your-answer-display"></div>
+      </div>
+
+      <div class="back-section">
+        <div class="back-section-label" style="color:#085041">Correct answer</div>
+        <div class="correct-answer-box" id="card-a"></div>
+      </div>
+
+      <!-- Rating lives inside the back face so it's always visible right below the content -->
+      <div class="rating-hint">How did you go? Be honest — this saves between sessions.</div>
+      <div class="rating-row">
+        <button class="rating-btn again" onclick="rate('again')">🔴 Needs work<br><span style="font-size:11px;font-weight:400">Didn't get it</span></button>
+        <button class="rating-btn good" onclick="rate('good')">🟢 Know it!<br><span style="font-size:11px;font-weight:400">Got it right</span></button>
+      </div>
+
+      <!-- Flip back button -->
+      <button class="flip-back-btn" onclick="unflipCard()">← Back to question</button>
+    </div>
+
+    <!-- Spacer to hold height -->
+    <div class="card-spacer" id="card-spacer" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- Nav (always visible below card) -->
+<div class="nav-row">
+  <button class="nav-btn" id="btn-prev" onclick="prevCard()">← Previous</button>
+  <button class="nav-btn" id="btn-next" onclick="nextCard()">Next →</button>
+</div>
+
+<!-- Done -->
+<div class="done-screen" id="done-screen">
+  <h2 id="done-title"></h2>
+  <p id="done-msg"></p>
+  <div class="done-actions">
+    <button onclick="restartDeck()">Restart this deck</button>
+    <button onclick="setFilter('needs', document.getElementById('btn-needs'))" id="btn-do-needs" style="display:none">🔴 Review Needs work</button>
+    <button class="primary" onclick="setFilter('all', document.querySelector('.filter-btn'))">All cards</button>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ─── Card data ───────────────────────────────────────────────
+const CARDS = [
+  {id:1,topic:'neurons',topicLabel:'Neurons',q:'Name the 6 main parts of a neuron.',a:'<strong>Dendrites</strong> — receive signals from other neurons.<br><strong>Cell body (soma)</strong> — contains the nucleus; processes signals.<br><strong>Axon</strong> — carries impulse away from cell body.<br><strong>Myelin sheath</strong> — fatty insulation that speeds up the impulse.<br><strong>Axon terminals</strong> — pass signals to the next cell.<br><strong>Synapse</strong> — gap between neurons; crossed using neurotransmitters.'},
+  {id:2,topic:'neurons',topicLabel:'Neurons',q:'What is the function of the myelin sheath?',a:'The myelin sheath is a <strong>fatty (lipid) insulating layer</strong> wrapped around the axon. It speeds up electrical impulse transmission by allowing the signal to "jump" between gaps (nodes of Ranvier) rather than travelling the entire length slowly.'},
+  {id:3,topic:'neurons',topicLabel:'Neurons',q:'What is a synapse and why does it matter?',a:'A synapse is the <strong>tiny gap between two neurons</strong>. Electrical signals cannot jump the gap directly — instead, <strong>neurotransmitters</strong> (chemicals) are released to carry the signal across. This allows the nervous system to control whether signals pass on or not.'},
+  {id:4,topic:'neurons',topicLabel:'Neurons',q:'What are the three types of neurons? What does each do?',a:'<strong>Sensory neuron</strong> — carries signals FROM receptors TO the CNS (detects stimuli).<br><br><strong>Relay neuron</strong> — found INSIDE the CNS; connects sensory and motor neurons; processes and routes signals.<br><br><strong>Motor neuron</strong> — carries signals FROM the CNS TO effectors (muscles/glands) to cause a response.'},
+  {id:5,topic:'neurons',topicLabel:'Neurons',q:'In which direction does each type of neuron carry signals?',a:'<strong>Sensory:</strong> Receptor → CNS (towards brain/spinal cord)<br><br><strong>Relay:</strong> Within the CNS (sensory to motor)<br><br><strong>Motor:</strong> CNS → Effector (away from brain/spinal cord)<br><br>Memory trick: <em>Sensory = Skin to brain | Motor = Makes movement</em>'},
+  {id:6,topic:'neurons',topicLabel:'Neurons',q:'What is a reflex arc? List all 5 steps in order.',a:'A reflex is a <strong>fast, automatic response</strong> that bypasses conscious thought (processed in spinal cord).<br><br>1. <strong>Receptor</strong> detects stimulus<br>2. <strong>Sensory neuron</strong> carries signal to spinal cord<br>3. <strong>Relay neuron</strong> in spinal cord processes signal<br>4. <strong>Motor neuron</strong> carries signal to effector<br>5. <strong>Effector</strong> (muscle) responds — e.g. hand pulls away<br><br>Brain is informed <em>after</em> the response.'},
+  {id:7,topic:'neurons',topicLabel:'Neurons',q:'Why is a reflex faster than a conscious response?',a:'In a reflex, the signal is processed in the <strong>spinal cord</strong>, not the brain — a shorter pathway. The brain is still informed, but the response happens before it has processed the sensation. This is why you pull your hand from heat before you consciously "feel" it.'},
+  {id:8,topic:'neurons',topicLabel:'Neurons',q:'What are neurotransmitters? Describe how they work step by step.',a:'Neurotransmitters are <strong>chemical messengers</strong> that carry signals across the synapse.<br><br>1. Impulse arrives at axon terminal<br>2. Vesicles release neurotransmitters into the synaptic cleft<br>3. They bind to receptors on the next neuron\'s dendrites<br>4. A new electrical impulse is triggered<br><br>Examples: <strong>acetylcholine, dopamine, serotonin, adrenaline</strong>'},
+  {id:9,topic:'neurons',topicLabel:'Neurons',q:'Name 4 examples of neurotransmitters and their roles.',a:'<strong>Acetylcholine</strong> — muscle control and memory<br><strong>Dopamine</strong> — reward, motivation, movement<br><strong>Serotonin</strong> — mood, sleep, appetite<br><strong>Adrenaline</strong> — fight-or-flight, alertness'},
+  {id:10,topic:'cns',topicLabel:'CNS / PNS',q:'What is the difference between the CNS and PNS?',a:'<strong>CNS (Central Nervous System)</strong> = Brain + spinal cord. The command centre — receives, processes and coordinates all signals.<br><br><strong>PNS (Peripheral Nervous System)</strong> = All nerves OUTSIDE the brain and spinal cord. Carries signals to and from the CNS.'},
+  {id:11,topic:'cns',topicLabel:'CNS / PNS',q:'What structures make up the CNS?',a:'<strong>Brain</strong> — main control centre (cerebrum, cerebellum, brainstem, hypothalamus, thalamus, pituitary).<br><br><strong>Spinal cord</strong> — relays signals between brain and body; handles reflex arcs.<br><br>Both protected by <strong>meninges</strong> and <strong>cerebrospinal fluid (CSF)</strong>.'},
+  {id:12,topic:'cns',topicLabel:'CNS / PNS',q:'What is the difference between the somatic and autonomic nervous systems?',a:'Both are divisions of the PNS.<br><br><strong>Somatic</strong> — controls <em>voluntary</em> skeletal muscle movements (walking, writing).<br><br><strong>Autonomic</strong> — controls <em>involuntary</em> automatic functions: heart rate, breathing, digestion, pupil size.'},
+  {id:13,topic:'cns',topicLabel:'CNS / PNS',q:'What are the two branches of the autonomic nervous system?',a:'<strong>Sympathetic</strong> — "fight-or-flight." Speeds up heart rate, dilates pupils, increases breathing, diverts blood to muscles.<br><br><strong>Parasympathetic</strong> — "rest-and-digest." Slows heart rate, promotes digestion, constricts pupils.<br><br>They work in opposition to maintain balance.'},
+  {id:14,topic:'cns',topicLabel:'CNS / PNS',q:'Compare the nervous system and endocrine system.',a:'<strong>Nervous:</strong> electrical impulse | very fast (ms) | short-lived | specific target<br><br><strong>Endocrine:</strong> chemical hormone via blood | slower (secs–mins) | long-lasting | widespread<br><br>Both work together — e.g. fight-or-flight uses nerve signals AND adrenaline.'},
+  {id:15,topic:'brain',topicLabel:'Brain parts',q:'Name 6 key parts of the brain and their functions.',a:'<strong>Cerebrum</strong> — thinking, memory, emotions, voluntary movement, speech, senses.<br><strong>Cerebellum</strong> — balance, coordination, fine motor control.<br><strong>Brainstem</strong> — heart rate, breathing, blood pressure.<br><strong>Hypothalamus</strong> — homeostasis; temp, hunger, thirst; controls pituitary.<br><strong>Thalamus</strong> — relay station for sensory signals.<br><strong>Pituitary gland</strong> — master endocrine gland.'},
+  {id:16,topic:'brain',topicLabel:'Brain parts',q:'Which part of the brain controls heart rate and breathing?',a:'The <strong>brainstem</strong> (specifically the medulla oblongata) controls heart rate, breathing rate, and blood pressure.<br><br>These are completely <em>automatic/involuntary</em> — the brainstem overrides conscious control when CO₂ builds up.'},
+  {id:17,topic:'brain',topicLabel:'Brain parts',q:'Which brain part controls memory, and which controls emotions?',a:'<strong>Memory</strong> — the <strong>cerebrum</strong>, particularly the <strong>hippocampus</strong> (limbic system). Essential for forming new and long-term memories.<br><br><strong>Emotions</strong> — the <strong>limbic system</strong>, especially the <strong>amygdala</strong>. Processes fear, happiness, anger.'},
+  {id:18,topic:'brain',topicLabel:'Brain parts',q:'Which brain part processes vision? Where is it located?',a:'Vision is processed in the <strong>occipital lobe</strong> of the cerebrum, at the <strong>back of the head</strong>.<br><br>Eyes detect light → electrical signals travel along the optic nerve → occipital lobe interprets them as images.'},
+  {id:19,topic:'brain',topicLabel:'Brain parts',q:'Which brain structures control growth?',a:'The <strong>pituitary gland</strong> releases <strong>growth hormone (GH)</strong>, stimulating bone and tissue growth.<br><br>The pituitary is controlled by the <strong>hypothalamus</strong>, which releases growth hormone-releasing hormone (the hypothalamo-pituitary axis).'},
+  {id:20,topic:'brain',topicLabel:'Brain parts',q:'How does the brain control the endocrine system?',a:'The <strong>hypothalamus</strong> receives nerve signals and releases hormones that control the <strong>pituitary gland</strong>. The pituitary releases hormones that travel through blood to control other glands (thyroid, adrenal, ovaries/testes).<br><br>This is the <strong>HPA axis</strong> — the hypothalamus is the key link between nervous and endocrine systems.'},
+  {id:21,topic:'brain',topicLabel:'Brain parts',q:'What is the role of the hypothalamus in homeostasis?',a:'The hypothalamus is the <strong>master controller of homeostasis</strong>. It:<br><ul><li>Monitors temperature → triggers sweating/shivering</li><li>Detects dehydration → signals ADH release</li><li>Regulates hunger and thirst</li><li>Controls sleep-wake cycles</li><li>Links nervous and endocrine systems via the pituitary</li></ul>'},
+  {id:22,topic:'endocrine',topicLabel:'Endocrine system',q:'What does the pancreas produce, and what does each hormone do?',a:'<strong>Insulin</strong> — released when blood glucose is HIGH. Causes cells to absorb glucose, liver stores as glycogen → lowers blood glucose.<br><br><strong>Glucagon</strong> — released when blood glucose is LOW. Liver converts glycogen back to glucose → raises blood glucose.'},
+  {id:23,topic:'endocrine',topicLabel:'Endocrine system',q:'What does the adrenal gland produce and what is its effect?',a:'<strong>Adrenaline</strong> — fight-or-flight: increases heart rate, breathing, blood to muscles, dilates pupils, raises blood glucose. Fast-acting.<br><br><strong>Cortisol</strong> — stress hormone; sustains stress response, regulates metabolism and immune response.'},
+  {id:24,topic:'endocrine',topicLabel:'Endocrine system',q:'What does the thyroid gland produce and what does it do?',a:'The thyroid gland produces <strong>thyroxine</strong>.<br><br>Thyroxine controls the body\'s <strong>metabolic rate</strong> — how fast cells use energy. Affects temperature, heart rate, and energy levels.<br><br>Too little = hypothyroidism (slow, fatigue). Too much = hyperthyroidism (fast heart rate).'},
+  {id:25,topic:'endocrine',topicLabel:'Endocrine system',q:'What does the pituitary gland produce?',a:'The "master gland" — controls other glands. Produces:<br><ul><li><strong>Growth hormone (GH)</strong> — stimulates growth</li><li><strong>ADH</strong> — kidneys retain water</li><li><strong>FSH and LH</strong> — control reproduction</li><li><strong>TSH</strong> — stimulates thyroid</li></ul>Controlled by the hypothalamus.'},
+  {id:26,topic:'endocrine',topicLabel:'Endocrine system',q:'What do the ovaries and testes produce?',a:'<strong>Ovaries:</strong><br>Oestrogen — female reproductive development, menstrual cycle<br>Progesterone — prepares uterus for pregnancy<br><br><strong>Testes:</strong><br>Testosterone — male reproductive development, muscle growth, sperm'},
+  {id:27,topic:'endocrine',topicLabel:'Endocrine system',q:'What is ADH and when is it released?',a:'ADH = <strong>Anti-Diuretic Hormone</strong> (prevents urination).<br><br>Released by the <strong>pituitary gland</strong> when the hypothalamus detects concentrated blood (dehydration).<br><br>Effect: kidneys reabsorb more water → less, concentrated urine → water levels restored. Less ADH → more dilute urine.'},
+  {id:28,topic:'endocrine',topicLabel:'Endocrine system',q:'What does melatonin do and which gland produces it?',a:'<strong>Melatonin</strong> is produced by the <strong>pineal gland</strong>.<br><br>It regulates the <strong>sleep-wake cycle (circadian rhythm)</strong>. Rises in darkness (promotes sleep), falls in light (promotes wakefulness).<br><br>Bright screens at night suppress melatonin → disrupts sleep.'},
+  {id:29,topic:'endocrine',topicLabel:'Endocrine system',q:'How do hormones reach their target organs?',a:'Hormones are secreted into the <strong>bloodstream</strong> and travel throughout the body. They only affect <strong>target organs</strong> — cells with the specific receptor protein for that hormone.<br><br>Lock-and-key: hormone = key, receptor = lock. Only matching cells respond.'},
+  {id:30,topic:'homeostasis',topicLabel:'Homeostasis',q:'Define homeostasis.',a:'<strong>Homeostasis</strong> is the process by which the body maintains a <strong>stable internal environment</strong> despite changes in external or internal conditions.<br><br>Variables (temperature, blood glucose, water) are kept within a narrow range called the <strong>set point</strong> using feedback loops.'},
+  {id:31,topic:'homeostasis',topicLabel:'Homeostasis',q:'What is a negative feedback loop? What are its three essential parts?',a:'Negative feedback detects a change from the set point and triggers a response that <strong>opposes and reverses</strong> that change.<br><br>1. <strong>Receptor</strong> — detects the change<br>2. <strong>Command centre</strong> — compares to set point, sends corrective signal<br>3. <strong>Effector</strong> — carries out the correction<br><br>Called "negative" because response goes in the OPPOSITE direction to the change.'},
+  {id:32,topic:'homeostasis',topicLabel:'Homeostasis',q:'Walk through blood glucose regulation as a negative feedback loop.',a:'<strong>Glucose RISES (after eating):</strong><br>Beta cells in pancreas detect high glucose → release <strong>insulin</strong> → cells absorb glucose, liver stores as glycogen → glucose falls ✓<br><br><strong>Glucose FALLS (exercise/fasting):</strong><br>Alpha cells detect low glucose → release <strong>glucagon</strong> → liver converts glycogen to glucose → glucose rises ✓'},
+  {id:33,topic:'homeostasis',topicLabel:'Homeostasis',q:'What happens when body temperature drops below 37°C?',a:'The <strong>hypothalamus</strong> detects the drop via thermoreceptors and triggers:<br><br><strong>Shivering</strong> — muscle contractions generate heat<br><strong>Vasoconstriction</strong> — blood vessels narrow, reducing heat loss<br><strong>Goosebumps</strong> — erect hairs trap air as insulation<br><strong>Reduced sweating</strong><br><br>All oppose the temperature drop — negative feedback.'},
+  {id:34,topic:'homeostasis',topicLabel:'Homeostasis',q:'What happens when body temperature rises above 37°C?',a:'The <strong>hypothalamus</strong> detects the rise and triggers:<br><br><strong>Sweating</strong> — evaporation from skin removes heat<br><strong>Vasodilation</strong> — blood vessels widen, releasing heat at the skin surface<br><strong>Reduced shivering</strong><br><br>All oppose the temperature rise — negative feedback.'},
+  {id:35,topic:'homeostasis',topicLabel:'Homeostasis',q:'How does the body regulate water levels (osmoregulation)?',a:'<strong>Dehydrated (concentrated blood):</strong><br>Osmoreceptors in hypothalamus detect → pituitary releases more <strong>ADH</strong> → kidneys reabsorb more water → concentrated urine → levels restored ✓<br><br><strong>Overhydrated (dilute blood):</strong><br>Less ADH → kidneys excrete more water → dilute urine → levels restored ✓'},
+  {id:36,topic:'homeostasis',topicLabel:'Homeostasis',q:'What is hypothermia and how does it relate to the feedback loop?',a:'<strong>Hypothermia</strong> = core body temperature below 35°C.<br><br>Effectors (shivering, vasoconstriction) are still active but heat loss <em>exceeds</em> what they can produce — the feedback loop is <strong>overwhelmed</strong>.<br><br>At very low temperatures, the hypothalamus itself fails, the loop breaks down, heart rhythm becomes irregular. Medical emergency.'},
+  {id:37,topic:'homeostasis',topicLabel:'Homeostasis',q:'How does Type 1 diabetes relate to the blood glucose feedback loop?',a:'The immune system destroys <strong>beta cells</strong> in the pancreas — no insulin is produced.<br><br>When glucose rises, the feedback loop cannot complete — no corrective signal. Blood glucose stays dangerously high (<strong>hyperglycaemia</strong>).<br><br>Treatment: <strong>insulin injections</strong> — manually completing the broken loop.'},
+  {id:38,topic:'homeostasis',topicLabel:'Homeostasis',q:'How have sports drinks been developed using knowledge of homeostasis?',a:'Exercise causes sweating (temperature feedback) which loses <strong>water and electrolytes</strong> (sodium, potassium).<br><br>This disrupts water balance and muscle/nerve function — affecting osmoregulation and nerve feedback loops.<br><br>Sports drinks contain <strong>water, glucose, and electrolytes</strong> to restore homeostasis and support the body\'s feedback systems.'},
+  {id:39,topic:'thermo',topicLabel:'Endo/Ectotherm',q:'Define endotherm. Give two examples.',a:'An <strong>endotherm</strong> (warm-blooded) generates its own body heat <strong>internally</strong> through metabolism. Maintains constant body temperature regardless of environment.<br><br>Relies on negative feedback constantly.<br><br>Examples: <strong>mammals</strong> (humans, dogs, whales) and <strong>birds</strong>.'},
+  {id:40,topic:'thermo',topicLabel:'Endo/Ectotherm',q:'Define ectotherm. Give two examples.',a:'An <strong>ectotherm</strong> (cold-blooded) relies on <strong>external heat sources</strong> to regulate body temperature. Body temperature varies with the environment.<br><br>Uses behavioural thermoregulation (basking, moving to shade).<br><br>Examples: <strong>reptiles</strong> (lizards, snakes), fish, amphibians, insects.'},
+  {id:41,topic:'thermo',topicLabel:'Endo/Ectotherm',q:'On a graph of body temp vs external temp — how do you identify endo vs ectotherm?',a:'<strong>Endotherm</strong> — body temperature stays roughly <em>flat/horizontal</em> as external temperature changes. Internal feedback compensates.<br><br><strong>Ectotherm</strong> — body temperature follows a <em>diagonal line</em>, rising and falling with the environment.<br><br>Exam answer: "Animal A is an endotherm because its body temperature remained constant at ~37°C despite changes in environmental temperature."'},
+  {id:42,topic:'thermo',topicLabel:'Endo/Ectotherm',q:'What are the advantages and disadvantages of endotherm vs ectotherm?',a:'<strong>Endotherm ✓</strong> active in cold, stable metabolism, no warm-up needed.<br><strong>Endotherm ✗</strong> requires lots of food/energy to generate constant heat.<br><br><strong>Ectotherm ✓</strong> very energy-efficient, needs far less food.<br><strong>Ectotherm ✗</strong> sluggish in cold, must bask to warm up, often hibernate, vulnerable to temperature extremes.'},
+  {id:43,topic:'thermo',topicLabel:'Endo/Ectotherm',q:'What is behavioural thermoregulation? Which animals use it?',a:'Using <strong>behaviour</strong> rather than internal physiology to control body temperature. Mainly used by <strong>ectotherms</strong>.<br><br>Examples:<br>• Basking in sun to warm up<br>• Moving to shade or water to cool down<br>• Burrowing underground to escape extremes<br>• Being nocturnal to avoid daytime heat'},
+  {id:44,topic:'homeostasis',topicLabel:'Homeostasis',q:'What is the "set point" in a feedback system?',a:'The <strong>set point</strong> is the normal target value the body aims to maintain.<br><br>Examples:<br>Body temperature: ~37°C<br>Blood glucose: 70–100 mg/dL<br>Blood pH: 7.35–7.45<br><br>When a variable deviates from the set point, the feedback loop acts to restore it — like a thermostat setting.'},
+  {id:45,topic:'cns',topicLabel:'CNS / PNS',q:'What is the role of a receptor in a feedback system?',a:'A <strong>receptor</strong> detects a change (stimulus) and converts it into a signal.<br><br>Examples:<br><strong>Thermoreceptors</strong> — detect temperature (skin and hypothalamus)<br><strong>Osmoreceptors</strong> — detect blood water concentration (hypothalamus)<br><strong>Beta/alpha cells</strong> — detect blood glucose (pancreas)<br><strong>Photoreceptors</strong> — detect light (eye)'},
+  {id:46,topic:'cns',topicLabel:'CNS / PNS',q:'What is an effector? Give three examples.',a:'An <strong>effector</strong> is an organ that carries out the corrective response — either a <strong>muscle</strong> or a <strong>gland</strong>.<br><br>Examples:<br><strong>Sweat glands</strong> — produce sweat to cool the body<br><strong>Skeletal muscles</strong> — shiver to generate heat<br><strong>Blood vessels</strong> — dilate or constrict to control heat loss<br><strong>Pancreas</strong> — releases insulin or glucagon<br><strong>Kidneys</strong> — adjust water reabsorption'},
+  {id:47,topic:'neurons',topicLabel:'Neurons',q:'What is the difference between an electrical impulse and a hormone?',a:'<strong>Electrical impulse (nervous):</strong> along neurons | up to 120 m/s | short-lived | very specific target<br><br><strong>Hormone (endocrine):</strong> chemical in bloodstream | slower | long-lasting | widespread — any cell with matching receptor<br><br>Often used together: fight-or-flight uses both nerve impulses AND adrenaline.'},
+  {id:48,topic:'endocrine',topicLabel:'Endocrine system',q:'What is the difference between a gland and a target organ?',a:'A <strong>gland</strong> produces and secretes a hormone into the bloodstream (e.g. pancreas, thyroid, adrenal, pituitary).<br><br>A <strong>target organ</strong> responds to the hormone — it has specific receptor proteins that bind to it (lock and key).<br><br>Example: pancreas (gland) releases insulin → liver and muscle cells (target organs) absorb glucose.'},
+];
+
+// ─── State ───────────────────────────────────────────────────
+const STORAGE_KEY = 'yr9sci_ratings_v2';
+let deck = [];
+let currentIdx = 0;
+let isFlipped = false;
+let cardRatings = {}; // id → 'again' | 'good'
+let currentFilter = 'all';
+
+// ─── Persistence ─────────────────────────────────────────────
+function saveRatings(){
+  try { window.storage.set(STORAGE_KEY, JSON.stringify(cardRatings)); } catch(e){}
+  // fallback to sessionStorage for local use
+  try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cardRatings)); } catch(e){}
+}
+
+async function loadRatings(){
+  // Try persistent storage first
+  try {
+    const res = await window.storage.get(STORAGE_KEY);
+    if(res && res.value){ cardRatings = JSON.parse(res.value); return; }
+  } catch(e){}
+  // Fallback to sessionStorage
+  try {
+    const s = sessionStorage.getItem(STORAGE_KEY);
+    if(s){ cardRatings = JSON.parse(s); return; }
+  } catch(e){}
+  cardRatings = {};
+}
+
+// ─── Colours ─────────────────────────────────────────────────
+function topicBg(t){ return {neurons:'#EEEDFE',cns:'#E6F1FB',brain:'#FAEEDA',endocrine:'#FAECE7',homeostasis:'#E1F5EE',thermo:'#F1EFE8'}[t]||'#f5f4f0'; }
+function topicFg(t){ return {neurons:'#3C3489',cns:'#0C447C',brain:'#633806',endocrine:'#712B13',homeostasis:'#085041',thermo:'#444441'}[t]||'#444'; }
+
+// ─── Counts ──────────────────────────────────────────────────
+function countNeeds(){ return CARDS.filter(c=>cardRatings[c.id]==='again').length; }
+function countKnowit(){ return CARDS.filter(c=>cardRatings[c.id]==='good').length; }
+function countUnrated(){ return CARDS.filter(c=>!cardRatings[c.id]).length; }
+
+function updateCounts(){
+  const n=countNeeds(), k=countKnowit(), u=countUnrated(), total=n+k;
+  document.getElementById('needs-count').textContent=n;
+  document.getElementById('knowit-count').textContent=k;
+  document.getElementById('unrated-count').textContent=u;
+  document.getElementById('st-needs').textContent=n;
+  document.getElementById('st-knowit').textContent=k;
+  document.getElementById('st-total').textContent=total;
+}
+
+// ─── Filter ──────────────────────────────────────────────────
+function setFilter(filter, btn){
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>{
+    b.classList.remove('active','active-needs','active-knowit');
+  });
+  if(filter==='needs') btn.classList.add('active-needs');
+  else if(filter==='knowit') btn.classList.add('active-knowit');
+  else btn.classList.add('active');
+
+  if(filter==='needs'){
+    deck = CARDS.filter(c=>cardRatings[c.id]==='again');
+    if(!deck.length){ alert('No "Needs work" cards yet — rate some cards first!'); deck=[...CARDS]; filter='all'; }
+  } else if(filter==='knowit'){
+    deck = CARDS.filter(c=>cardRatings[c.id]==='good');
+    if(!deck.length){ alert('No "Know it!" cards yet — rate some cards first!'); deck=[...CARDS]; filter='all'; }
+  } else if(filter==='unrated'){
+    deck = CARDS.filter(c=>!cardRatings[c.id]);
+    if(!deck.length){ alert('All cards have been rated! Showing all cards.'); deck=[...CARDS]; filter='all'; }
+  } else if(filter==='all'){
+    deck = [...CARDS];
+  } else {
+    deck = CARDS.filter(c=>c.topic===filter);
+  }
+
+  shuffle(deck);
+  currentIdx=0; isFlipped=false;
+  document.getElementById('done-screen').style.display='none';
+  document.getElementById('card-area').style.display='block';
+  document.getElementById('card-inner').classList.remove('flipped');
+  document.getElementById('answer-input').value='';
+  showCard();
+  updateProgress();
+}
+
+// ─── Shuffle ─────────────────────────────────────────────────
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+
+// ─── Show card ───────────────────────────────────────────────
+function showCard(){
+  if(!deck.length) return;
+  const card = deck[currentIdx];
+
+  // Front
+  document.getElementById('topic-badge').textContent = card.topicLabel;
+  document.getElementById('topic-badge').style.cssText = `background:${topicBg(card.topic)};color:${topicFg(card.topic)}`;
+  document.getElementById('card-q').textContent = card.q;
+
+  // Back
+  document.getElementById('topic-badge-back').textContent = card.topicLabel;
+  document.getElementById('topic-badge-back').style.cssText = `background:${topicBg(card.topic)};color:${topicFg(card.topic)}`;
+  document.getElementById('card-a').innerHTML = card.a;
+
+  document.getElementById('card-num').textContent = (currentIdx+1)+' of '+deck.length;
+
+  // Outline based on rating
+  const r = cardRatings[card.id];
+  const ca = document.getElementById('card-area');
+  ca.className = 'card-area' + (r==='again' ? ' outline-again' : r==='good' ? ' outline-good' : '');
+
+  document.getElementById('btn-prev').disabled = currentIdx===0;
+  document.getElementById('btn-next').disabled = currentIdx===deck.length-1;
+
+  // Spacer holds height of whichever face is taller so card-area never collapses
+  requestAnimationFrame(()=>{
+    const front = document.getElementById('card-front');
+    const back  = document.getElementById('card-back');
+    const spacer = document.getElementById('card-spacer');
+    spacer.innerHTML = document.getElementById('card-a').innerHTML;
+    spacer.style.minHeight = Math.max(200, front.scrollHeight, back.scrollHeight)+'px';
+  });
+}
+
+// ─── Flip ────────────────────────────────────────────────────
+function flipCard(){
+  if(isFlipped) return;
+  isFlipped = true;
+  // Copy typed answer to back
+  const typed = document.getElementById('answer-input').value.trim();
+  const display = document.getElementById('your-answer-display');
+  if(typed){
+    display.textContent = typed;
+    display.classList.remove('empty');
+  } else {
+    display.textContent = '(no answer written)';
+    display.classList.add('empty');
+  }
+  document.getElementById('card-inner').classList.add('flipped');
+  // Update spacer now back is visible
+  requestAnimationFrame(()=>{
+    const back = document.getElementById('card-back');
+    const spacer = document.getElementById('card-spacer');
+    spacer.style.minHeight = Math.max(200, back.scrollHeight)+'px';
+  });
+}
+
+function unflipCard(){
+  if(!isFlipped) return;
+  isFlipped = false;
+  document.getElementById('card-inner').classList.remove('flipped');
+  requestAnimationFrame(()=>{
+    const front = document.getElementById('card-front');
+    const spacer = document.getElementById('card-spacer');
+    spacer.style.minHeight = Math.max(200, front.scrollHeight)+'px';
+  });
+}
+
+// ─── Rate ────────────────────────────────────────────────────
+function rate(r){
+  const card = deck[currentIdx];
+  cardRatings[card.id] = r;
+  saveRatings();
+  updateCounts();
+
+  const ca = document.getElementById('card-area');
+  ca.className = 'card-area' + (r==='again' ? ' outline-again' : ' outline-good');
+
+  setTimeout(()=>{
+    if(currentIdx < deck.length-1){ nextCard(); }
+    else { showDone(); }
+  }, 300);
+}
+
+// ─── Navigate ────────────────────────────────────────────────
+function nextCard(){
+  if(currentIdx < deck.length-1){
+    currentIdx++;
+    resetToFront();
+  } else { showDone(); }
+}
+function prevCard(){
+  if(currentIdx > 0){
+    currentIdx--;
+    resetToFront();
+  }
+}
+function resetToFront(){
+  isFlipped=false;
+  document.getElementById('card-inner').classList.remove('flipped');
+  document.getElementById('answer-input').value='';
+  showCard();
+  updateProgress();
+}
+
+// ─── Progress ────────────────────────────────────────────────
+function updateProgress(){
+  const rated = deck.filter(c=>cardRatings[c.id]).length;
+  const pct = deck.length ? Math.round(rated/deck.length*100) : 0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=rated+' / '+deck.length+' rated';
+}
+
+// ─── Done screen ─────────────────────────────────────────────
+function showDone(){
+  document.getElementById('card-area').style.display='none';
+  document.getElementById('card-num').textContent='';
+  const ds = document.getElementById('done-screen');
+  ds.style.display='block';
+  const n=countNeeds(), k=countKnowit();
+  document.getElementById('done-title').textContent = k > n ? '🎉 Great work!' : '💪 Keep going!';
+  document.getElementById('done-msg').textContent = k+' card'+(k!==1?'s':'')+' in Know it! and '+n+' card'+(n!==1?'s':'')+' in Needs work. Ratings are saved for next time.'+(n>0?' Keep reviewing the "Needs work" pile until they move to "Know it!"':'');
+  document.getElementById('btn-do-needs').style.display = n>0 ? '' : 'none';
+}
+
+function restartDeck(){
+  document.getElementById('done-screen').style.display='none';
+  document.getElementById('card-area').style.display='block';
+  shuffle(deck); currentIdx=0;
+  resetToFront();
+}
+
+// ─── Init ────────────────────────────────────────────────────
+async function init(){
+  await loadRatings();
+  deck = [...CARDS];
+  shuffle(deck);
+  showCard();
+  updateCounts();
+  updateProgress();
+}
+init();
+</script>
+</body>
+</html>

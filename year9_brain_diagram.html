@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Diagram — Year 9 Science</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:700px;margin:0 auto;padding-bottom:2rem}
+.header{background:#085041;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.header h1{font-size:18px;font-weight:500;color:white;margin-bottom:2px}
+.header p{font-size:12px;color:rgba(255,255,255,0.75)}
+.tab-row{display:flex;gap:6px;margin-bottom:1rem}
+.tab{padding:7px 18px;border:1px solid #ccc;border-radius:20px;font-size:13px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.tab.active{background:#085041;color:white;border-color:#085041}
+.panel{display:none}.panel.active{display:block}
+
+/* STUDY PANEL */
+.diagram-card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.diagram-card h2{font-size:15px;font-weight:500;margin-bottom:1rem}
+.svg-wrap{width:100%;max-width:620px;margin:0 auto;display:block}
+.info-panel{margin-top:1rem;background:#f5f4f0;border-radius:10px;padding:1rem;min-height:80px;font-size:13px;line-height:1.6;color:#5f5e5a;transition:all 0.2s}
+.info-panel strong{color:#2c2c2a;font-weight:500;display:block;margin-bottom:4px;font-size:14px}
+.info-panel .tag{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500;margin-bottom:6px}
+.click-hint{font-size:12px;color:#aaa;text-align:center;margin-top:6px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:1rem}
+@media(max-width:480px){.legend{grid-template-columns:1fr}}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#5f5e5a;padding:6px 10px;background:#f5f4f0;border-radius:8px;cursor:pointer;transition:background 0.15s;border:1px solid transparent}
+.legend-item:hover,.legend-item.active{background:white;border-color:#ccc}
+.legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+
+/* LABEL ACTIVITY */
+.activity-card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.activity-card h2{font-size:15px;font-weight:500;margin-bottom:0.5rem}
+.activity-card p{font-size:13px;color:#5f5e5a;margin-bottom:1rem}
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.score-box{background:#E1F5EE;border-radius:8px;padding:6px 14px;font-size:14px;font-weight:500;color:#085041}
+.score-box span{font-size:11px;font-weight:400;color:#0F6E56;margin-left:4px}
+.check-btn{padding:7px 16px;background:#085041;color:white;border:none;border-radius:8px;font-size:13px;cursor:pointer;margin-left:auto}
+.check-btn:hover{background:#0F6E56}
+.reset-btn{padding:7px 14px;background:white;color:#5f5e5a;border:1px solid #ccc;border-radius:8px;font-size:13px;cursor:pointer}
+.reset-btn:hover{background:#f5f4f0}
+
+.label-bank{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;min-height:44px;padding:8px;background:#f5f4f0;border-radius:10px;border:1px dashed #ccc}
+.drag-label{padding:6px 12px;background:white;border:1px solid #ccc;border-radius:20px;font-size:12px;font-weight:500;cursor:grab;user-select:none;color:#2c2c2a;transition:all 0.15s;white-space:nowrap}
+.drag-label:hover{border-color:#085041;color:#085041}
+.drag-label.dragging{opacity:0.4}
+.drag-label.placed{display:none}
+
+.drop-zone{border:1.5px dashed #ccc;border-radius:8px;padding:4px 10px;font-size:11px;color:#aaa;min-width:90px;text-align:center;background:white;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.drop-zone.over{border-color:#085041;background:#E1F5EE;color:#085041}
+.drop-zone.filled{border-style:solid;color:#2c2c2a;font-size:12px;font-weight:500}
+.drop-zone.correct{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.drop-zone.incorrect{border-color:#A32D2D;background:#FCEBEB;color:#A32D2D}
+
+.function-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem}
+@media(max-width:480px){.function-grid{grid-template-columns:1fr}}
+.func-card{background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:12px;color:#5f5e5a;border:1px solid #e0dfd8}
+.func-card .func-q{font-weight:500;color:#2c2c2a;margin-bottom:6px;font-size:13px}
+.func-drop{display:inline-block;border:1.5px dashed #ccc;border-radius:6px;padding:3px 10px;font-size:12px;color:#aaa;min-width:110px;text-align:center;background:white;cursor:pointer;transition:all 0.15s}
+.func-drop.over{border-color:#085041;background:#E1F5EE;color:#085041}
+.func-drop.filled{border-style:solid;color:#2c2c2a;font-weight:500}
+.func-drop.correct{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.func-drop.incorrect{border-color:#A32D2D;background:#FCEBEB;color:#A32D2D}
+
+.result-bar{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;text-align:center;display:none;margin-top:0.75rem}
+.result-bar.show{display:block}
+.result-bar.pass{background:#E1F5EE;color:#085041}
+.result-bar.fail{background:#FAEEDA;color:#633806}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="header">
+  <h1>Brain Diagram — Year 9 Science</h1>
+  <p>Checklist items 9 & 10 — label brain parts and know what each controls</p>
+</div>
+
+<div class="tab-row">
+  <button class="tab active" onclick="switchTab('study',this)">Study diagram</button>
+  <button class="tab" onclick="switchTab('label',this)">Label the brain</button>
+  <button class="tab" onclick="switchTab('functions',this)">Match functions</button>
+</div>
+
+<!-- STUDY PANEL -->
+<div id="panel-study" class="panel active">
+  <div class="diagram-card">
+    <h2>Click any region to learn what it does</h2>
+    <svg class="svg-wrap" viewBox="0 0 620 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer brain shape (cerebrum silhouette) -->
+      <!-- Main cerebrum outline -->
+      <ellipse cx="295" cy="185" rx="210" ry="170" fill="#f0ece4" stroke="#c8c0b0" stroke-width="1.5"/>
+      <!-- Cerebral folds suggestion (decorative sulci) -->
+      <path d="M160,130 Q185,115 210,125 Q225,110 245,118" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+      <path d="M320,95 Q345,85 370,95 Q390,82 410,92" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+      <path d="M120,170 Q140,155 162,165" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+      <path d="M420,140 Q445,128 465,140" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+      <path d="M430,200 Q455,188 478,198" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+      <path d="M130,220 Q150,208 172,218" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.6"/>
+
+      <!-- CEREBRUM (clickable region - large) -->
+      <ellipse id="reg-cerebrum" cx="295" cy="170" rx="195" ry="148" fill="#EEEDFE" fill-opacity="0.6" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="none" cursor="pointer" onclick="selectRegion('cerebrum')" style="transition:fill-opacity 0.2s"/>
+
+      <!-- CEREBELLUM (bottom back) -->
+      <ellipse id="reg-cerebellum" cx="390" cy="330" rx="75" ry="58" fill="#FAEEDA" fill-opacity="0.85" stroke="#854F0B" stroke-width="1.5" cursor="pointer" onclick="selectRegion('cerebellum')" style="transition:fill-opacity 0.2s"/>
+      <!-- Cerebellum folds -->
+      <path d="M330,320 Q360,310 390,318 Q420,310 450,320" fill="none" stroke="#854F0B" stroke-width="0.8" opacity="0.5"/>
+      <path d="M328,332 Q358,322 390,330 Q422,322 452,332" fill="none" stroke="#854F0B" stroke-width="0.8" opacity="0.5"/>
+      <path d="M332,344 Q360,334 390,342 Q420,334 448,344" fill="none" stroke="#854F0B" stroke-width="0.8" opacity="0.5"/>
+
+      <!-- BRAINSTEM -->
+      <rect id="reg-brainstem" x="248" y="300" width="80" height="95" rx="18" fill="#FAECE7" fill-opacity="0.9" stroke="#993C1D" stroke-width="1.5" cursor="pointer" onclick="selectRegion('brainstem')" style="transition:fill-opacity 0.2s"/>
+      <!-- Brainstem label lines suggestion -->
+      <line x1="265" y1="325" x2="310" y2="325" stroke="#993C1D" stroke-width="0.6" opacity="0.4"/>
+      <line x1="265" y1="340" x2="310" y2="340" stroke="#993C1D" stroke-width="0.6" opacity="0.4"/>
+      <line x1="265" y1="355" x2="310" y2="355" stroke="#993C1D" stroke-width="0.6" opacity="0.4"/>
+
+      <!-- HYPOTHALAMUS (small, below thalamus) -->
+      <ellipse id="reg-hypothalamus" cx="272" cy="268" rx="34" ry="22" fill="#E1F5EE" fill-opacity="0.95" stroke="#0F6E56" stroke-width="1.5" cursor="pointer" onclick="selectRegion('hypothalamus')" style="transition:fill-opacity 0.2s"/>
+
+      <!-- THALAMUS -->
+      <ellipse id="reg-thalamus" cx="300" cy="230" rx="42" ry="28" fill="#E6F1FB" fill-opacity="0.9" stroke="#185FA5" stroke-width="1.5" cursor="pointer" onclick="selectRegion('thalamus')" style="transition:fill-opacity 0.2s"/>
+
+      <!-- PITUITARY (small, hanging below hypothalamus) -->
+      <ellipse id="reg-pituitary" cx="252" cy="302" rx="18" ry="14" fill="#FBF0E8" fill-opacity="1" stroke="#993C1D" stroke-width="1.5" cursor="pointer" onclick="selectRegion('pituitary')" style="transition:fill-opacity 0.2s"/>
+      <!-- stalk -->
+      <line x1="252" y1="290" x2="257" y2="300" stroke="#993C1D" stroke-width="1.5"/>
+
+      <!-- SPINAL CORD -->
+      <rect x="270" y="390" width="36" height="28" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5" cursor="pointer" id="reg-spinal" onclick="selectRegion('spinal')" style="transition:fill-opacity 0.2s"/>
+
+      <!-- Region text labels ON diagram -->
+      <text x="250" y="155" text-anchor="middle" font-size="13" font-weight="500" fill="#3C3489" pointer-events="none">Cerebrum</text>
+
+      <text x="390" y="334" text-anchor="middle" font-size="12" font-weight="500" fill="#633806" pointer-events="none">Cerebellum</text>
+
+      <text x="380" y="295" text-anchor="middle" font-size="11" font-weight="500" fill="#712B13" pointer-events="none">Brainstem</text>
+
+      <text x="302" y="234" text-anchor="middle" font-size="11" font-weight="500" fill="#0C447C" pointer-events="none">Thalamus</text>
+
+      <text x="230" y="272" text-anchor="middle" font-size="10" font-weight="500" fill="#085041" pointer-events="none">Hypothalamus</text>
+
+      <text x="210" y="308" text-anchor="middle" font-size="10" font-weight="500" fill="#712B13" pointer-events="none">Pituitary</text>
+      <line x1="232" y1="305" x2="242" y2="303" stroke="#993C1D" stroke-width="0.8"/>
+
+      <text x="288" y="412" text-anchor="middle" font-size="11" font-weight="500" fill="#444441" pointer-events="none">Spinal cord</text>
+
+      <!-- Leader lines to labels on right side -->
+      <!-- Cerebrum leader -->
+      <line x1="455" y1="155" x2="530" y2="120" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="534" y="117" font-size="11" fill="#534AB7" font-weight="500">Cerebrum</text>
+      <text x="534" y="129" font-size="10" fill="#5f5e5a">thinking, memory,</text>
+      <text x="534" y="140" font-size="10" fill="#5f5e5a">emotions, senses</text>
+
+      <!-- Cerebellum leader -->
+      <line x1="455" y1="335" x2="530" y2="310" stroke="#854F0B" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="534" y="307" font-size="11" fill="#854F0B" font-weight="500">Cerebellum</text>
+      <text x="534" y="318" font-size="10" fill="#5f5e5a">balance,</text>
+      <text x="534" y="328" font-size="10" fill="#5f5e5a">coordination</text>
+
+      <!-- Brainstem leader -->
+      <line x1="328" y1="360" x2="530" y2="370" stroke="#993C1D" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="534" y="367" font-size="11" fill="#993C1D" font-weight="500">Brainstem</text>
+      <text x="534" y="378" font-size="10" fill="#5f5e5a">heart rate,</text>
+      <text x="534" y="388" font-size="10" fill="#5f5e5a">breathing</text>
+
+      <!-- Thalamus leader -->
+      <line x1="342" y1="220" x2="530" y2="205" stroke="#185FA5" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="534" y="202" font-size="11" fill="#185FA5" font-weight="500">Thalamus</text>
+      <text x="534" y="213" font-size="10" fill="#5f5e5a">sensory relay</text>
+
+      <!-- Hypothalamus leader -->
+      <line x1="238" y1="268" x2="50" y2="250" stroke="#0F6E56" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="4" y="238" font-size="11" fill="#0F6E56" font-weight="500">Hypothalamus</text>
+      <text x="4" y="249" font-size="10" fill="#5f5e5a">homeostasis,</text>
+      <text x="4" y="259" font-size="10" fill="#5f5e5a">temp, hunger</text>
+
+      <!-- Pituitary leader -->
+      <line x1="234" y1="302" x2="50" y2="315" stroke="#993C1D" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="4" y="304" font-size="11" fill="#712B13" font-weight="500">Pituitary gland</text>
+      <text x="4" y="315" font-size="10" fill="#5f5e5a">master endocrine</text>
+      <text x="4" y="325" font-size="10" fill="#5f5e5a">gland</text>
+
+      <!-- Spinal cord leader -->
+      <line x1="270" y1="404" x2="50" y2="390" stroke="#5F5E5A" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="4" y="380" font-size="11" fill="#444441" font-weight="500">Spinal cord</text>
+      <text x="4" y="391" font-size="10" fill="#5f5e5a">relays signals,</text>
+      <text x="4" y="401" font-size="10" fill="#5f5e5a">reflex arcs</text>
+    </svg>
+
+    <div class="click-hint">Click any coloured region above for full details</div>
+
+    <div class="info-panel" id="info-panel">
+      <span style="color:#aaa;font-size:13px">Click a region on the diagram to see its function.</span>
+    </div>
+  </div>
+
+  <div class="diagram-card">
+    <h2>Quick reference — what controls what?</h2>
+    <div class="legend" id="legend-btns">
+      <div class="legend-item" onclick="selectRegion('cerebrum');scrollToInfo()" >
+        <div class="legend-dot" style="background:#534AB7"></div>Cerebrum — thinking, memory, emotions
+      </div>
+      <div class="legend-item" onclick="selectRegion('cerebellum');scrollToInfo()">
+        <div class="legend-dot" style="background:#854F0B"></div>Cerebellum — balance, coordination
+      </div>
+      <div class="legend-item" onclick="selectRegion('brainstem');scrollToInfo()">
+        <div class="legend-dot" style="background:#993C1D"></div>Brainstem — heart rate, breathing
+      </div>
+      <div class="legend-item" onclick="selectRegion('hypothalamus');scrollToInfo()">
+        <div class="legend-dot" style="background:#0F6E56"></div>Hypothalamus — homeostasis master
+      </div>
+      <div class="legend-item" onclick="selectRegion('thalamus');scrollToInfo()">
+        <div class="legend-dot" style="background:#185FA5"></div>Thalamus — sensory relay station
+      </div>
+      <div class="legend-item" onclick="selectRegion('pituitary');scrollToInfo()">
+        <div class="legend-dot" style="background:#993C1D"></div>Pituitary — master endocrine gland
+      </div>
+      <div class="legend-item" onclick="selectRegion('spinal');scrollToInfo()">
+        <div class="legend-dot" style="background:#5F5E5A"></div>Spinal cord — relay, reflex arcs
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LABEL PANEL -->
+<div id="panel-label" class="panel">
+  <div class="activity-card">
+    <h2>Label the brain</h2>
+    <p>Drag each label from the bank and drop it onto the correct region. Click Check when done.</p>
+    <div class="label-bank" id="label-bank"></div>
+    <div class="score-row">
+      <div class="score-box" id="label-score">— <span>/ 7 correct</span></div>
+      <button class="reset-btn" onclick="resetLabels()">Reset</button>
+      <button class="check-btn" onclick="checkLabels()">Check answers</button>
+    </div>
+    <div class="result-bar" id="label-result"></div>
+
+    <svg class="svg-wrap" viewBox="0 0 620 440" xmlns="http://www.w3.org/2000/svg" id="label-svg">
+      <!-- Brain outline -->
+      <ellipse cx="295" cy="185" rx="210" ry="170" fill="#f0ece4" stroke="#c8c0b0" stroke-width="1.5"/>
+      <path d="M160,130 Q185,115 210,125 Q225,110 245,118" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.5"/>
+      <path d="M320,95 Q345,85 370,95 Q390,82 410,92" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.5"/>
+      <path d="M120,170 Q140,155 162,165" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.5"/>
+      <path d="M420,140 Q445,128 465,140" fill="none" stroke="#c8c0b0" stroke-width="1" opacity="0.5"/>
+
+      <!-- Cerebrum -->
+      <ellipse cx="295" cy="170" rx="195" ry="148" fill="#f5f2ee" stroke="#ccc" stroke-width="1.5"/>
+      <!-- Cerebellum -->
+      <ellipse cx="390" cy="330" rx="75" ry="58" fill="#f0ece4" stroke="#ccc" stroke-width="1.5"/>
+      <path d="M330,320 Q360,310 390,318 Q420,310 450,320" fill="none" stroke="#bbb" stroke-width="0.8" opacity="0.6"/>
+      <path d="M328,332 Q358,322 390,330 Q422,322 452,332" fill="none" stroke="#bbb" stroke-width="0.8" opacity="0.6"/>
+      <!-- Brainstem -->
+      <rect x="248" y="300" width="80" height="95" rx="18" fill="#f0ece4" stroke="#ccc" stroke-width="1.5"/>
+      <!-- Thalamus -->
+      <ellipse cx="300" cy="230" rx="42" ry="28" fill="#e8e4de" stroke="#ccc" stroke-width="1.5"/>
+      <!-- Hypothalamus -->
+      <ellipse cx="272" cy="268" rx="34" ry="22" fill="#e0dcd6" stroke="#ccc" stroke-width="1.5"/>
+      <!-- Pituitary -->
+      <ellipse cx="252" cy="302" rx="18" ry="14" fill="#ddd9d2" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="252" y1="290" x2="257" y2="300" stroke="#ccc" stroke-width="1.5"/>
+      <!-- Spinal cord -->
+      <rect x="270" y="390" width="36" height="40" rx="8" fill="#e8e4de" stroke="#ccc" stroke-width="1.5"/>
+
+      <!-- Numbered circles + leader lines -->
+      <!-- 1 Cerebrum -->
+      <circle cx="200" cy="130" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="200" y="135" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">1</text>
+      <line x1="200" y1="142" x2="230" y2="158" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 2 Cerebellum -->
+      <circle cx="485" cy="330" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="485" y="335" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">2</text>
+      <line x1="473" y1="330" x2="462" y2="330" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 3 Brainstem -->
+      <circle cx="360" cy="370" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="360" y="375" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">3</text>
+      <line x1="348" y1="370" x2="328" y2="365" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 4 Thalamus -->
+      <circle cx="360" cy="210" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="360" y="215" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">4</text>
+      <line x1="348" y1="218" x2="340" y2="228" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 5 Hypothalamus -->
+      <circle cx="180" cy="285" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="180" y="290" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">5</text>
+      <line x1="192" y1="282" x2="238" y2="270" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 6 Pituitary -->
+      <circle cx="180" cy="320" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="180" y="325" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">6</text>
+      <line x1="192" y1="318" x2="234" y2="308" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- 7 Spinal cord -->
+      <circle cx="360" cy="415" r="12" fill="white" stroke="#ccc" stroke-width="1.5"/>
+      <text x="360" y="420" text-anchor="middle" font-size="12" font-weight="500" fill="#2c2c2a">7</text>
+      <line x1="348" y1="415" x2="306" y2="415" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Drop zones positioned near numbers -->
+      <!-- These are rendered as foreignObject -->
+      <foreignObject x="60" y="110" width="120" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-1" data-answer="Cerebrum" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="490" y="312" width="120" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-2" data-answer="Cerebellum" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="365" y="352" width="120" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-3" data-answer="Brainstem" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="365" y="192" width="120" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-4" data-answer="Thalamus" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="40" y="267" width="130" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-5" data-answer="Hypothalamus" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="40" y="303" width="130" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-6" data-answer="Pituitary gland" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+
+      <foreignObject x="365" y="397" width="120" height="36"><div xmlns="http://www.w3.org/1999/xhtml" class="drop-zone" id="dz-7" data-answer="Spinal cord" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dzDrop(event,this)" onclick="dzClick(this)">drop here</div></foreignObject>
+    </svg>
+  </div>
+</div>
+
+<!-- FUNCTIONS PANEL -->
+<div id="panel-functions" class="panel">
+  <div class="activity-card">
+    <h2>Match functions to brain parts</h2>
+    <p>Drag the brain part from the bank to the correct function. This matches your teacher's checklist item 10.</p>
+    <div class="label-bank" id="func-bank"></div>
+    <div class="score-row">
+      <div class="score-box" id="func-score">— <span>/ 9 correct</span></div>
+      <button class="reset-btn" onclick="resetFunctions()">Reset</button>
+      <button class="check-btn" onclick="checkFunctions()">Check answers</button>
+    </div>
+    <div class="result-bar" id="func-result"></div>
+    <div class="function-grid" id="func-grid"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// Tab switching
+function switchTab(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// STUDY PANEL DATA
+const regions = {
+  cerebrum:{
+    label:'Cerebrum',color:'#534AB7',bg:'#EEEDFE',
+    desc:'The largest part of the brain, divided into left and right hemispheres and four lobes.',
+    functions:[
+      '<strong>Thinking and reasoning</strong> — conscious thought, problem solving, decision making',
+      '<strong>Memory</strong> — forming and recalling short and long-term memories (hippocampus)',
+      '<strong>Emotions</strong> — processing feelings such as happiness, fear, anger (limbic system / amygdala)',
+      '<strong>Voluntary movement</strong> — controlling deliberate muscle movements (motor cortex)',
+      '<strong>Vision</strong> — interpreting signals from the eyes (occipital lobe, back of head)',
+      '<strong>Speech and language</strong> — producing and understanding language (Broca\'s and Wernicke\'s areas)',
+      '<strong>Sensory interpretation</strong> — touch, temperature, pain (sensory cortex)'
+    ]
+  },
+  cerebellum:{
+    label:'Cerebellum',color:'#854F0B',bg:'#FAEEDA',
+    desc:'Located at the lower back of the brain. Sometimes called the "little brain".',
+    functions:[
+      '<strong>Balance and posture</strong> — keeps you upright and stable',
+      '<strong>Coordination</strong> — ensures smooth, coordinated muscle movements',
+      '<strong>Fine motor control</strong> — precise hand and finger movements',
+      '<strong>Timing</strong> — coordinates the timing of movement sequences'
+    ]
+  },
+  brainstem:{
+    label:'Brainstem',color:'#993C1D',bg:'#FAECE7',
+    desc:'Connects the brain to the spinal cord. Controls the most basic survival functions — completely automatic, cannot be consciously controlled.',
+    functions:[
+      '<strong>Heart rate</strong> — controls how fast the heart beats (medulla oblongata)',
+      '<strong>Breathing rate</strong> — controls the rhythm of breathing',
+      '<strong>Blood pressure</strong> — regulates blood pressure',
+      '<strong>Swallowing and vomiting reflexes</strong>',
+      '<strong>Consciousness and alertness</strong> — the reticular formation regulates sleep/wake'
+    ]
+  },
+  hypothalamus:{
+    label:'Hypothalamus',color:'#0F6E56',bg:'#E1F5EE',
+    desc:'A small but critical structure. The master controller of homeostasis and the key link between the nervous system and the endocrine system.',
+    functions:[
+      '<strong>Body temperature</strong> — detects temperature changes and triggers sweating/shivering',
+      '<strong>Hunger and appetite</strong> — detects blood glucose/hormones and triggers hunger/fullness',
+      '<strong>Thirst and water balance</strong> — detects dehydration and triggers ADH release',
+      '<strong>Sleep-wake cycle</strong> — regulates circadian rhythm',
+      '<strong>Controls the pituitary gland</strong> — sends releasing hormones to tell the pituitary what to secrete',
+      '<strong>Connects nervous and endocrine systems</strong> — receives nerve signals, responds with hormones'
+    ]
+  },
+  thalamus:{
+    label:'Thalamus',color:'#185FA5',bg:'#E6F1FB',
+    desc:'Located near the centre of the brain, just above the brainstem.',
+    functions:[
+      '<strong>Sensory relay station</strong> — receives sensory signals (sight, hearing, touch, taste) and routes them to the correct area of the cerebrum',
+      '<strong>Motor relay</strong> — routes motor signals from the cerebral cortex',
+      '<strong>Consciousness and alertness</strong> — involved in regulating awareness',
+      '<strong>Pain processing</strong> — involved in the perception of pain'
+    ]
+  },
+  pituitary:{
+    label:'Pituitary gland',color:'#993C1D',bg:'#FBF0E8',
+    desc:'A pea-sized gland hanging below the hypothalamus. Called the "master endocrine gland" because it controls other glands.',
+    functions:[
+      '<strong>Growth hormone (GH)</strong> — stimulates bone and tissue growth',
+      '<strong>ADH (anti-diuretic hormone)</strong> — tells kidneys to retain water',
+      '<strong>FSH and LH</strong> — control the reproductive organs (ovaries/testes)',
+      '<strong>TSH</strong> — stimulates the thyroid gland',
+      '<strong>Controlled by the hypothalamus</strong> — receives releasing hormones from hypothalamus'
+    ]
+  },
+  spinal:{
+    label:'Spinal cord',color:'#5F5E5A',bg:'#F1EFE8',
+    desc:'A long bundle of nerves running down the spine, protected by vertebrae. Part of the CNS.',
+    functions:[
+      '<strong>Relay signals</strong> — carries signals between the brain and the rest of the body',
+      '<strong>Reflex arcs</strong> — processes reflex responses (e.g. pulling away from pain) without involving the brain',
+      '<strong>Sensory information upward</strong> — carries sensory signals up to the brain',
+      '<strong>Motor commands downward</strong> — carries motor signals from brain to muscles'
+    ]
+  }
+};
+
+function selectRegion(id){
+  const r = regions[id];
+  if(!r) return;
+  // Highlight svg region
+  document.querySelectorAll('[id^="reg-"]').forEach(el=>{
+    el.style.fillOpacity = '0.4';
+  });
+  const el = document.getElementById('reg-'+id);
+  if(el) el.style.fillOpacity = '1';
+
+  const panel = document.getElementById('info-panel');
+  panel.innerHTML = `<span class="tag" style="background:${r.bg};color:${r.color}">${r.label}</span><strong>${r.label}</strong>${r.desc}<ul style="margin-top:8px;padding-left:1.1rem">${r.functions.map(f=>`<li style="margin-bottom:4px">${f}</li>`).join('')}</ul>`;
+}
+
+function scrollToInfo(){
+  document.getElementById('info-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// LABEL ACTIVITY
+const labelAnswers = ['Cerebrum','Cerebellum','Brainstem','Thalamus','Hypothalamus','Pituitary gland','Spinal cord'];
+let dragging = null;
+let selectedLabel = null;
+
+function buildLabelBank(){
+  const bank = document.getElementById('label-bank');
+  bank.innerHTML = '';
+  const shuffled = [...labelAnswers].sort(()=>Math.random()-0.5);
+  shuffled.forEach(lbl=>{
+    const el = document.createElement('div');
+    el.className = 'drag-label';
+    el.textContent = lbl;
+    el.draggable = true;
+    el.dataset.label = lbl;
+    el.addEventListener('dragstart', e=>{
+      dragging = lbl;
+      selectedLabel = null;
+      e.target.classList.add('dragging');
+    });
+    el.addEventListener('dragend', e=>e.target.classList.remove('dragging'));
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('.drag-label').forEach(d=>d.style.outline='');
+      if(selectedLabel === lbl){selectedLabel=null;return;}
+      selectedLabel = lbl;
+      el.style.outline = '2px solid #085041';
+    });
+    bank.appendChild(el);
+  });
+  // Reset drop zones
+  for(let i=1;i<=7;i++){
+    const dz = document.getElementById('dz-'+i);
+    if(dz){dz.textContent='drop here';dz.className='drop-zone';dz.dataset.placed='';}
+  }
+  document.getElementById('label-score').innerHTML = '— <span>/ 7 correct</span>';
+  document.getElementById('label-result').className='result-bar';
+}
+
+function dzOver(e,el){e.preventDefault();el.classList.add('over')}
+function dzLeave(el){el.classList.remove('over')}
+function dzDrop(e,el){
+  e.preventDefault();el.classList.remove('over');
+  const lbl = dragging || selectedLabel;
+  if(!lbl) return;
+  // If something was placed here before, return it to bank
+  if(el.dataset.placed){
+    returnToBank(el.dataset.placed);
+  }
+  // Hide label from bank
+  document.querySelectorAll('.drag-label').forEach(d=>{
+    if(d.dataset.label===lbl) d.style.display='none';
+  });
+  el.textContent = lbl;
+  el.dataset.placed = lbl;
+  el.classList.add('filled');
+  dragging = null; selectedLabel = null;
+  document.querySelectorAll('.drag-label').forEach(d=>d.style.outline='');
+}
+function dzClick(el){
+  const lbl = selectedLabel;
+  if(!lbl) return;
+  dzDrop({preventDefault:()=>{}}, el);
+}
+function returnToBank(lbl){
+  document.querySelectorAll('.drag-label').forEach(d=>{
+    if(d.dataset.label===lbl) d.style.display='';
+  });
+}
+
+function checkLabels(){
+  let correct=0;
+  for(let i=1;i<=7;i++){
+    const dz=document.getElementById('dz-'+i);
+    if(!dz) continue;
+    const placed=dz.dataset.placed;
+    const ans=dz.dataset.answer;
+    if(placed===ans){correct++;dz.classList.add('correct');}
+    else if(placed){dz.classList.add('incorrect');}
+  }
+  document.getElementById('label-score').innerHTML = correct+' <span>/ 7 correct</span>';
+  const r=document.getElementById('label-result');
+  r.className='result-bar show '+(correct>=6?'pass':'fail');
+  r.textContent = correct===7?'Perfect! All 7 labels correct.':correct>=5?correct+'/7 correct — almost there! Check the highlighted ones.':correct+'/7 — keep practising. Reset and try again!';
+}
+
+function resetLabels(){buildLabelBank();}
+
+// FUNCTION MATCHING
+const funcQuestions = [
+  {q:'Controls heart rate and breathing',answer:'Brainstem'},
+  {q:'Controls memory formation',answer:'Cerebrum'},
+  {q:'Controls emotions like fear and happiness',answer:'Cerebrum'},
+  {q:'Interprets signals from the eyes (vision)',answer:'Cerebrum'},
+  {q:'Controls growth hormone release',answer:'Pituitary gland'},
+  {q:'Links nervous system to endocrine system',answer:'Hypothalamus'},
+  {q:'Regulates body temperature',answer:'Hypothalamus'},
+  {q:'Controls balance and coordination',answer:'Cerebellum'},
+  {q:'Relays sensory signals to the cerebrum',answer:'Thalamus'},
+];
+
+const funcLabels = ['Cerebrum','Cerebellum','Brainstem','Hypothalamus','Thalamus','Pituitary gland'];
+
+function buildFuncBank(){
+  const bank = document.getElementById('func-bank');
+  bank.innerHTML='';
+  const shuffled=[...funcLabels].sort(()=>Math.random()-0.5);
+  shuffled.forEach(lbl=>{
+    const el=document.createElement('div');
+    el.className='drag-label';
+    el.textContent=lbl;
+    el.draggable=true;
+    el.dataset.label=lbl;
+    el.addEventListener('dragstart',e=>{dragging=lbl;selectedLabel=null;e.target.classList.add('dragging')});
+    el.addEventListener('dragend',e=>e.target.classList.remove('dragging'));
+    el.addEventListener('click',()=>{
+      document.querySelectorAll('#func-bank .drag-label').forEach(d=>d.style.outline='');
+      if(selectedLabel===lbl){selectedLabel=null;return;}
+      selectedLabel=lbl;el.style.outline='2px solid #085041';
+    });
+    bank.appendChild(el);
+  });
+}
+
+function buildFuncGrid(){
+  const grid=document.getElementById('func-grid');
+  grid.innerHTML='';
+  funcQuestions.forEach((fq,i)=>{
+    const card=document.createElement('div');
+    card.className='func-card';
+    card.innerHTML=`<div class="func-q">${fq.q}</div><div class="func-drop" id="fd-${i}" data-answer="${fq.answer}" ondragover="fdOver(event,this)" ondragleave="fdLeave(this)" ondrop="fdDrop(event,this)" onclick="fdClick(this)">drop here</div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('func-score').innerHTML='— <span>/ 9 correct</span>';
+  document.getElementById('func-result').className='result-bar';
+}
+
+function fdOver(e,el){e.preventDefault();el.classList.add('over')}
+function fdLeave(el){el.classList.remove('over')}
+function fdDrop(e,el){
+  e.preventDefault();el.classList.remove('over');
+  const lbl=dragging||selectedLabel;
+  if(!lbl)return;
+  el.textContent=lbl;el.dataset.placed=lbl;el.classList.add('filled');
+  dragging=null;selectedLabel=null;
+  document.querySelectorAll('#func-bank .drag-label').forEach(d=>d.style.outline='');
+}
+function fdClick(el){const lbl=selectedLabel;if(!lbl)return;fdDrop({preventDefault:()=>{}},el);}
+
+function checkFunctions(){
+  let correct=0;
+  funcQuestions.forEach((_,i)=>{
+    const fd=document.getElementById('fd-'+i);
+    if(!fd)return;
+    const placed=fd.dataset.placed;
+    const ans=fd.dataset.answer;
+    fd.classList.remove('correct','incorrect');
+    if(placed===ans){correct++;fd.classList.add('correct');}
+    else if(placed){fd.classList.add('incorrect');}
+  });
+  document.getElementById('func-score').innerHTML=correct+' <span>/ 9 correct</span>';
+  const r=document.getElementById('func-result');
+  r.className='result-bar show '+(correct>=8?'pass':'fail');
+  r.textContent=correct===9?'Perfect score! All 9 functions matched correctly.':correct>=7?correct+'/9 — great effort! Review the highlighted ones.':correct+'/9 — keep practising. Reset and try again!';
+}
+
+function resetFunctions(){buildFuncBank();buildFuncGrid();}
+
+// Init
+buildLabelBank();
+buildFuncBank();
+buildFuncGrid();
+</script>
+</body>
+</html>

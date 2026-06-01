@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 9 Science Study Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.g{max-width:680px;margin:0 auto;padding-bottom:2rem}
+.hero{background:#085041;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.hero .bs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hero .b{background:rgba(255,255,255,0.18);border-radius:20px;padding:3px 10px;font-size:11px;color:white}
+.nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem}
+.nb{padding:6px 12px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.nb.active,.nb:hover{background:#085041;color:white;border-color:#085041}
+.sec{display:none}.sec.active{display:block}
+.card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card h2{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem}
+.card h3{font-size:13px;font-weight:500;color:#2c2c2a;margin-top:0.75rem;margin-bottom:0.4rem}
+.card p,.card li{font-size:13px;color:#5f5e5a;line-height:1.6}
+.card ul{padding-left:1rem;margin-bottom:0.5rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+@media(max-width:480px){.two{grid-template-columns:1fr}}
+.chip{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500;margin:2px}
+.ct{background:#E1F5EE;color:#085041}
+.cp{background:#EEEDFE;color:#3C3489}
+.ca{background:#FAEEDA;color:#633806}
+.cc{background:#FAECE7;color:#712B13}
+.cb{background:#E6F1FB;color:#0C447C}
+.eb{background:#f5f4f0;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:13px;color:#5f5e5a;border-left:3px solid #ccc}
+.eb strong{color:#2c2c2a;font-weight:500}
+.eb.teal{border-left-color:#1D9E75}
+.eb.purple{border-left-color:#534AB7}
+.eb.amber{border-left-color:#854F0B}
+.eb.coral{border-left-color:#993C1D}
+.eb.blue{border-left-color:#185FA5}
+.row{display:flex;gap:6px;margin-bottom:6px}
+.cell{flex:1;background:#f5f4f0;border-radius:8px;padding:8px 10px;font-size:12px;color:#5f5e5a}
+.cell .lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px}
+.lp{color:#534AB7}.lt{color:#0F6E56}.lc{color:#993C1D}.la{color:#854F0B}
+.cl-p{border-left:3px solid #534AB7;border-radius:0}.cl-t{border-left:3px solid #1D9E75;border-radius:0}.cl-c{border-left:3px solid #993C1D;border-radius:0}
+.fa{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0.75rem 0}
+.fb{background:#f5f4f0;border:1px solid #ccc;border-radius:8px;padding:7px 10px;font-size:12px;text-align:center;min-width:70px}
+.fb.rec{background:#EEEDFE;border-color:#534AB7;color:#3C3489;font-weight:500}
+.fb.cmd{background:#FAEEDA;border-color:#854F0B;color:#633806;font-weight:500}
+.fb.eff{background:#FAECE7;border-color:#993C1D;color:#712B13;font-weight:500}
+.arr{color:#888;font-size:14px;flex-shrink:0}
+.ff{width:100%;text-align:center;font-size:12px;color:#5f5e5a;background:#f5f4f0;border-radius:8px;padding:5px;border:1px dashed #ccc;margin-top:4px}
+.cl{list-style:none;padding:0}
+.cl li{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#5f5e5a;padding:6px 0;border-bottom:1px solid #e0dfd8;line-height:1.5;cursor:pointer}
+.cl li:last-child{border-bottom:none}
+.cl li::before{content:"○";color:#aaa;flex-shrink:0;margin-top:1px}
+.cl li.done::before{content:"●";color:#1D9E75}
+.cl li.done{color:#aaa;text-decoration:line-through}
+.ckstar{color:#854F0B}
+.brain-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.5rem}
+@media(max-width:480px){.brain-grid{grid-template-columns:1fr}}
+.bpart{border:1px solid #e0dfd8;border-radius:8px;padding:10px;cursor:pointer;transition:background 0.15s}
+.bpart:hover{background:#f5f4f0}
+.bpart .bname{font-size:13px;font-weight:500;color:#2c2c2a;margin-bottom:3px}
+.bpart .bfn{font-size:12px;color:#5f5e5a;line-height:1.4}
+.bpart .btag{display:inline-block;font-size:10px;border-radius:3px;padding:1px 5px;margin-bottom:4px;font-weight:500}
+.sim{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin:0.75rem 0}
+.simh{background:#f5f4f0;padding:8px 12px;font-size:13px;font-weight:500;border-bottom:1px solid #e0dfd8}
+.simb{padding:12px}
+.sr{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px}
+.sr label{color:#5f5e5a;min-width:120px}
+.sr .sv{min-width:44px;text-align:right;font-size:13px;font-weight:500}
+.sr input[type=range]{flex:1}
+.stat{background:#f5f4f0;border-radius:8px;padding:8px 12px;font-size:13px;line-height:1.5}
+.ok{color:#0F6E56}.warn{color:#854F0B}.danger{color:#A32D2D}
+.gland-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:0.5rem}
+.gland-table th{font-size:11px;font-weight:500;color:#5f5e5a;text-align:left;padding:5px 8px;border-bottom:1px solid #ccc;text-transform:uppercase;letter-spacing:0.3px}
+.gland-table td{padding:6px 8px;border-bottom:1px solid #e0dfd8;color:#5f5e5a;vertical-align:top}
+.gland-table tr:last-child td{border-bottom:none}
+.gland-table .gn{color:#2c2c2a;font-weight:500}
+.etbox{border-radius:8px;padding:10px 14px;margin-bottom:8px}
+.etbox.endo{background:#FAEEDA;border:1px solid #854F0B}
+.etbox.ecto{background:#E6F1FB;border:1px solid #185FA5}
+.etbox .etlbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px}
+.etbox.endo .etlbl{color:#633806}
+.etbox.ecto .etlbl{color:#0C447C}
+.etbox p{font-size:13px;line-height:1.5}
+.etbox.endo p{color:#412402}
+.etbox.ecto p{color:#042C53}
+.qbox{background:#f5f4f0;border-radius:8px;padding:1rem;margin-bottom:0.75rem}
+.qbox p{font-size:14px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem}
+.qopts{display:flex;flex-direction:column;gap:5px}
+.qo{padding:7px 12px;border:1px solid #ccc;border-radius:8px;font-size:13px;cursor:pointer;background:white;color:#5f5e5a;text-align:left}
+.qo:hover{background:#f5f4f0}
+.qo.correct{background:#EAF3DE;border-color:#3B6D11;color:#173404}
+.qo.incorrect{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.qfb{font-size:12px;margin-top:7px;padding:8px;border-radius:8px;display:none}
+.qfb.show{display:block}
+.qfb.correct{background:#EAF3DE;color:#173404}
+.qfb.incorrect{background:#FCEBEB;color:#501313}
+.sc{text-align:center;padding:0.75rem;background:#f5f4f0;border-radius:8px;margin-bottom:1rem}
+.sn{font-size:28px;font-weight:500;color:#1D9E75}
+.sl{font-size:12px;color:#5f5e5a}
+.rbtn{width:100%;padding:9px;background:white;border:1px solid #ccc;border-radius:8px;font-size:13px;cursor:pointer;color:#5f5e5a}
+.rbtn:hover{background:#f5f4f0}
+.gbtn{padding:10px;background:#f5f4f0;border:1px solid #ccc;border-radius:8px;cursor:pointer;font-size:13px;flex:1;transition:all 0.15s}
+.gbtn:hover{background:#e0dfd8}
+</style>
+</head>
+<body>
+<div class="g">
+<div class="hero">
+  <h1>Year 9 Science — Complete Study Guide</h1>
+  <p>Based on your teacher's 20-item exam checklist</p>
+  <div class="bs">
+    <span class="b">Neurons</span><span class="b">Brain parts</span><span class="b">CNS vs PNS</span>
+    <span class="b">Endocrine glands</span><span class="b">Feedback loops</span><span class="b">Endo/Ectotherm</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb active" onclick="show('neurons',this)">1–5 Neurons</button>
+  <button class="nb" onclick="show('cns',this)">6–8 CNS/PNS</button>
+  <button class="nb" onclick="show('brain',this)">9–10 Brain</button>
+  <button class="nb" onclick="show('endo',this)">11 Endocrine</button>
+  <button class="nb" onclick="show('feedback',this)">12–16 Homeostasis</button>
+  <button class="nb" onclick="show('thermo',this)">17–18 Endo/Ecto</button>
+  <button class="nb" onclick="show('skills',this)">19–20 Data skills</button>
+  <button class="nb" onclick="show('quiz',this)">Quiz</button>
+  <button class="nb" onclick="show('checklist',this)">Checklist</button>
+</div>
+
+<!-- NEURONS -->
+<div id="sec-neurons" class="sec active">
+  <div class="card">
+    <h2>1. Parts of a neuron</h2>
+    <p>A neuron is a specialised nerve cell that carries electrical signals. Learn these 6 parts:</p>
+    <div class="brain-grid" style="margin-top:0.75rem">
+      <div class="bpart"><div class="btag" style="background:#EEEDFE;color:#3C3489">input</div><div class="bname">Dendrites</div><div class="bfn">Branch-like extensions that receive signals from other neurons</div></div>
+      <div class="bpart"><div class="btag" style="background:#EEEDFE;color:#3C3489">input</div><div class="bname">Cell body (soma)</div><div class="bfn">Contains the nucleus; processes incoming signals</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAEEDA;color:#633806">transmit</div><div class="bname">Axon</div><div class="bfn">Long fibre that carries the impulse away from the cell body</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAEEDA;color:#633806">transmit</div><div class="bname">Myelin sheath</div><div class="bfn">Fatty insulating layer that speeds up the impulse</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAECE7;color:#712B13">output</div><div class="bname">Axon terminals</div><div class="bfn">Branched endings that pass signals to the next cell</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAECE7;color:#712B13">output</div><div class="bname">Synapse</div><div class="bfn">Gap between two neurons — signals cross using neurotransmitters</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2 &amp; 3. Types of neurons and their roles</h2>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Sensory neuron</div>Carries signals <strong>TO</strong> the CNS from receptors (skin, eyes, ears). Detects the stimulus.</div></div>
+    <div class="row"><div class="cell cl-t"><div class="lbl lt">Relay neuron</div>Found <strong>inside</strong> the CNS. Connects sensory and motor neurons. Processes and routes signals.</div></div>
+    <div class="row"><div class="cell cl-c"><div class="lbl lc">Motor neuron</div>Carries signals <strong>FROM</strong> the CNS to effectors (muscles and glands). Causes the response.</div></div>
+    <p style="margin-top:0.5rem;font-size:12px">Memory trick: <span class="chip cp">S</span>ensory = to the brain &nbsp;|&nbsp; <span class="chip cc">M</span>otor = <span class="chip cc">M</span>uscle action</p>
+  </div>
+
+  <div class="card">
+    <h2>4. Reflex arcs</h2>
+    <p>A reflex is a fast, automatic response processed in the spinal cord — it bypasses conscious thought.</p>
+    <div class="fa">
+      <div class="fb rec">Receptor<br><small>e.g. pain in skin</small></div>
+      <div class="arr">→</div>
+      <div class="fb" style="font-size:12px">Sensory<br>neuron</div>
+      <div class="arr">→</div>
+      <div class="fb cmd">Relay neuron<br><small>spinal cord</small></div>
+      <div class="arr">→</div>
+      <div class="fb" style="font-size:12px">Motor<br>neuron</div>
+      <div class="arr">→</div>
+      <div class="fb eff">Effector<br><small>muscle contracts</small></div>
+    </div>
+    <p style="font-size:12px">The brain is informed <em>after</em> the response — that's why you pull away before you consciously "feel" pain.</p>
+  </div>
+
+  <div class="card">
+    <h2>5. Neurotransmitters</h2>
+    <p>When an impulse reaches the <strong>synapse</strong>, it cannot jump the gap electrically. Instead neurotransmitters carry the signal chemically:</p>
+    <div class="eb teal"><strong>Step 1:</strong> Impulse arrives at axon terminal</div>
+    <div class="eb teal"><strong>Step 2:</strong> Vesicles release neurotransmitters into the synaptic cleft (gap)</div>
+    <div class="eb teal"><strong>Step 3:</strong> Neurotransmitters bind to receptors on the next neuron's dendrites</div>
+    <div class="eb teal"><strong>Step 4:</strong> A new electrical impulse is triggered in the next neuron</div>
+    <p style="margin-top:0.5rem">Examples: <span class="chip ct">Acetylcholine</span> <span class="chip ct">Dopamine</span> <span class="chip ct">Serotonin</span> <span class="chip ct">Adrenaline</span></p>
+  </div>
+</div>
+
+<!-- CNS / PNS -->
+<div id="sec-cns" class="sec">
+  <div class="card">
+    <h2>6. CNS vs PNS</h2>
+    <div class="row">
+      <div class="cell cl-p"><div class="lbl lp">Central Nervous System (CNS)</div>Brain + spinal cord. The command centre — receives, processes and coordinates all signals.</div>
+      <div class="cell cl-t"><div class="lbl lt">Peripheral Nervous System (PNS)</div>All nerves outside the brain and spinal cord. Carries signals to and from the CNS.</div>
+    </div>
+    <p style="font-size:12px;margin-top:0.5rem">Memory trick: <span class="chip cp">C</span>NS = <span class="chip cp">C</span>entre of the body | <span class="chip ct">P</span>NS = <span class="chip ct">P</span>eriphery (everything else)</p>
+  </div>
+
+  <div class="card">
+    <h2>7. Autonomic vs Somatic (divisions of the PNS)</h2>
+    <div class="row">
+      <div class="cell cl-c"><div class="lbl lc">Somatic</div><strong>Voluntary</strong> control. Controls skeletal muscles — things you consciously choose to do (walking, writing).</div>
+      <div class="cell cl-t"><div class="lbl lt">Autonomic</div><strong>Involuntary</strong> control. Regulates automatic functions: heart rate, digestion, breathing, pupil size.</div>
+    </div>
+    <p style="font-size:12px;margin-top:0.5rem">The autonomic system has two branches: <span class="chip cc">Sympathetic</span> (fight-or-flight — speeds up) and <span class="chip ct">Parasympathetic</span> (rest-and-digest — slows down).</p>
+  </div>
+
+  <div class="card">
+    <h2>8. Parts of the CNS</h2>
+    <div class="eb purple"><strong>Brain</strong> — main control centre, divided into regions with different functions (see Brain tab).</div>
+    <div class="eb purple"><strong>Spinal cord</strong> — bundle of nerves down the spine. Relays signals between brain and body; processes reflex arcs.</div>
+    <div class="eb blue"><strong>Meninges</strong> — three protective membranes surrounding the brain and spinal cord.</div>
+    <div class="eb blue"><strong>Cerebrospinal fluid (CSF)</strong> — cushions and protects the CNS from impact.</div>
+  </div>
+
+  <div class="card">
+    <h2>20. Comparing nervous vs endocrine systems</h2>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Nervous</div>Electrical impulse along neurons</div><div class="cell cl-c"><div class="lbl lc">Endocrine</div>Chemical hormone through bloodstream</div></div>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Nervous</div>Very fast (milliseconds)</div><div class="cell cl-c"><div class="lbl lc">Endocrine</div>Slower (seconds to minutes)</div></div>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Nervous</div>Short-lived response</div><div class="cell cl-c"><div class="lbl lc">Endocrine</div>Long-lasting response</div></div>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Nervous</div>Specific target (one muscle/organ)</div><div class="cell cl-c"><div class="lbl lc">Endocrine</div>Widespread (any organ with receptors)</div></div>
+    <div class="row"><div class="cell cl-p"><div class="lbl lp">Example</div>Reflex arc — pulling from heat</div><div class="cell cl-c"><div class="lbl lc">Example</div>Adrenaline in fight-or-flight</div></div>
+  </div>
+</div>
+
+<!-- BRAIN -->
+<div id="sec-brain" class="sec">
+  <div class="card">
+    <h2>9. Label parts of the brain and their functions</h2>
+    <div class="brain-grid" style="margin-top:0.5rem">
+      <div class="bpart"><div class="btag" style="background:#EEEDFE;color:#3C3489">largest part</div><div class="bname">Cerebrum</div><div class="bfn">Thinking, memory, emotions, voluntary movement, speech, sensory interpretation. Left and right hemispheres.</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAEEDA;color:#633806">coordination</div><div class="bname">Cerebellum</div><div class="bfn">Balance, coordination, and fine motor control. Located at the back/bottom of the brain.</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAECE7;color:#712B13">vital functions</div><div class="bname">Brainstem</div><div class="bfn">Controls heart rate, breathing, blood pressure. Connects brain to spinal cord. Cannot be consciously overridden.</div></div>
+      <div class="bpart"><div class="btag" style="background:#E1F5EE;color:#085041">homeostasis hub</div><div class="bname">Hypothalamus</div><div class="bfn">Master homeostasis controller. Regulates temperature, hunger, thirst, sleep. Controls the pituitary gland.</div></div>
+      <div class="bpart"><div class="btag" style="background:#E6F1FB;color:#0C447C">relay</div><div class="bname">Thalamus</div><div class="bfn">Relay station — sorts sensory signals and routes them to the correct part of the cerebrum.</div></div>
+      <div class="bpart"><div class="btag" style="background:#FAEEDA;color:#633806">master gland</div><div class="bname">Pituitary gland</div><div class="bfn">The "master endocrine gland" — releases hormones that control other glands. Controlled by the hypothalamus.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>10. Which brain part controls what?</h2>
+    <div class="eb purple"><strong>Heart rate and breathing</strong> — Brainstem (medulla oblongata). Completely automatic.</div>
+    <div class="eb purple"><strong>Memory</strong> — Cerebrum (hippocampus in the limbic system). Short and long-term.</div>
+    <div class="eb purple"><strong>Emotions</strong> — Cerebrum / limbic system (amygdala). Fear, happiness, anger.</div>
+    <div class="eb purple"><strong>Eyes / vision</strong> — Occipital lobe of the cerebrum (back of head). Interprets visual signals.</div>
+    <div class="eb purple"><strong>Growth</strong> — Pituitary gland releases growth hormone (GH), controlled by the hypothalamus.</div>
+    <div class="eb purple"><strong>Controlling the endocrine system</strong> — Hypothalamus signals the pituitary gland, which signals other glands (the HPA axis).</div>
+    <p style="margin-top:0.5rem;font-size:12px">Key exam point: the <span class="chip ct">hypothalamus</span> is the crucial link between the nervous system and the endocrine system — it receives nerve signals and responds with hormones.</p>
+  </div>
+</div>
+
+<!-- ENDOCRINE -->
+<div id="sec-endo" class="sec">
+  <div class="card">
+    <h2>11. Major endocrine glands, their hormones and effects</h2>
+    <table class="gland-table">
+      <tr><th>Gland</th><th>Hormone(s)</th><th>Effect</th></tr>
+      <tr><td class="gn">Pituitary</td><td>Growth hormone, ADH, FSH, LH</td><td>Growth, water retention, reproductive development</td></tr>
+      <tr><td class="gn">Thyroid</td><td>Thyroxine</td><td>Controls metabolic rate (how fast body uses energy)</td></tr>
+      <tr><td class="gn">Adrenal glands</td><td>Adrenaline, cortisol</td><td>Fight-or-flight and stress responses</td></tr>
+      <tr><td class="gn">Pancreas</td><td>Insulin, glucagon</td><td>Regulates blood glucose (up and down)</td></tr>
+      <tr><td class="gn">Ovaries</td><td>Oestrogen, progesterone</td><td>Female reproductive development and menstrual cycle</td></tr>
+      <tr><td class="gn">Testes</td><td>Testosterone</td><td>Male reproductive development</td></tr>
+      <tr><td class="gn">Hypothalamus</td><td>Releasing hormones</td><td>Controls the pituitary gland (master controller)</td></tr>
+      <tr><td class="gn">Pineal gland</td><td>Melatonin</td><td>Regulates sleep-wake cycle</td></tr>
+    </table>
+    <p style="margin-top:0.75rem;font-size:12px">Exam tip: hormones travel through the <span class="chip ct">bloodstream</span> to <span class="chip ct">target organs</span> — only cells with the matching receptor will respond.</p>
+  </div>
+</div>
+
+<!-- HOMEOSTASIS -->
+<div id="sec-feedback" class="sec">
+  <div class="card">
+    <h2>12. Define homeostasis</h2>
+    <div class="eb teal"><strong>Homeostasis</strong> is the process by which the body maintains a stable internal environment despite changes in external or internal conditions.</div>
+    <p style="margin-top:0.5rem">The body monitors variables (temperature, blood glucose, water) and uses feedback loops to keep them at a <span class="chip ct">set point</span>.</p>
+  </div>
+
+  <div class="card">
+    <h2>16. Negative feedback loops</h2>
+    <p>Negative feedback detects a change from the set point and triggers a response that <em>opposes and reverses</em> that change.</p>
+    <div class="fa">
+      <div class="fb rec">Receptor<br><small>detects change</small></div>
+      <div class="arr">→</div>
+      <div class="fb cmd">Command centre<br><small>compares to set point</small></div>
+      <div class="arr">→</div>
+      <div class="fb eff">Effector<br><small>corrects the change</small></div>
+    </div>
+    <div class="ff">↩ Output detected → response reduces → system stabilises (negative feedback)</div>
+    <p style="margin-top:0.5rem;font-size:12px">It is called <em>negative</em> because the response goes in the <strong>opposite direction</strong> to the original change.</p>
+  </div>
+
+  <div class="card">
+    <h2>13. How the body controls blood glucose</h2>
+    <div class="sim">
+      <div class="simh">Interactive: blood glucose simulator</div>
+      <div class="simb">
+        <div class="sr"><label>Meal/sugar intake</label><input type="range" min="0" max="100" value="0" step="1" id="gl" oninput="updateGlucose()"><span class="sv" id="glv">None</span></div>
+        <div class="sr"><label>Exercise intensity</label><input type="range" min="0" max="100" value="0" step="1" id="ex" oninput="updateGlucose()"><span class="sv" id="exv">None</span></div>
+        <div class="stat" id="gstat"></div>
+      </div>
+    </div>
+    <div class="two" style="margin-top:0.75rem">
+      <div>
+        <h3>If glucose rises (after eating)</h3>
+        <div class="eb teal"><strong>Receptor:</strong> Beta cells in pancreas detect high glucose</div>
+        <div class="eb teal"><strong>Command centre:</strong> Pancreas releases <strong>insulin</strong></div>
+        <div class="eb teal"><strong>Effector:</strong> Cells absorb glucose; liver stores it as glycogen → glucose falls ✓</div>
+      </div>
+      <div>
+        <h3>If glucose falls (exercise/fasting)</h3>
+        <div class="eb amber"><strong>Receptor:</strong> Alpha cells in pancreas detect low glucose</div>
+        <div class="eb amber"><strong>Command centre:</strong> Pancreas releases <strong>glucagon</strong></div>
+        <div class="eb amber"><strong>Effector:</strong> Liver converts glycogen back to glucose → glucose rises ✓</div>
+      </div>
+    </div>
+    <div class="eb coral" style="margin-top:0.75rem"><strong>Diabetes:</strong> In Type 1 diabetes, beta cells are destroyed — no insulin is produced. The feedback loop is broken. Insulin injections manually replace the missing signal.</div>
+  </div>
+
+  <div class="card">
+    <h2>14. How the body controls temperature</h2>
+    <div class="sim">
+      <div class="simh">Interactive: temperature regulation simulator</div>
+      <div class="simb">
+        <div class="sr"><label>External temp (°C)</label><input type="range" min="0" max="50" value="20" step="1" id="et" oninput="updateTemp()"><span class="sv" id="etv">20°C</span></div>
+        <div class="sr"><label>Exercise intensity</label><input type="range" min="0" max="100" value="0" step="1" id="xr" oninput="updateTemp()"><span class="sv" id="xrv">None</span></div>
+        <div class="stat" id="tstat"></div>
+      </div>
+    </div>
+    <div class="two" style="margin-top:0.75rem">
+      <div>
+        <h3>If too cold</h3>
+        <div class="eb blue"><strong>Receptor:</strong> Thermoreceptors in skin + hypothalamus</div>
+        <div class="eb blue"><strong>Command centre:</strong> Hypothalamus</div>
+        <div class="eb blue"><strong>Effectors:</strong> Shivering (heat from muscles), vasoconstriction (narrow blood vessels to reduce heat loss), goosebumps (trap air insulation)</div>
+      </div>
+      <div>
+        <h3>If too hot</h3>
+        <div class="eb coral"><strong>Receptor:</strong> Thermoreceptors detect temperature rise</div>
+        <div class="eb coral"><strong>Command centre:</strong> Hypothalamus</div>
+        <div class="eb coral"><strong>Effectors:</strong> Sweating (evaporative cooling), vasodilation (widen blood vessels to release heat at skin)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>15. How the body controls water levels (osmoregulation)</h2>
+    <div class="two">
+      <div>
+        <h3>If dehydrated</h3>
+        <div class="eb purple"><strong>Receptor:</strong> Osmoreceptors in hypothalamus detect concentrated blood</div>
+        <div class="eb purple"><strong>Command centre:</strong> Hypothalamus signals pituitary gland</div>
+        <div class="eb purple"><strong>Effector:</strong> Pituitary releases <strong>ADH</strong> → kidneys reabsorb more water → less urine, more concentrated → water restored ✓</div>
+      </div>
+      <div>
+        <h3>If overhydrated</h3>
+        <div class="eb teal"><strong>Receptor:</strong> Osmoreceptors detect dilute blood</div>
+        <div class="eb teal"><strong>Command centre:</strong> Hypothalamus reduces ADH signal</div>
+        <div class="eb teal"><strong>Effector:</strong> Less ADH → kidneys excrete more water → more dilute urine → water restored ✓</div>
+      </div>
+    </div>
+    <p style="margin-top:0.5rem;font-size:12px">ADH = <span class="chip cp">Anti-Diuretic Hormone</span>. Anti-diuretic = prevents urination. More ADH = less urine = body retains water.</p>
+  </div>
+</div>
+
+<!-- ENDOTHERM/ECTOTHERM -->
+<div id="sec-thermo" class="sec">
+  <div class="card">
+    <h2>17. Endotherm vs Ectotherm — definitions</h2>
+    <div class="etbox endo">
+      <div class="etlbl">Endotherm (warm-blooded)</div>
+      <p>Generates body heat internally through metabolism. Maintains a constant body temperature regardless of the environment. Relies heavily on negative feedback.</p>
+      <p style="margin-top:6px"><strong>Examples:</strong> Mammals (humans, dogs, whales) and birds</p>
+    </div>
+    <div class="etbox ecto">
+      <div class="etlbl">Ectotherm (cold-blooded)</div>
+      <p>Relies on external heat sources (sun, environment) to regulate body temperature. Body temperature varies with the surroundings.</p>
+      <p style="margin-top:6px"><strong>Examples:</strong> Reptiles (lizards, snakes), fish, amphibians, insects</p>
+    </div>
+    <p style="font-size:12px;margin-top:0.5rem">Memory trick: <span class="chip ca">Endo</span> = Internal heat | <span class="chip cb">Ecto</span> = External heat</p>
+  </div>
+
+  <div class="card">
+    <h2>18. Analysing graphs — endo or ectotherm?</h2>
+    <p>On a graph of body temperature vs environmental temperature:</p>
+    <div class="eb amber"><strong>Endotherm:</strong> Body temperature stays roughly <em>flat/horizontal</em> as external temperature changes — the body compensates via feedback mechanisms.</div>
+    <div class="eb blue"><strong>Ectotherm:</strong> Body temperature follows a <em>diagonal line</em> matching environmental temperature — it rises and falls with the environment.</div>
+    <div class="sim">
+      <div class="simh">Graph pattern identifier — click to check your understanding</div>
+      <div class="simb">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="gbtn" onclick="document.getElementById('gr').textContent='Correct! Flat line = endotherm. Internal feedback (sweating, shivering) keeps body temperature stable despite external changes.';this.style.background='#FAEEDA'">Flat horizontal line</button>
+          <button class="gbtn" onclick="document.getElementById('gr').textContent='Correct! Diagonal line = ectotherm. Body temperature matches the environment — no internal heating mechanism.';this.style.background='#E6F1FB'">Diagonal line (follows environment)</button>
+        </div>
+        <div style="padding:8px 4px;font-size:13px;color:#5f5e5a;min-height:36px;margin-top:6px" id="gr"></div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:0.75rem">
+      <div class="cell" style="border-left:3px solid #854F0B;border-radius:0"><div class="lbl la">Endotherm</div>High, constant energy use. Active in cold. No warm-up needed. Warm fur/feathers for insulation.</div>
+      <div class="cell" style="border-left:3px solid #185FA5;border-radius:0"><div class="lbl" style="color:#185FA5">Ectotherm</div>Low energy use — very efficient. Slower in cold. Must bask to warm up. Often hibernates in winter.</div>
+    </div>
+    <h3 style="margin-top:0.75rem">Sample exam answer template</h3>
+    <div class="eb coral">"The data shows animal [X] is an [endotherm/ectotherm] because its body temperature [remained stable at ~37°C / changed proportionally with the environment]. At an external temperature of [X°C], the body temperature was [Y°C]. [Endotherms use negative feedback via the hypothalamus to maintain a constant internal temperature / Ectotherms rely on external heat sources and behavioural thermoregulation such as basking in the sun.]"</div>
+  </div>
+</div>
+
+<!-- DATA SKILLS -->
+<div id="sec-skills" class="sec">
+  <div class="card">
+    <h2>19. Analysing data tables</h2>
+    <div class="eb teal"><strong>Step 1 — Read the headings.</strong> What variables are measured? What are the units?</div>
+    <div class="eb teal"><strong>Step 2 — Identify the pattern.</strong> Does one variable increase as the other increases (positive correlation)? Decrease (negative)? No pattern?</div>
+    <div class="eb teal"><strong>Step 3 — Find any anomaly.</strong> Is there a data point that doesn't fit the pattern? Note it — don't ignore it.</div>
+    <div class="eb teal"><strong>Step 4 — Link to biology.</strong> Why does this pattern make biological sense? Reference the relevant feedback system.</div>
+    <p style="margin-top:0.5rem;font-size:12px">Exam tip: always use specific numbers. E.g. "As temperature increased from 20°C to 40°C, heart rate increased from 65 to 95 bpm — an increase of 30 bpm."</p>
+  </div>
+
+  <div class="card">
+    <h2>19–20. Graph analysis practice</h2>
+    <div class="eb amber"><strong>Flat body temp despite changing external temp</strong> → Endotherm. Write: "Body temperature remained constant at approximately X°C despite environmental changes, indicating internal regulation via negative feedback through the hypothalamus."</div>
+    <div class="eb blue"><strong>Body temp rises/falls with external temp</strong> → Ectotherm. Write: "Body temperature increased proportionally with environmental temperature, indicating the animal relies on external heat sources and lacks internal thermoregulatory mechanisms."</div>
+    <div class="eb coral" style="margin-top:0.75rem"><strong>Comparing nervous vs endocrine data:</strong> If a response is immediate (within milliseconds) → nervous system. If delayed but prolonged → endocrine system.</div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="sec-quiz" class="sec">
+  <div class="sc"><div class="sn" id="qs">0 / 0</div><div class="sl">correct answers</div></div>
+  <div id="qq"></div>
+  <button class="rbtn" onclick="resetQuiz()">Reset quiz</button>
+</div>
+
+<!-- CHECKLIST -->
+<div id="sec-checklist" class="sec">
+  <div class="card">
+    <h2>Exam checklist — all 20 items from your teacher</h2>
+    <p style="font-size:12px;margin-bottom:0.75rem">Click each item to mark done. Stars (★) were highlighted by your teacher.</p>
+    <ul class="cl">
+      <li onclick="toggleCheck(this)">1. Parts of a neuron</li>
+      <li onclick="toggleCheck(this)">2. Label different types of neurons</li>
+      <li onclick="toggleCheck(this)">3. Explain the role of each type of neuron</li>
+      <li onclick="toggleCheck(this)">4. Explain and label reflex arcs</li>
+      <li onclick="toggleCheck(this)">5. Explain neurotransmitters</li>
+      <li onclick="toggleCheck(this)">6. Differences between CNS and PNS</li>
+      <li onclick="toggleCheck(this)">7. Differences between autonomic and somatic nervous systems</li>
+      <li onclick="toggleCheck(this)">8. Parts of the CNS and what they do</li>
+      <li onclick="toggleCheck(this)">9. Label parts of the brain and their functions</li>
+      <li onclick="toggleCheck(this)"><span class="ckstar">★ </span>10. Know which part of the brain controls: heart rate/breathing, memory, emotions, eyes, growth, endocrine system</li>
+      <li onclick="toggleCheck(this)">11. Major endocrine glands, their hormones and effects</li>
+      <li onclick="toggleCheck(this)">12. Define homeostasis</li>
+      <li onclick="toggleCheck(this)"><span class="ckstar">★ </span>13. Explain/label how the body controls blood sugar levels</li>
+      <li onclick="toggleCheck(this)"><span class="ckstar">★ </span>14. Explain/label how the body controls temperature</li>
+      <li onclick="toggleCheck(this)"><span class="ckstar">★ </span>15. Explain/label how the body controls water levels</li>
+      <li onclick="toggleCheck(this)">16. Explain negative feedback loops</li>
+      <li onclick="toggleCheck(this)">17. Define endotherm and ectotherm</li>
+      <li onclick="toggleCheck(this)">18. Analyse graphs to determine endo/ectotherm</li>
+      <li onclick="toggleCheck(this)">19. Analyse data tables</li>
+      <li onclick="toggleCheck(this)">20. Compare nervous and endocrine systems</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Key vocabulary — all topics</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:5px">
+      <span class="chip cp">Neuron</span><span class="chip cp">Dendrite</span><span class="chip cp">Axon</span><span class="chip cp">Myelin sheath</span><span class="chip cp">Synapse</span><span class="chip cp">Neurotransmitter</span><span class="chip cp">Sensory neuron</span><span class="chip cp">Relay neuron</span><span class="chip cp">Motor neuron</span><span class="chip cp">Reflex arc</span><span class="chip ct">CNS</span><span class="chip ct">PNS</span><span class="chip ct">Somatic</span><span class="chip ct">Autonomic</span><span class="chip ct">Sympathetic</span><span class="chip ct">Parasympathetic</span><span class="chip ca">Cerebrum</span><span class="chip ca">Cerebellum</span><span class="chip ca">Brainstem</span><span class="chip ca">Hypothalamus</span><span class="chip ca">Pituitary gland</span><span class="chip cc">Hormone</span><span class="chip cc">Target organ</span><span class="chip cc">Insulin</span><span class="chip cc">Glucagon</span><span class="chip cc">Adrenaline</span><span class="chip cc">Thyroxine</span><span class="chip cc">ADH</span><span class="chip ct">Homeostasis</span><span class="chip ct">Set point</span><span class="chip ct">Negative feedback</span><span class="chip ct">Receptor</span><span class="chip ct">Effector</span><span class="chip ct">Vasoconstriction</span><span class="chip ct">Vasodilation</span><span class="chip ct">Osmoregulation</span><span class="chip ca">Endotherm</span><span class="chip cb">Ectotherm</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleCheck(el){el.classList.toggle('done')}
+
+function updateGlucose(){
+  const g=parseInt(document.getElementById('gl').value);
+  const x=parseInt(document.getElementById('ex').value);
+  const mLabels=['None','Small','Moderate','Large meal'];
+  const exLabels=['None','Low','Moderate','High','Intense'];
+  document.getElementById('glv').textContent=g===0?'None':g<34?'Small':g<67?'Moderate':'Large meal';
+  document.getElementById('exv').textContent=exLabels[Math.round(x/25)];
+  let level=80+g*1.2-x*0.6;level=Math.round(level);
+  const el=document.getElementById('gstat');
+  let cls,txt,resp;
+  if(level<60){cls='danger';txt='Blood glucose: ~'+level+' mg/dL — Hypoglycaemia (too low)';resp='Pancreas releases glucagon → liver converts glycogen to glucose → levels rise to normal'}
+  else if(level<70){cls='warn';txt='Blood glucose: ~'+level+' mg/dL — Below normal';resp='Glucagon response activating to raise glucose levels'}
+  else if(level<=100){cls='ok';txt='Blood glucose: ~'+level+' mg/dL — Normal range (70–100 mg/dL)';resp='Feedback stable — insulin and glucagon in balance'}
+  else if(level<=180){cls='warn';txt='Blood glucose: ~'+level+' mg/dL — Elevated (post-meal)';resp='Pancreas releases insulin → cells absorb glucose → glycogen stored → levels drop to normal'}
+  else{cls='danger';txt='Blood glucose: ~'+level+' mg/dL — Hyperglycaemia (dangerously high)';resp='In diabetes: this loop is broken without insulin injections'}
+  el.innerHTML='<span class="'+cls+'">'+txt+'</span><br><span style="font-size:12px;color:#5f5e5a">'+resp+'</span>';
+}
+updateGlucose();
+
+function updateTemp(){
+  const e=parseInt(document.getElementById('et').value);
+  const x=parseInt(document.getElementById('xr').value);
+  const exLabels=['None','Low','Moderate','High','Intense'];
+  document.getElementById('etv').textContent=e+'°C';
+  document.getElementById('xrv').textContent=exLabels[Math.round(x/25)];
+  let t=37+(x*0.05)+Math.max(0,(15-e)*0.1)-Math.max(0,(e-30)*0.05);
+  t=Math.round(t*10)/10;
+  const el=document.getElementById('tstat');
+  let cls,txt,resp;
+  if(t<35){cls='danger';txt='Core temp: ~'+t+'°C — Hypothermia!';resp='Effectors overwhelmed — shivering + vasoconstriction cannot generate enough heat. Medical emergency.'}
+  else if(t<36.5){cls='warn';txt='Core temp: ~'+t+'°C — Below set point (37°C)';resp='Hypothalamus triggers: shivering (heat generation), vasoconstriction (reduce heat loss), goosebumps'}
+  else if(t<=37.5){cls='ok';txt='Core temp: ~'+t+'°C — Normal range (set point: 37°C)';resp='Feedback stable — no major corrective response needed'}
+  else if(t<=39){cls='warn';txt='Core temp: ~'+t+'°C — Above set point';resp='Hypothalamus triggers: sweating (evaporative cooling), vasodilation (release heat at skin surface)'}
+  else{cls='danger';txt='Core temp: ~'+t+'°C — Hyperthermia / heat stroke risk';resp='Feedback overwhelmed — immediate cooling needed. Risk of organ damage above 40°C.'}
+  el.innerHTML='<span class="'+cls+'">'+txt+'</span><br><span style="font-size:12px;color:#5f5e5a">'+resp+'</span>';
+}
+updateTemp();
+
+const Qs=[
+  {q:'What is the correct order for a reflex arc?',opts:['Effector → Relay → Sensory → Receptor','Receptor → Sensory neuron → Relay neuron → Motor neuron → Effector','Receptor → Motor neuron → Brain → Effector','Brain → Sensory neuron → Relay neuron → Effector'],ans:1,exp:'The reflex arc goes: Receptor → Sensory neuron (to CNS) → Relay neuron (spinal cord) → Motor neuron → Effector. The brain is informed but does not control the reflex.'},
+  {q:'What is the role of neurotransmitters?',opts:['Carry electrical signals along the axon','Insulate the neuron to speed up impulses','Carry signals across the synapse between neurons chemically','Detect stimuli in the environment'],ans:2,exp:'Neurotransmitters are chemicals released into the synaptic cleft. They diffuse across and bind to receptors on the next neuron, triggering a new electrical impulse.'},
+  {q:'Which part of the brain controls heart rate and breathing?',opts:['Cerebrum','Cerebellum','Hypothalamus','Brainstem (medulla oblongata)'],ans:3,exp:'The brainstem (medulla oblongata) controls automatic vital functions like heart rate, breathing, and blood pressure. These cannot be consciously controlled.'},
+  {q:'What happens when blood glucose rises after a meal?',opts:['Liver releases glucagon to store glucose','Pancreas releases insulin, causing cells to absorb glucose','Hypothalamus releases ADH to reduce urine output','Adrenal glands release adrenaline'],ans:1,exp:'High blood glucose triggers the pancreas (beta cells) to release insulin. Insulin causes cells to absorb glucose and the liver to store it as glycogen — lowering blood glucose back to normal.'},
+  {q:'Which hormone is released when the body is dehydrated?',opts:['Insulin','Glucagon','ADH (anti-diuretic hormone)','Thyroxine'],ans:2,exp:'ADH is released by the pituitary gland when the hypothalamus detects concentrated blood. ADH causes kidneys to reabsorb more water, producing less, more concentrated urine.'},
+  {q:'On a graph, an ectotherm\'s body temperature would show:',opts:['A flat horizontal line — body temp stays constant','A diagonal line — body temp rises and falls with the environment','A random scatter — no pattern','A curved line — body temp rises then levels off'],ans:1,exp:'Ectotherms rely on external heat, so their body temperature follows the environment — shown as a diagonal line. Endotherms show a flat line because they regulate temperature internally.'},
+  {q:'What is the difference between the somatic and autonomic nervous systems?',opts:['Somatic = involuntary, autonomic = voluntary','Somatic = voluntary (skeletal muscles), autonomic = involuntary (organs/glands)','Somatic = in the brain, autonomic = in the spinal cord','Somatic = fast, autonomic = slow'],ans:1,exp:'The somatic system controls voluntary skeletal muscle movements. The autonomic system controls involuntary functions like heart rate, digestion and breathing — these happen automatically.'},
+  {q:'What is the main role of the hypothalamus?',opts:['Stores long-term memories','Coordinates balance and movement','Master homeostasis controller — regulates temperature, hunger, thirst and controls the pituitary gland','Relays visual signals to the cerebrum'],ans:2,exp:'The hypothalamus is the key link between the nervous and endocrine systems. It monitors internal conditions and signals the pituitary gland to release hormones, regulating temperature, hunger, thirst and sleep.'},
+];
+let answered=new Array(Qs.length).fill(null);
+function buildQuiz(){
+  const c=document.getElementById('qq');c.innerHTML='';
+  Qs.forEach((q,qi)=>{
+    const d=document.createElement('div');d.className='qbox';
+    d.innerHTML='<p>Q'+(qi+1)+': '+q.q+'</p><div class="qopts">'+q.opts.map((o,oi)=>'<button class="qo" onclick="answer('+qi+','+oi+',this)">'+o+'</button>').join('')+'</div><div class="qfb" id="qf-'+qi+'"></div>';
+    c.appendChild(d);
+  });
+  updateScore();
+}
+function answer(qi,oi,btn){
+  if(answered[qi]!==null)return;
+  const q=Qs[qi];const ok=oi===q.ans;answered[qi]=ok;
+  btn.parentElement.querySelectorAll('.qo').forEach((b,i)=>{
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===oi&&!ok)b.classList.add('incorrect');
+    b.disabled=true;
+  });
+  const fb=document.getElementById('qf-'+qi);
+  fb.className='qfb show '+(ok?'correct':'incorrect');
+  fb.textContent=(ok?'Correct! ':'Not quite. ')+q.exp;
+  updateScore();
+}
+function updateScore(){
+  const done=answered.filter(a=>a!==null).length;
+  document.getElementById('qs').textContent=answered.filter(a=>a===true).length+' / '+done;
+}
+function resetQuiz(){answered=new Array(Qs.length).fill(null);buildQuiz()}
+buildQuiz();
+</script>
+</body>
+</html>
