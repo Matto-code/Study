@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 9 Study Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;padding:1.5rem}
+.wrap{max-width:620px;margin:0 auto;padding-bottom:3rem}
+
+.back{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#534AB7;text-decoration:none;margin-bottom:1rem}
+.back:hover{text-decoration:underline}
+
+.hero{background:linear-gradient(135deg,#3C3489 0%,#085041 100%);border-radius:14px;padding:2rem;margin-bottom:1.5rem;text-align:center}
+.hero .sub{font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:4px}
+.hero h1{font-size:22px;font-weight:500;color:white;margin:4px 0}
+.hero .desc{font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px}
+.hero .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.hero .badge{background:rgba(255,255,255,0.12);border-radius:20px;padding:3px 12px;font-size:11px;color:rgba(255,255,255,0.8)}
+
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:8px;margin-top:1.5rem;padding-left:4px}
+
+.cards{display:flex;flex-direction:column;gap:10px}
+
+.resource-card{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:1.25rem;text-decoration:none;color:inherit;display:flex;align-items:center;gap:1.25rem;transition:all 0.15s}
+.resource-card:hover{border-color:#534AB7;box-shadow:0 2px 12px rgba(83,74,183,0.1);transform:translateY(-1px)}
+
+.icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.icon-purple{background:#EEEDFE}
+.icon-green{background:#E1F5EE}
+.icon-blue{background:#E6F1FB}
+.icon-amber{background:#FAEEDA}
+
+.rc-body{flex:1}
+.rc-title{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:3px}
+.rc-desc{font-size:12px;color:#888;line-height:1.55;margin-bottom:6px}
+.rc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{background:#f5f4f0;border:1px solid #e0dfd8;border-radius:20px;padding:2px 9px;font-size:11px;color:#888}
+
+.arrow{font-size:18px;color:#ccc;flex-shrink:0}
+.resource-card:hover .arrow{color:#534AB7}
+
+.coming-card{background:white;border:1px dashed #ddd;border-radius:14px;padding:1.25rem;display:flex;align-items:center;gap:1.25rem;opacity:0.55}
+.coming-card .rc-title{color:#aaa}
+
+.footer{text-align:center;font-size:12px;color:#bbb;margin-top:2rem;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="../index.html">← Study Hub</a>
+
+  <div class="hero">
+    <div class="sub">Queensland Curriculum · Australian Curriculum v9.0</div>
+    <h1>Year 9 Study Hub</h1>
+    <div class="desc">Study guides, quizzes and tools for Year 9</div>
+    <div class="badges">
+      <span class="badge">Works offline</span>
+      <span class="badge">No login needed</span>
+      <span class="badge">Mobile friendly</span>
+    </div>
+  </div>
+
+  <!-- FRENCH -->
+  <div class="section-label">🇫🇷 French</div>
+  <div class="cards">
+    <a class="resource-card" href="french_tutor.html">
+      <div class="icon icon-purple">🇫🇷</div>
+      <div class="rc-body">
+        <div class="rc-title">French Tutor</div>
+        <div class="rc-desc">Vocab quiz, grammar reference, phrase book and translation practice. Covers Year 9 curriculum topics: greetings, family, food, school, hobbies, town, weather and more.</div>
+        <div class="rc-tags">
+          <span class="tag">80+ vocab words</span>
+          <span class="tag">Grammar tables</span>
+          <span class="tag">Phrase book</span>
+          <span class="tag">Translation practice</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+
+  <!-- SCIENCE -->
+  <div class="section-label">🔬 Science</div>
+  <div class="cards">
+    <a class="resource-card" href="yr9_science_body_systems.html">
+      <div class="icon icon-green">🧠</div>
+      <div class="rc-body">
+        <div class="rc-title">Body Systems & Negative Feedback</div>
+        <div class="rc-desc">Nervous system, endocrine system, homeostasis, feedback loops, disorders and pharmaceuticals. Aligned to AC9S9U01.</div>
+        <div class="rc-tags">
+          <span class="tag">Study guide</span>
+          <span class="tag">Flashcards</span>
+          <span class="tag">Diagrams</span>
+          <span class="tag">AC9S9U01</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+
+    <!-- Placeholder for more science -->
+    <div class="coming-card">
+      <div class="icon icon-blue">➕</div>
+      <div class="rc-body">
+        <div class="rc-title">More Science topics coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATHS placeholder -->
+  <div class="section-label">📐 Maths</div>
+  <div class="cards">
+    <div class="coming-card">
+      <div class="icon icon-amber">➕</div>
+      <div class="rc-body">
+        <div class="rc-title">Maths topics coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Year 9 · Queensland Curriculum · Australian Curriculum v9.0<br>
+    More topics coming soon
+  </div>
+
+</div>
+</body>
+</html>

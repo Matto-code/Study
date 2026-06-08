@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>French Tutor — Year 9</title>
+<script src="https://www.youtube.com/iframe_api"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --pur50:#EEEDFE;--pur100:#CECBF6;--pur200:#AFA9EC;--pur600:#534AB7;--pur800:#3C3489;--pur900:#26215C;
+  --teal50:#E1F5EE;--teal600:#0F6E56;--teal800:#085041;
+  --amb50:#FAEEDA;--amb800:#633806;
+  --grn50:#EAF3DE;--grn800:#27500A;
+  --bg:#fff;--bg2:#f5f5f3;--bg3:#efefec;
+  --text:#1a1a18;--text2:#5f5e5a;--text3:#9a9890;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --radius:8px;--radius-lg:12px;
+  --font:system-ui,-apple-system,sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{--pur50:#2a2660;--pur600:#afa9ec;--pur800:#cecbf6;--pur900:#eeedfe;
+  --bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;
+  --text:#f0efeb;--text2:#a8a7a3;--text3:#6a6967;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.18)}
+}
+body{font-family:var(--font);background:var(--bg3);color:var(--text);min-height:100vh;}
+.page{max-width:720px;margin:0 auto;padding:1.25rem 1rem 3rem}
+
+/* Header */
+.header{display:flex;align-items:center;gap:14px;margin-bottom:1.25rem}
+.flag-circle{width:52px;height:52px;border-radius:50%;background:var(--pur50);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid var(--border)}
+.header h1{font-size:21px;font-weight:600;color:var(--text)}
+.header p{font-size:13px;color:var(--text2);margin-top:2px}
+.back-link{font-size:13px;color:var(--pur600);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:1rem}
+.back-link:hover{text-decoration:underline}
+
+/* API key banner */
+.api-banner{background:var(--amb50);border:1px solid #EF9F27;border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:1rem;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--amb800)}
+.api-banner.hidden{display:none}
+.api-banner input{flex:1;padding:6px 10px;border:1px solid #EF9F27;border-radius:var(--radius);font-size:13px;background:white;color:#333;font-family:var(--font)}
+.api-banner button{padding:6px 14px;background:var(--pur600);color:white;border:none;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:var(--font);white-space:nowrap}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.tab{padding:8px 15px;border-radius:var(--radius);border:1px solid var(--border);font-size:13px;cursor:pointer;background:var(--bg);color:var(--text2);transition:all .15s;font-family:var(--font)}
+.tab:hover{border-color:var(--border2);color:var(--text)}
+.tab.active{background:var(--pur50);border-color:var(--pur200);color:var(--pur900);font-weight:500}
+.tab.ai-tab{border-style:dashed}
+.tab.ai-tab.unlocked{border-style:solid;border-color:var(--pur200)}
+
+/* Stats */
+.stats{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.stat{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)}
+.stat strong{display:block;font-size:18px;font-weight:600;color:var(--text)}
+
+/* Card */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem}
+
+/* Section */
+.section{display:none}.section.active{display:block}
+
+/* Quiz */
+.topic-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;background:var(--pur50);color:var(--pur800);margin-bottom:1rem;border:1px solid var(--pur100)}
+.question-text{font-size:20px;font-weight:500;margin-bottom:6px;color:var(--text);text-align:center}
+.question-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem;text-align:center}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+@media(max-width:460px){.options{grid-template-columns:1fr}}
+.opt{padding:12px 16px;border:1px solid var(--border2);border-radius:var(--radius);font-size:15px;cursor:pointer;background:var(--bg2);color:var(--text);transition:all .15s;font-family:var(--font);text-align:left}
+.opt:hover:not(:disabled){border-color:var(--pur200);background:var(--pur50);color:var(--pur900)}
+.opt.correct{background:#EAF3DE;border-color:#27500A;color:#173404}
+.opt.incorrect{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.opt:disabled{cursor:default}
+.feedback{padding:12px 16px;border-radius:var(--radius);margin-bottom:1rem;font-size:14px;line-height:1.5}
+.feedback.ok{background:#EAF3DE;border:1px solid #639922;color:#173404}
+.feedback.bad{background:#FCEBEB;border:1px solid #E24B4A;color:#501313}
+.feedback-title{font-weight:600;margin-bottom:4px}
+.progress-wrap{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.progress-bar-outer{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.progress-bar-inner{height:100%;background:var(--pur600);border-radius:3px;transition:width .3s}
+.progress-label{font-size:12px;color:var(--text2);white-space:nowrap}
+.next-btn{width:100%;padding:12px;background:var(--pur600);color:white;border:none;border-radius:var(--radius);font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font);transition:background .15s}
+.next-btn:hover{background:var(--pur800)}
+
+/* Grammar */
+.grammar-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.gtab{padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);font-family:var(--font)}
+.gtab.active{background:var(--pur50);border-color:var(--pur200);color:var(--pur900)}
+.grammar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.grammar-grid{grid-template-columns:1fr}}
+.gc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px}
+.gc h3{font-size:12px;font-weight:600;color:var(--pur800);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.gc table{width:100%;font-size:13px;border-collapse:collapse}
+.gc td{padding:3px 0}
+.gc td:first-child{color:var(--text2);width:45%}
+.gc td:last-child{color:var(--text);font-style:italic}
+.gc p{font-size:13px;color:var(--text);line-height:1.6}
+.gc .eg{margin-top:6px;font-style:italic;color:var(--pur800);font-size:13px}
+
+/* Phrase book */
+.phrase-section{margin-bottom:1.25rem}
+.phrase-section h3{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.phrase-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:var(--radius);font-size:14px;margin-bottom:4px;cursor:pointer;border:1px solid transparent;transition:all .1s}
+.phrase-row:hover{background:var(--bg2);border-color:var(--border)}
+.phrase-fr{color:var(--pur800);font-style:italic;font-weight:500}
+.phrase-en{color:var(--text2);font-size:13px;margin-top:2px}
+.reveal-hint{font-size:11px;color:var(--text3)}
+
+/* Translate */
+.type-area{display:flex;gap:8px;margin-bottom:1rem}
+.type-input{flex:1;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;font-family:var(--font);background:var(--bg);color:var(--text)}
+.type-input:focus{outline:none;border-color:var(--pur200);box-shadow:0 0 0 3px var(--pur50)}
+.check-btn{padding:10px 20px;background:var(--pur600);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font)}
+.check-btn:hover{background:var(--pur800)}
+.hint-box{background:var(--amb50);border:1px solid #EF9F27;border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--amb800);margin-bottom:1rem}
+
+/* AI Chat */
+.chat-area{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);min-height:280px;max-height:380px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+.msg{display:flex;gap:10px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.avatar.tutor{background:var(--pur50);color:var(--pur800)}
+.avatar.student{background:var(--teal50);color:var(--teal800)}
+.bubble{max-width:85%;padding:9px 13px;border-radius:12px;font-size:14px;line-height:1.6;border:1px solid var(--border);background:var(--bg2);color:var(--text)}
+.msg.user .bubble{background:var(--pur50);border-color:var(--pur100);color:var(--pur900)}
+.typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.chat-input-row{display:flex;gap:8px}
+.chat-input{flex:1;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;font-family:var(--font);background:var(--bg);color:var(--text)}
+.chat-input:focus{outline:none;border-color:var(--pur200);box-shadow:0 0 0 3px var(--pur50)}
+.send-btn{padding:10px 18px;background:var(--pur600);color:white;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font)}
+.send-btn:hover{background:var(--pur800)}
+.send-btn:disabled{background:var(--bg2);color:var(--text3);cursor:not-allowed}
+.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.qbtn{font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:var(--font)}
+.qbtn:hover{border-color:var(--pur200);color:var(--pur800)}
+.locked-msg{text-align:center;padding:2rem;color:var(--text2);font-size:14px}
+.locked-msg .lock{font-size:36px;margin-bottom:10px}
+
+/* VIDEO SECTION */
+.video-list{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem}
+.video-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.video-item:hover{border-color:var(--pur200)}
+.video-item.active{border-color:var(--pur600);border-width:2px}
+.video-thumb-row{display:flex;align-items:center;gap:12px;padding:12px}
+.vthumb{width:72px;height:44px;border-radius:6px;background:#111;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;overflow:hidden}
+.vthumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.play-icon{position:relative;z-index:1;color:white;font-size:18px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.vinfo{flex:1}
+.vtitle{font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px}
+.vdesc{font-size:12px;color:var(--text2)}
+.vtags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.vtag{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--pur50);color:var(--pur800);border:1px solid var(--pur100)}
+
+.video-player-area{display:none;margin-bottom:1rem}
+.video-player-area.visible{display:block}
+.yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:var(--radius-lg);overflow:hidden;background:#000;margin-bottom:12px}
+.yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* Quiz overlay that appears when video pauses */
+.video-quiz{display:none;background:var(--pur50);border:2px solid var(--pur200);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px;animation:slidein .25s ease}
+.video-quiz.visible{display:block}
+@keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.vq-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--pur600);margin-bottom:8px}
+.vq-question{font-size:16px;font-weight:500;color:var(--pur900);margin-bottom:12px}
+.vq-opts{display:flex;flex-direction:column;gap:6px}
+.vq-opt{padding:9px 14px;border:1px solid var(--pur200);border-radius:var(--radius);font-size:14px;cursor:pointer;background:white;color:var(--pur900);text-align:left;font-family:var(--font);transition:all .15s}
+.vq-opt:hover{background:var(--pur100)}
+.vq-opt.correct{background:#EAF3DE;border-color:#27500A;color:#173404}
+.vq-opt.incorrect{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.vq-feedback{margin-top:10px;font-size:13px;line-height:1.5;padding:8px 12px;border-radius:var(--radius)}
+.vq-feedback.ok{background:#EAF3DE;color:#173404}
+.vq-feedback.bad{background:#FCEBEB;color:#501313}
+.continue-btn{margin-top:10px;padding:9px 20px;background:var(--pur600);color:white;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font)}
+.continue-btn:hover{background:var(--pur800)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="back-link" href="index.html">← Back to study guides</a>
+
+<div class="header">
+  <div class="flag-circle">🇫🇷</div>
+  <div>
+    <h1>French Tutor</h1>
+    <p>Year 9 · Queensland Curriculum · Interactive</p>
+  </div>
+</div>
+
+<!-- API key banner -->
+<div class="api-banner" id="api-banner">
+  <span>🔑</span>
+  <div style="flex:1">
+    <strong>Unlock AI conversation</strong> — enter your Anthropic API key to enable live chat with your tutor.
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." />
+      <button onclick="saveApiKey()">Unlock ↗</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showMode('vocab',this)">📚 Vocab Quiz</button>
+  <button class="tab" onclick="showMode('videos',this)">🎬 Videos</button>
+  <button class="tab" onclick="showMode('grammar',this)">✏️ Grammar</button>
+  <button class="tab" onclick="showMode('phrases',this)">💬 Phrases</button>
+  <button class="tab" onclick="showMode('translate',this)">🔄 Translate</button>
+  <button class="tab ai-tab" id="chat-tab" onclick="showMode('chat',this)">🤖 AI Tutor</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><strong id="stat-score">0</strong>Points</div>
+  <div class="stat"><strong id="stat-streak">0</strong>Streak</div>
+  <div class="stat"><strong id="stat-correct">0/0</strong>Session</div>
+</div>
+
+<!-- VOCAB QUIZ -->
+<div id="section-vocab" class="section active">
+  <div class="card">
+    <div class="progress-wrap">
+      <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar" style="width:0%"></div></div>
+      <span class="progress-label" id="prog-label">Q 1 of 10</span>
+    </div>
+    <div id="quiz-content"></div>
+  </div>
+</div>
+
+<!-- VIDEOS -->
+<div id="section-videos" class="section">
+  <div class="card" style="margin-bottom:.75rem">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6">Watch short French lessons — the video will <strong>pause automatically</strong> at key moments and ask you a question. Answer correctly to continue! 🎬</p>
+  </div>
+
+  <!-- Player area -->
+  <div class="video-player-area" id="player-area">
+    <div class="yt-wrap"><div id="yt-player"></div></div>
+    <div class="video-quiz" id="vq-box">
+      <div class="vq-label">⏸ Pause question</div>
+      <div class="vq-question" id="vq-q"></div>
+      <div class="vq-opts" id="vq-opts"></div>
+      <div class="vq-feedback" id="vq-fb" style="display:none"></div>
+      <button class="continue-btn" id="vq-continue" style="display:none" onclick="continueVideo()">Continue watching →</button>
+    </div>
+    <div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px" id="now-playing"></div>
+  </div>
+
+  <!-- Video list -->
+  <div class="video-list" id="video-list"></div>
+</div>
+
+<!-- GRAMMAR -->
+<div id="section-grammar" class="section">
+  <div class="card">
+    <div class="grammar-tabs" id="grammar-tabs"></div>
+    <div id="grammar-content"></div>
+  </div>
+</div>
+
+<!-- PHRASES -->
+<div id="section-phrases" class="section">
+  <div class="card" id="phrases-content"></div>
+</div>
+
+<!-- TRANSLATE -->
+<div id="section-translate" class="section">
+  <div class="card" id="translate-content">
+    <div style="text-align:center;padding:1.5rem 1rem">
+      <div style="font-size:42px;margin-bottom:10px">🔄</div>
+      <div style="font-size:17px;font-weight:500;margin-bottom:6px">Translation practice</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:1.5rem">Read the sentence, think of the French, then reveal the answer.</div>
+      <button class="next-btn" style="max-width:260px;margin:0 auto;display:block" onclick="startTranslate()">Start →</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT -->
+<div id="section-chat" class="section">
+  <div id="chat-locked" class="card">
+    <div class="locked-msg">
+      <div class="lock">🔒</div>
+      <strong>AI Tutor locked</strong>
+      <p style="margin-top:8px">Enter your Anthropic API key in the banner above to unlock real conversation with your French tutor.</p>
+    </div>
+  </div>
+  <div id="chat-unlocked" style="display:none">
+    <div class="card" style="padding:.75rem">
+      <div class="quick-btns">
+        <button class="qbtn" onclick="quickSend('Bonjour ! Parlons en français')">Start in French</button>
+        <button class="qbtn" onclick="quickSend('Give me a vocab quiz')">Vocab quiz</button>
+        <button class="qbtn" onclick="quickSend('Help me with present tense')">Present tense</button>
+        <button class="qbtn" onclick="quickSend('Let\'s practise a café conversation')">Café roleplay</button>
+        <button class="qbtn" onclick="quickSend('Correct my French: Je suis allé au magasin hier')">Check my French</button>
+      </div>
+    </div>
+    <div class="chat-area" id="chat-area"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-input" placeholder="Type in English or French… (Enter to send)" />
+      <button class="send-btn" id="send-btn" onclick="sendChat()">Send ↗</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+// Drop your Anthropic API key here OR enter it in the banner
+const HARDCODED_KEY = '';
+
+// ─── VIDEO DATA ───────────────────────────────────────────────────────────────
+// Each video has pause points: {time: seconds, question, options:[{text,correct}], explanation}
+const VIDEOS = [
+  {
+    id: 'dQw4w9WgXcQ', // placeholder — swap for real video IDs
+    title: 'French greetings — Bonjour & beyond',
+    desc: 'Learn how to greet people formally and informally in French',
+    tags: ['Greetings','A1'],
+    emoji: '👋',
+    pauses: [
+      {time: 15, q: 'What does "Bonsoir" mean?', opts:[{t:'Good morning',c:false},{t:'Good evening',c:true},{t:'Goodbye',c:false},{t:'Good night',c:false}], exp:'Bonsoir = Good evening. Use it after around 6pm!'},
+      {time: 40, q: 'Which greeting is informal (used with friends)?', opts:[{t:'Bonjour',c:false},{t:'Bonsoir',c:false},{t:'Salut',c:true},{t:'Au revoir',c:false}], exp:'Salut is casual — use it with friends. Bonjour is more formal.'},
+    ]
+  },
+  {
+    id: 'dQw4w9WgXcQ',
+    title: 'Present tense -er verbs',
+    desc: 'How to conjugate parler, manger, habiter and other -er verbs',
+    tags: ['Grammar','Present tense'],
+    emoji: '✏️',
+    pauses: [
+      {time: 20, q: 'What is the "nous" ending for -er verbs?', opts:[{t:'-ez',c:false},{t:'-ons',c:true},{t:'-ent',c:false},{t:'-es',c:false}], exp:'Nous + -ons: nous parlons, nous mangeons — always -ons for "we"!'},
+      {time: 45, q: 'How do you say "They speak" in French?', opts:[{t:'Ils parle',c:false},{t:'Ils parlons',c:false},{t:'Ils parlent',c:true},{t:'Ils parlez',c:false}], exp:'Ils/Elles + -ent: ils parlent. Note — the -ent ending is silent!'},
+    ]
+  },
+  {
+    id: 'dQw4w9WgXcQ',
+    title: 'Numbers 1–100 in French',
+    desc: 'Count from 1 to 100, including the tricky 70s, 80s and 90s',
+    tags: ['Numbers','Vocabulary'],
+    emoji: '🔢',
+    pauses: [
+      {time: 25, q: 'How do you say 70 in French?', opts:[{t:'Septante',c:false},{t:'Soixante-dix',c:true},{t:'Sept-dix',c:false},{t:'Soixante-sept',c:false}], exp:'70 = soixante-dix (literally "sixty-ten"). French numbers get creative after 60!'},
+      {time: 50, q: 'What is 80 in French?', opts:[{t:'Huitante',c:false},{t:'Octante',c:false},{t:'Quatre-vingts',c:true},{t:'Soixante-vingt',c:false}], exp:'80 = quatre-vingts (literally "four twenties"). 4 × 20 = 80!'},
+    ]
+  },
+  {
+    id: 'dQw4w9WgXcQ',
+    title: 'Le, la, les — French articles explained',
+    desc: 'Master masculine, feminine and plural articles with real examples',
+    tags: ['Grammar','Articles'],
+    emoji: '📖',
+    pauses: [
+      {time: 18, q: 'What article goes before a masculine singular noun?', opts:[{t:'la',c:false},{t:'le',c:true},{t:'les',c:false},{t:'l\'',c:false}], exp:'Le = the (masculine singular). Le chat, le livre, le garçon.'},
+      {time: 38, q: 'When do you use l\' instead of le or la?', opts:[{t:'With plural nouns',c:false},{t:'Before nouns starting with a vowel or h',c:true},{t:'With feminine nouns only',c:false},{t:'Never',c:false}], exp:'L\' replaces le or la before a vowel or silent h: l\'arbre, l\'homme, l\'école.'},
+    ]
+  },
+  {
+    id: 'dQw4w9WgXcQ',
+    title: 'Near future — aller + infinitive',
+    desc: 'Talk about what you\'re going to do using the futur proche',
+    tags: ['Grammar','Future'],
+    emoji: '🔮',
+    pauses: [
+      {time: 22, q: 'What is the formula for the near future?', opts:[{t:'avoir + infinitive',c:false},{t:'être + infinitive',c:false},{t:'aller + infinitive',c:true},{t:'vouloir + infinitive',c:false}], exp:'Near future = aller (conjugated) + infinitive. Je vais manger = I\'m going to eat.'},
+      {time: 44, q: 'How do you say "She is going to study" in French?', opts:[{t:'Elle va étudier',c:true},{t:'Elle est étudier',c:false},{t:'Elle aller étudier',c:false},{t:'Elle vais étudier',c:false}], exp:'Elle va étudier — elle uses "va" (3rd person singular of aller) + infinitive.'},
+    ]
+  },
+];
+
+// ─── VOCAB DATA ───────────────────────────────────────────────────────────────
+const VOCAB = [
+  {fr:'Bonjour',en:'Hello / Good morning',t:'Greetings'},{fr:'Bonsoir',en:'Good evening',t:'Greetings'},
+  {fr:'Au revoir',en:'Goodbye',t:'Greetings'},{fr:'Salut',en:'Hi / Bye (informal)',t:'Greetings'},
+  {fr:'Merci',en:'Thank you',t:'Greetings'},{fr:'De rien',en:'You\'re welcome',t:'Greetings'},
+  {fr:'la mère',en:'the mother',t:'Family'},{fr:'le père',en:'the father',t:'Family'},
+  {fr:'le frère',en:'the brother',t:'Family'},{fr:'la sœur',en:'the sister',t:'Family'},
+  {fr:'le grand-père',en:'the grandfather',t:'Family'},{fr:'la grand-mère',en:'the grandmother',t:'Family'},
+  {fr:'le pain',en:'bread',t:'Food'},{fr:'le fromage',en:'cheese',t:'Food'},
+  {fr:'le poulet',en:'chicken',t:'Food'},{fr:'les frites',en:'chips / fries',t:'Food'},
+  {fr:'l\'eau',en:'water',t:'Food'},{fr:'le café',en:'coffee',t:'Food'},
+  {fr:'le professeur',en:'teacher',t:'School'},{fr:'les devoirs',en:'homework',t:'School'},
+  {fr:'la salle de classe',en:'classroom',t:'School'},{fr:'la récréation',en:'break time',t:'School'},
+  {fr:'rouge',en:'red',t:'Colours'},{fr:'bleu(e)',en:'blue',t:'Colours'},
+  {fr:'vert(e)',en:'green',t:'Colours'},{fr:'jaune',en:'yellow',t:'Colours'},
+  {fr:'noir(e)',en:'black',t:'Colours'},{fr:'blanc/blanche',en:'white',t:'Colours'},
+  {fr:'jouer au foot',en:'to play football',t:'Hobbies'},{fr:'écouter de la musique',en:'to listen to music',t:'Hobbies'},
+  {fr:'regarder la télé',en:'to watch TV',t:'Hobbies'},{fr:'lire',en:'to read',t:'Hobbies'},
+  {fr:'nager',en:'to swim',t:'Hobbies'},{fr:'jouer aux jeux vidéo',en:'to play video games',t:'Hobbies'},
+  {fr:'un/une',en:'one',t:'Numbers'},{fr:'deux',en:'two',t:'Numbers'},
+  {fr:'trois',en:'three',t:'Numbers'},{fr:'dix',en:'ten',t:'Numbers'},
+  {fr:'vingt',en:'twenty',t:'Numbers'},{fr:'cent',en:'one hundred',t:'Numbers'},
+  {fr:'la boulangerie',en:'bakery',t:'Town'},{fr:'la gare',en:'train station',t:'Town'},
+  {fr:'le supermarché',en:'supermarket',t:'Town'},{fr:'la piscine',en:'swimming pool',t:'Town'},
+  {fr:'Il fait beau',en:'The weather is nice',t:'Weather'},{fr:'Il pleut',en:'It\'s raining',t:'Weather'},
+  {fr:'Il fait chaud',en:'It\'s hot',t:'Weather'},{fr:'Il fait froid',en:'It\'s cold',t:'Weather'},
+];
+
+// ─── GRAMMAR DATA ────────────────────────────────────────────────────────────
+const GRAMMAR = [
+  {id:'present',label:'Present tense',content:`
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.6">Regular verbs follow patterns based on their ending (-er, -ir, -re). Plus the key irregular verbs.</p>
+    <div class="grammar-grid">
+      <div class="gc"><h3>-er verbs: parler</h3><table>
+        <tr><td>je</td><td>parle</td></tr><tr><td>tu</td><td>parles</td></tr>
+        <tr><td>il/elle/on</td><td>parle</td></tr><tr><td>nous</td><td>parlons</td></tr>
+        <tr><td>vous</td><td>parlez</td></tr><tr><td>ils/elles</td><td>parlent</td></tr>
+      </table><p class="eg">Je parle français.</p></div>
+      <div class="gc"><h3>être (to be)</h3><table>
+        <tr><td>je</td><td>suis</td></tr><tr><td>tu</td><td>es</td></tr>
+        <tr><td>il/elle</td><td>est</td></tr><tr><td>nous</td><td>sommes</td></tr>
+        <tr><td>vous</td><td>êtes</td></tr><tr><td>ils/elles</td><td>sont</td></tr>
+      </table><p class="eg">Je suis australienne.</p></div>
+      <div class="gc"><h3>avoir (to have)</h3><table>
+        <tr><td>je</td><td>ai</td></tr><tr><td>tu</td><td>as</td></tr>
+        <tr><td>il/elle</td><td>a</td></tr><tr><td>nous</td><td>avons</td></tr>
+        <tr><td>vous</td><td>avez</td></tr><tr><td>ils/elles</td><td>ont</td></tr>
+      </table><p class="eg">J'ai un chien.</p></div>
+      <div class="gc"><h3>aller (to go)</h3><table>
+        <tr><td>je</td><td>vais</td></tr><tr><td>tu</td><td>vas</td></tr>
+        <tr><td>il/elle</td><td>va</td></tr><tr><td>nous</td><td>allons</td></tr>
+        <tr><td>vous</td><td>allez</td></tr><tr><td>ils/elles</td><td>vont</td></tr>
+      </table><p class="eg">Je vais à l'école.</p></div>
+    </div>`},
+  {id:'articles',label:'Articles',content:`
+    <div class="grammar-grid">
+      <div class="gc"><h3>Definite (the)</h3><table>
+        <tr><td>masculine</td><td>le chat</td></tr><tr><td>feminine</td><td>la chaise</td></tr>
+        <tr><td>vowel/h</td><td>l'arbre</td></tr><tr><td>plural</td><td>les chats</td></tr>
+      </table><p class="eg">💡 Specific things you know about</p></div>
+      <div class="gc"><h3>Indefinite (a/some)</h3><table>
+        <tr><td>masculine</td><td>un chat</td></tr><tr><td>feminine</td><td>une chaise</td></tr>
+        <tr><td>plural</td><td>des chats</td></tr>
+      </table><p class="eg">💡 Non-specific things</p></div>
+      <div class="gc"><h3>Partitive (some)</h3><table>
+        <tr><td>masculine</td><td>du pain</td></tr><tr><td>feminine</td><td>de la salade</td></tr>
+        <tr><td>vowel</td><td>de l'eau</td></tr>
+      </table><p class="eg">💡 Uncountable quantities</p></div>
+      <div class="gc"><h3>After negation → de</h3>
+        <p>All articles become <strong>de</strong> after ne...pas.</p>
+        <p class="eg">J'ai un chien → Je n'ai pas de chien.</p>
+      </div>
+    </div>`},
+  {id:'negation',label:'Negation',content:`
+    <div class="grammar-grid">
+      <div class="gc"><h3>ne...pas (not)</h3><p>Wrap the verb: ne before, pas after.</p><p class="eg">Je <strong>ne</strong> parle <strong>pas</strong> anglais.<br>Il <strong>n'</strong>aime <strong>pas</strong> le foot.</p></div>
+      <div class="gc"><h3>ne...jamais (never)</h3><p>Replace pas with jamais.</p><p class="eg">Je ne mange <strong>jamais</strong> de viande.</p></div>
+      <div class="gc"><h3>ne...plus (no longer)</h3><p>Replace pas with plus.</p><p class="eg">Il ne joue <strong>plus</strong> au foot.</p></div>
+      <div class="gc"><h3>ne...rien (nothing)</h3><p>Replace pas with rien.</p><p class="eg">Je ne mange <strong>rien</strong>.</p></div>
+    </div>`},
+  {id:'future',label:'Near future',content:`
+    <div class="grammar-grid">
+      <div class="gc"><h3>Formula: aller + infinitive</h3><p>Conjugate aller, then add the main verb infinitive.</p><p class="eg">Je vais manger. (I'm going to eat.)</p></div>
+      <div class="gc"><h3>Examples</h3><table>
+        <tr><td>je vais</td><td>jouer</td></tr><tr><td>tu vas</td><td>regarder</td></tr>
+        <tr><td>il va</td><td>partir</td></tr><tr><td>nous allons</td><td>manger</td></tr>
+        <tr><td>ils vont</td><td>arriver</td></tr>
+      </table></div>
+      <div class="gc"><h3>Making it negative</h3><p>ne...pas goes around aller, not the infinitive.</p><p class="eg">Je <strong>ne</strong> vais <strong>pas</strong> manger.</p></div>
+      <div class="gc"><h3>Time phrases</h3><table>
+        <tr><td>demain</td><td>tomorrow</td></tr><tr><td>ce soir</td><td>tonight</td></tr>
+        <tr><td>ce week-end</td><td>this weekend</td></tr><tr><td>bientôt</td><td>soon</td></tr>
+      </table></div>
+    </div>`},
+  {id:'adjectives',label:'Adjectives',content:`
+    <div class="grammar-grid">
+      <div class="gc"><h3>Agreement rules</h3><table>
+        <tr><td>masc. sing.</td><td>grand</td></tr><tr><td>fem. sing.</td><td>grande</td></tr>
+        <tr><td>masc. pl.</td><td>grands</td></tr><tr><td>fem. pl.</td><td>grandes</td></tr>
+      </table><p class="eg">un grand garçon / une grande fille</p></div>
+      <div class="gc"><h3>Irregular ones</h3><table>
+        <tr><td>beau/belle</td><td>beautiful</td></tr><tr><td>vieux/vieille</td><td>old</td></tr>
+        <tr><td>nouveau/nouvelle</td><td>new</td></tr><tr><td>blanc/blanche</td><td>white</td></tr>
+      </table></div>
+      <div class="gc"><h3>Position</h3><p>Most go <strong>after</strong> the noun.</p><p class="eg">un livre intéressant<br>une voiture rouge</p>
+      <p style="margin-top:6px;font-size:12px;color:var(--text2)">BAGS go before: Beauty, Age, Goodness, Size (beau, jeune, bon, petit, grand…)</p></div>
+      <div class="gc"><h3>Common adjectives</h3><table>
+        <tr><td>petit(e)</td><td>small</td></tr><tr><td>grand(e)</td><td>big/tall</td></tr>
+        <tr><td>sympa</td><td>nice</td></tr><tr><td>content(e)</td><td>happy</td></tr>
+        <tr><td>fatigué(e)</td><td>tired</td></tr>
+      </table></div>
+    </div>`},
+];
+
+// ─── PHRASE DATA ─────────────────────────────────────────────────────────────
+const PHRASES = {
+  'Classroom language':[
+    {fr:"Je ne comprends pas.",en:"I don't understand."},
+    {fr:"Pouvez-vous répéter, s'il vous plaît ?",en:"Can you repeat that, please?"},
+    {fr:"Comment dit-on ... en français ?",en:"How do you say ... in French?"},
+    {fr:"J'ai une question.",en:"I have a question."},
+  ],
+  'Opinions':[
+    {fr:"J'aime ...",en:"I like ..."},{fr:"Je n'aime pas ...",en:"I don't like ..."},
+    {fr:"J'adore ...",en:"I love ..."},{fr:"Je déteste ...",en:"I hate ..."},
+    {fr:"À mon avis, ...",en:"In my opinion, ..."},{fr:"C'est super !",en:"It's great!"},
+  ],
+  'Daily routine':[
+    {fr:"Je me réveille à ...",en:"I wake up at ..."},{fr:"Je me lève.",en:"I get up."},
+    {fr:"Je prends le petit-déjeuner.",en:"I have breakfast."},
+    {fr:"Je vais à l'école.",en:"I go to school."},
+    {fr:"Je fais mes devoirs.",en:"I do my homework."},{fr:"Je me couche.",en:"I go to bed."},
+  ],
+  'Café':[
+    {fr:"Je voudrais ..., s'il vous plaît.",en:"I would like ..., please."},
+    {fr:"L'addition, s'il vous plaît.",en:"The bill, please."},
+    {fr:"C'est combien ?",en:"How much is it?"},{fr:"C'était délicieux !",en:"It was delicious!"},
+  ],
+  'Directions':[
+    {fr:"Où est ... ?",en:"Where is ...?"},{fr:"Tournez à gauche.",en:"Turn left."},
+    {fr:"Tournez à droite.",en:"Turn right."},{fr:"Allez tout droit.",en:"Go straight ahead."},
+  ]
+};
+
+const TRANSLATE = [
+  {en:"My name is Sophie and I am 14 years old.",fr:"Je m'appelle Sophie et j'ai 14 ans."},
+  {en:"I have a brother and a sister.",fr:"J'ai un frère et une sœur."},
+  {en:"I like to play football with my friends.",fr:"J'aime jouer au foot avec mes amis."},
+  {en:"She doesn't eat meat.",fr:"Elle ne mange pas de viande."},
+  {en:"We are going to go to the cinema tonight.",fr:"Nous allons aller au cinéma ce soir."},
+  {en:"He never watches TV in the morning.",fr:"Il ne regarde jamais la télé le matin."},
+  {en:"I would like a coffee and a croissant please.",fr:"Je voudrais un café et un croissant s'il vous plaît."},
+  {en:"My favourite subject is maths.",fr:"Ma matière préférée c'est les maths."},
+  {en:"I go to bed at ten o'clock.",fr:"Je me couche à dix heures."},
+  {en:"The teacher is tall and funny.",fr:"Le professeur est grand et amusant."},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let score=0,streak=0,correct=0,total=0;
+let quizQueue=[],qIdx=0,qTotal=10,showingAnswer=false;
+let tQueue=[],tIdx=0;
+let activeGrammar=0;
+let apiKey='';
+let chatHistory=[];
+let isLoading=false;
+
+// YouTube player state
+let ytPlayer=null,ytReady=false;
+let currentVideo=null,currentPauseIdx=0,pauseCheckInterval=null;
+let awaitingAnswer=false;
+
+// ─── API KEY ──────────────────────────────────────────────────────────────────
+function saveApiKey(){
+  const k=document.getElementById('api-key-input').value.trim();
+  if(!k.startsWith('sk-')){alert('API key should start with sk-');return;}
+  apiKey=k;
+  document.getElementById('api-banner').classList.add('hidden');
+  document.getElementById('chat-locked').style.display='none';
+  document.getElementById('chat-unlocked').style.display='block';
+  document.getElementById('chat-tab').classList.add('unlocked');
+  document.getElementById('chat-tab').textContent='🤖 AI Tutor ✓';
+  addBotMsg("Bonjour ! 👋 I'm your AI French tutor. We can chat in French or English, practise grammar, do a quiz — whatever you need. What would you like to work on?");
+}
+window.onload=()=>{
+  if(HARDCODED_KEY){
+    document.getElementById('api-key-input').value=HARDCODED_KEY;
+    saveApiKey();
+  }
+};
+
+// ─── YOUTUBE API ──────────────────────────────────────────────────────────────
+function onYouTubeIframeAPIReady(){ytReady=true;}
+
+function loadVideo(v){
+  currentVideo=v;currentPauseIdx=0;awaitingAnswer=false;
+  document.getElementById('player-area').classList.add('visible');
+  document.getElementById('now-playing').textContent='▶ Now playing: '+v.title;
+  document.getElementById('vq-box').classList.remove('visible');
+
+  // highlight active in list
+  document.querySelectorAll('.video-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('vi-'+VIDEOS.indexOf(v)).classList.add('active');
+
+  if(ytPlayer&&ytPlayer.loadVideoById){
+    ytPlayer.loadVideoById(v.id);
+  } else {
+    ytPlayer=new YT.Player('yt-player',{
+      videoId:v.id,
+      playerVars:{rel:0,modestbranding:1},
+      events:{onReady:()=>ytPlayer.playVideo(),onStateChange:onPlayerStateChange}
+    });
+  }
+  startPauseChecker();
+  // scroll to player
+  document.getElementById('player-area').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function startPauseChecker(){
+  if(pauseCheckInterval)clearInterval(pauseCheckInterval);
+  pauseCheckInterval=setInterval(()=>{
+    if(!ytPlayer||!ytPlayer.getCurrentTime)return;
+    if(awaitingAnswer)return;
+    const t=ytPlayer.getCurrentTime();
+    if(currentVideo&&currentPauseIdx<currentVideo.pauses.length){
+      const pause=currentVideo.pauses[currentPauseIdx];
+      if(t>=pause.time){
+        ytPlayer.pauseVideo();
+        awaitingAnswer=true;
+        showVideoQuiz(pause);
+      }
+    }
+  },500);
+}
+
+function onPlayerStateChange(e){
+  // YT.PlayerState.ENDED = 0
+  if(e.data===0){
+    clearInterval(pauseCheckInterval);
+    document.getElementById('now-playing').textContent='✓ Finished: '+currentVideo.title;
+  }
+}
+
+function showVideoQuiz(pause){
+  const box=document.getElementById('vq-box');
+  document.getElementById('vq-q').textContent=pause.q;
+  document.getElementById('vq-fb').style.display='none';
+  document.getElementById('vq-continue').style.display='none';
+  const opts=document.getElementById('vq-opts');
+  opts.innerHTML=pause.opts.map(o=>
+    `<button class="vq-opt" onclick="answerVQ(this,${o.c},'${esc(pause.exp)}')">${esc(o.t)}</button>`
+  ).join('');
+  box.classList.add('visible');
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function answerVQ(btn,correct,exp){
+  document.querySelectorAll('.vq-opt').forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'correct':'incorrect');
+  if(correct){score+=10;streak++;updateStats();}else{streak=0;updateStats();}
+  const fb=document.getElementById('vq-fb');
+  fb.className='vq-feedback '+(correct?'ok':'bad');
+  fb.innerHTML=(correct?'✓ Correct! ':'✗ Not quite. ')+exp;
+  fb.style.display='block';
+  document.getElementById('vq-continue').style.display='block';
+  if(correct)currentPauseIdx++;
+}
+
+function continueVideo(){
+  document.getElementById('vq-box').classList.remove('visible');
+  awaitingAnswer=false;
+  if(ytPlayer)ytPlayer.playVideo();
+}
+
+// ─── VIDEO LIST ───────────────────────────────────────────────────────────────
+function buildVideoList(){
+  const list=document.getElementById('video-list');
+  list.innerHTML=VIDEOS.map((v,i)=>`
+    <div class="video-item" id="vi-${i}" onclick="loadVideo(VIDEOS[${i}])">
+      <div class="video-thumb-row">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="" onerror="this.style.display='none'">
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="vinfo">
+          <div class="vtitle">${v.emoji} ${v.title}</div>
+          <div class="vdesc">${v.desc}</div>
+          <div class="vtags">${v.tags.map(t=>`<span class="vtag">${t}</span>`).join('')}
+            <span class="vtag">⏸ ${v.pauses.length} pause quiz${v.pauses.length>1?'zes':''}</span>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ─── VOCAB QUIZ ───────────────────────────────────────────────────────────────
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+function buildQuiz(){quizQueue=shuffle(VOCAB).slice(0,qTotal);qIdx=0;correct=0;total=0;updateStats();nextQ();}
+function nextQ(){
+  if(qIdx>=qTotal){showQComplete();return;}
+  currentQ=quizQueue[qIdx];showingAnswer=false;
+  const toFr=Math.random()>.5;
+  const wrongs=shuffle(VOCAB.filter(v=>v!==currentQ)).slice(0,3);
+  const opts=shuffle([currentQ,...wrongs]);
+  const qWord=toFr?currentQ.en:currentQ.fr;
+  const qDir=toFr?'→ French':'→ English';
+  const correctAns=toFr?currentQ.fr:currentQ.en;
+  document.getElementById('prog-bar').style.width=Math.round(qIdx/qTotal*100)+'%';
+  document.getElementById('prog-label').textContent=`Q ${qIdx+1} of ${qTotal}`;
+  document.getElementById('quiz-content').innerHTML=`
+    <div style="text-align:center;padding:.5rem 0 1rem">
+      <div class="topic-badge">${currentQ.t} ${qDir}</div>
+      <div class="question-text">${esc(qWord)}</div>
+      <div class="question-sub">Choose the correct translation</div>
+    </div>
+    <div class="options">${opts.map(o=>{
+      const label=toFr?o.fr:o.en;
+      return`<button class="opt" onclick="selectOpt(this,${o===currentQ},'${esc(correctAns)}')">${esc(label)}</button>`;
+    }).join('')}</div>
+    <div id="fb-area"></div>`;
+}
+function selectOpt(btn,isCorrect,correctAns){
+  if(showingAnswer)return;showingAnswer=true;total++;
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(isCorrect){btn.classList.add('correct');score+=10;streak++;correct++;
+    document.getElementById('fb-area').innerHTML=`<div class="feedback ok"><div class="feedback-title">✓ Correct! +10 points</div>${esc(currentQ.fr)} = ${esc(currentQ.en)}</div><button class="next-btn" onclick="qIdx++;nextQ()">Next →</button>`;
+  }else{btn.classList.add('incorrect');streak=0;
+    document.querySelectorAll('.opt').forEach(b=>{if(b.textContent.trim()===correctAns)b.classList.add('correct');});
+    document.getElementById('fb-area').innerHTML=`<div class="feedback bad"><div class="feedback-title">✗ Not quite</div>The answer was: <strong>${esc(correctAns)}</strong></div><button class="next-btn" onclick="qIdx++;nextQ()">Next →</button>`;
+  }
+  updateStats();
+}
+function showQComplete(){
+  const pct=Math.round(correct/qTotal*100);
+  document.getElementById('prog-bar').style.width='100%';
+  document.getElementById('prog-label').textContent='Done!';
+  document.getElementById('quiz-content').innerHTML=`
+    <div style="text-align:center;padding:2rem 1rem">
+      <div style="font-size:48px;margin-bottom:12px">${pct>=80?'🌟':pct>=60?'👍':'💪'}</div>
+      <div class="question-text">${correct}/${qTotal} correct — ${pct}%</div>
+      <div class="question-sub" style="margin-bottom:1.5rem">${pct>=80?'Excellent — très bien !':pct>=60?'Good effort, keep going!':'Practice makes perfect!'}</div>
+      <button class="next-btn" onclick="buildQuiz()" style="max-width:280px;margin:0 auto;display:block">Play again ↺</button>
+    </div>`;
+}
+
+// ─── GRAMMAR ──────────────────────────────────────────────────────────────────
+function buildGrammar(){
+  document.getElementById('grammar-tabs').innerHTML=GRAMMAR.map((g,i)=>
+    `<button class="gtab${i===activeGrammar?' active':''}" onclick="activeGrammar=${i};buildGrammar()">${g.label}</button>`
+  ).join('');
+  document.getElementById('grammar-content').innerHTML=GRAMMAR[activeGrammar].content;
+}
+
+// ─── PHRASES ──────────────────────────────────────────────────────────────────
+function buildPhrases(){
+  let html='';
+  for(const[sec,rows]of Object.entries(PHRASES)){
+    html+=`<div class="phrase-section"><h3>${sec}</h3>`;
+    rows.forEach(r=>{
+      html+=`<div class="phrase-row" onclick="var en=this.querySelector('.phrase-en');en.style.display=en.style.display==='none'?'block':'none';var rv=this.querySelector('.reveal-hint');if(rv)rv.style.display='none'">
+        <div><div class="phrase-fr">${esc(r.fr)}</div><div class="phrase-en" style="display:none;margin-top:2px">${esc(r.en)}</div></div>
+        <span class="reveal-hint">tap</span>
+      </div>`;
+    });
+    html+='</div>';
+  }
+  document.getElementById('phrases-content').innerHTML=html;
+}
+
+// ─── TRANSLATE ────────────────────────────────────────────────────────────────
+function startTranslate(){tQueue=shuffle(TRANSLATE);tIdx=0;showTranslate();}
+function showTranslate(){
+  if(tIdx>=tQueue.length){tIdx=0;tQueue=shuffle(TRANSLATE);}
+  const p=tQueue[tIdx];
+  document.getElementById('translate-content').innerHTML=`
+    <div style="text-align:center;padding:1rem 0 1.5rem">
+      <div class="topic-badge">English → French</div>
+      <div class="question-text" style="font-size:17px">${esc(p.en)}</div>
+      <div class="question-sub">Say it in French, then reveal</div>
+    </div>
+    <div id="trans-ans" class="hint-box" style="display:none"><strong>French:</strong> ${esc(p.fr)}</div>
+    <div style="display:flex;gap:8px">
+      <button class="next-btn" style="background:var(--bg2);color:var(--text);border:1px solid var(--border2)" onclick="document.getElementById('trans-ans').style.display='block';document.getElementById('trans-next').style.display='block';this.style.display='none'">Reveal answer</button>
+      <button class="next-btn" id="trans-next" style="display:none" onclick="tIdx++;showTranslate()">Next →</button>
+    </div>`;
+}
+
+// ─── AI CHAT ──────────────────────────────────────────────────────────────────
+const SYSTEM=`You are a friendly, encouraging French tutor for a Year 9 student (13-14 years old) in Queensland, Australia.
+
+Your style:
+- Conversational and warm — like a patient older student helping them out
+- Mix English and French naturally. When they write French, respond with some French too
+- Keep responses concise — 2-4 short paragraphs at most
+- Gently correct French mistakes: restate the correct version, explain briefly why
+- Use emojis occasionally to keep it light
+- End each response with either a question, a mini challenge, or something for them to try
+- Year 9 topics: greetings, family, school, food, hobbies, town, directions, weather, holidays
+- Grammar focus: present tense, near future (aller+inf), articles, adjective agreement, negation
+
+When they seem stuck or frustrated, encourage them. Celebrate their wins!`;
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim();
+  if(!text||isLoading)return;
+  if(!apiKey){alert('Please enter your API key first.');return;}
+  input.value='';
+  addUserMsg(text);
+  chatHistory.push({role:'user',content:text});
+  isLoading=true;
+  document.getElementById('send-btn').disabled=true;
+  addTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,messages:chatHistory.slice(-20)})
+    });
+    const d=await r.json();
+    const reply=d.content?.[0]?.text||'Désolé, something went wrong. Please try again!';
+    chatHistory.push({role:'assistant',content:reply});
+    removeTyping();
+    addBotMsg(reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'));
+  }catch(e){removeTyping();addBotMsg('Oops! Connection problem. Try again 🙏');}
+  isLoading=false;
+  document.getElementById('send-btn').disabled=false;
+  input.focus();
+}
+
+function quickSend(t){document.getElementById('chat-input').value=t;sendChat();}
+function addBotMsg(html){
+  const c=document.getElementById('chat-area');
+  const el=document.createElement('div');el.className='msg bot';
+  el.innerHTML=`<div class="avatar tutor">🇫🇷</div><div class="bubble">${html}</div>`;
+  c.appendChild(el);c.scrollTop=c.scrollHeight;
+}
+function addUserMsg(t){
+  const c=document.getElementById('chat-area');
+  const el=document.createElement('div');el.className='msg user';
+  el.innerHTML=`<div class="avatar student">👩</div><div class="bubble">${esc(t)}</div>`;
+  c.appendChild(el);c.scrollTop=c.scrollHeight;
+}
+function addTyping(){
+  const c=document.getElementById('chat-area');
+  const el=document.createElement('div');el.className='msg bot';el.id='typing';
+  el.innerHTML=`<div class="avatar tutor">🇫🇷</div><div class="bubble"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  c.appendChild(el);c.scrollTop=c.scrollHeight;
+}
+function removeTyping(){const el=document.getElementById('typing');if(el)el.remove();}
+
+// ─── MODE SWITCH ──────────────────────────────────────────────────────────────
+function showMode(mode,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('section-'+mode).classList.add('active');
+  btn.classList.add('active');
+  if(mode==='vocab')buildQuiz();
+  if(mode==='grammar')buildGrammar();
+  if(mode==='phrases')buildPhrases();
+  if(mode==='videos')buildVideoList();
+  if(mode==='translate'){document.getElementById('translate-content').innerHTML=`<div style="text-align:center;padding:1.5rem 1rem"><div style="font-size:42px;margin-bottom:10px">🔄</div><div style="font-size:17px;font-weight:500;margin-bottom:6px">Translation practice</div><div style="font-size:13px;color:var(--text2);margin-bottom:1.5rem">Read the sentence, think of the French, then reveal.</div><button class="next-btn" style="max-width:260px;margin:0 auto;display:block" onclick="startTranslate()">Start →</button></div>`;}
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function updateStats(){
+  document.getElementById('stat-score').textContent=score;
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('stat-correct').textContent=correct+'/'+total;
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+document.getElementById('chat-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
+buildQuiz();
+</script>
+</body>
+</html>
