@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Geography Flashcards — Landscapes & Landforms</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;padding:1rem}
+.wrap{max-width:680px;margin:0 auto;padding-bottom:3rem}
+.header{background:#1a6b3c;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.header h1{font-size:18px;font-weight:500;color:white;margin-bottom:2px}
+.header p{font-size:12px;color:rgba(255,255,255,0.75)}
+.filter-section{margin-bottom:0.6rem}
+.filter-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:5px}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.fb{padding:5px 11px;border:1px solid #ccc;border-radius:20px;font-size:11px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s;white-space:nowrap}
+.fb:hover:not(.active):not(.active-n):not(.active-k){background:#e8e6e0}
+.fb.active{background:#1a6b3c;color:white;border-color:#1a6b3c}
+.fb.active-n{background:#A32D2D;color:white;border-color:#A32D2D}
+.fb.active-k{background:#1a6b3c;color:white;border-color:#1a6b3c}
+.divider{height:1px;background:#e0dfd8;margin:0.6rem 0}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem}
+.stat-box{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:10px;text-align:center;cursor:pointer}
+.stat-num{font-size:22px;font-weight:500}
+.sn-t{color:#1a6b3c}.sn-n{color:#A32D2D}.sn-k{color:#1a6b3c}
+.stat-lbl{font-size:11px;color:#5f5e5a;margin-top:2px}
+.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.progress-bar{flex:1;height:6px;background:#e0dfd8;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:#1a6b3c;border-radius:3px;transition:width 0.4s}
+.progress-label{font-size:12px;color:#5f5e5a;white-space:nowrap}
+.card-num{font-size:12px;color:#aaa;text-align:center;margin-bottom:0.5rem}
+.card-area{perspective:1000px;margin-bottom:1rem}
+.card-inner{position:relative;width:100%;transition:transform 0.5s ease;transform-style:preserve-3d}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{background:white;border-radius:14px;border:1px solid #e0dfd8;padding:1.5rem 1.75rem;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:200px}
+.card-back{position:absolute;top:0;left:0;width:100%;transform:rotateY(180deg);background:white}
+.card-spacer{visibility:hidden;padding:1.5rem 1.75rem;pointer-events:none;border:1px solid transparent;border-radius:14px}
+.card-topic{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:inline-block;border-radius:4px;padding:2px 8px}
+.card-q{font-size:16px;font-weight:500;color:#2c2c2a;line-height:1.5;margin-bottom:1rem}
+.answer-input-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;color:#aaa;margin-bottom:6px}
+.answer-input{width:100%;border:1px solid #e0dfd8;border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;color:#2c2c2a;background:#fafaf8;line-height:1.5;outline:none}
+.answer-input:focus{border-color:#1a6b3c;background:white}
+.flip-btn{margin-top:0.75rem;width:100%;padding:10px;background:#1a6b3c;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer}
+.flip-btn:hover{background:#237a47}
+.back-section{margin-bottom:1rem}
+.back-section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.your-answer-box{background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;color:#5f5e5a;line-height:1.6;min-height:40px;font-style:italic;border-left:3px solid #ccc;white-space:pre-wrap}
+.your-answer-box.empty{color:#bbb}
+.correct-answer-box{background:#E8F5E9;border-radius:8px;padding:10px 12px;font-size:13px;color:#2c2c2a;line-height:1.7;border-left:3px solid #1a6b3c}
+.correct-answer-box strong{color:#0d3d1f;font-weight:500}
+.rating-hint{font-size:11px;color:#aaa;text-align:center;margin-bottom:0.6rem;margin-top:0.75rem}
+.rating-row{display:flex;gap:8px;margin-top:0.5rem}
+.rating-btn{flex:1;padding:12px 8px;border:1.5px solid;border-radius:10px;font-size:13px;cursor:pointer;background:white;font-weight:500;line-height:1.3}
+.rating-btn.again{border-color:#A32D2D;color:#A32D2D}
+.rating-btn.again:hover{background:#FCEAEA}
+.rating-btn.good{border-color:#1a6b3c;color:#1a6b3c}
+.rating-btn.good:hover{background:#E8F5E9}
+.flip-back-btn{margin-top:0.75rem;width:100%;padding:9px;background:white;color:#5f5e5a;border:1px solid #ccc;border-radius:10px;font-size:13px;cursor:pointer}
+.nav-row{display:flex;gap:8px;margin-top:1rem;margin-bottom:1rem}
+.nav-btn{flex:1;padding:10px;border:1px solid #ccc;border-radius:10px;font-size:13px;cursor:pointer;background:white;color:#2c2c2a;font-weight:500}
+.nav-btn:hover{background:#f5f4f0}
+.nav-btn:disabled{opacity:0.35;cursor:default}
+.done-screen{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:2rem;text-align:center;display:none}
+.done-screen h2{font-size:20px;font-weight:500;margin-bottom:0.5rem}
+.done-screen p{font-size:14px;color:#5f5e5a;margin-bottom:1.5rem}
+.done-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.done-actions button{padding:9px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-weight:500;border:1px solid #ccc;background:white;color:#2c2c2a}
+.done-actions button.primary{background:#1a6b3c;color:white;border-color:#1a6b3c}
+.outline-again{outline:2px solid #A32D2D;border-radius:14px}
+.outline-good{outline:2px solid #1a6b3c;border-radius:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="header"><h1>Year 7 Geography Flashcards</h1><p>Landscapes & Landforms — write, flip, compare, rate</p></div>
+<div class="filter-section"><div class="filter-label">By topic</div><div class="filter-row">
+  <button class="fb active" onclick="setFilter('all',this)">All</button>
+  <button class="fb" onclick="setFilter('landforms',this)">Landforms &amp; values</button>
+  <button class="fb" onclick="setFilter('earth',this)">Earth's structure</button>
+  <button class="fb" onclick="setFilter('plates',this)">Plate tectonics</button>
+  <button class="fb" onclick="setFilter('quakes',this)">Earthquakes &amp; volcanoes</button>
+  <button class="fb" onclick="setFilter('rainforest',this)">Rainforests</button>
+  <button class="fb" onclick="setFilter('deforestation',this)">Deforestation</button>
+  <button class="fb" onclick="setFilter('maps',this)">Map skills</button>
+</div></div>
+<div class="divider"></div>
+<div class="filter-section" style="margin-bottom:1rem"><div class="filter-label">By difficulty</div><div class="filter-row">
+  <button class="fb" id="btn-needs" onclick="setFilter('needs',this)">🔴 Needs work (<span id="needs-count">0</span>)</button>
+  <button class="fb" id="btn-knowit" onclick="setFilter('knowit',this)">🟢 Know it! (<span id="knowit-count">0</span>)</button>
+  <button class="fb" id="btn-unrated" onclick="setFilter('unrated',this)">⚪ Not rated (<span id="unrated-count">0</span>)</button>
+</div></div>
+<div class="stats">
+  <div class="stat-box" onclick="setFilter('all',document.querySelector('.fb'))"><div class="stat-num sn-t" id="st-total">0</div><div class="stat-lbl">Total rated</div></div>
+  <div class="stat-box" onclick="setFilter('needs',document.getElementById('btn-needs'))"><div class="stat-num sn-n" id="st-needs">0</div><div class="stat-lbl">🔴 Needs work</div></div>
+  <div class="stat-box" onclick="setFilter('knowit',document.getElementById('btn-knowit'))"><div class="stat-num sn-k" id="st-knowit">0</div><div class="stat-lbl">🟢 Know it!</div></div>
+</div>
+<div class="progress-row"><div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div><div class="progress-label" id="prog-label">0 / 0</div></div>
+<div class="card-num" id="card-num"></div>
+<div class="card-area" id="card-area"><div class="card-inner" id="card-inner">
+  <div class="card-face" id="card-front"><span class="card-topic" id="topic-badge"></span><div class="card-q" id="card-q"></div><div class="answer-input-label">Your answer</div><textarea class="answer-input" id="answer-input" placeholder="Type your answer…" onclick="event.stopPropagation()"></textarea><button class="flip-btn" onclick="flipCard()">Flip to check answer →</button></div>
+  <div class="card-face card-back" id="card-back"><span class="card-topic" id="topic-badge-back"></span><div class="back-section"><div class="back-section-label" style="color:#5f5e5a">Your answer</div><div class="your-answer-box" id="your-answer-display"></div></div><div class="back-section"><div class="back-section-label" style="color:#0d3d1f">Correct answer</div><div class="correct-answer-box" id="card-a"></div></div><div class="rating-hint">How did you go?</div><div class="rating-row"><button class="rating-btn again" onclick="rate('again')">🔴 Needs work</button><button class="rating-btn good" onclick="rate('good')">🟢 Know it!</button></div><button class="flip-back-btn" onclick="unflipCard()">← Back to question</button></div>
+  <div class="card-spacer" id="card-spacer" aria-hidden="true"></div>
+</div></div>
+<div class="nav-row"><button class="nav-btn" id="btn-prev" onclick="prevCard()">← Previous</button><button class="nav-btn" id="btn-next" onclick="nextCard()">Next →</button></div>
+<div class="done-screen" id="done-screen"><h2 id="done-title"></h2><p id="done-msg"></p><div class="done-actions"><button onclick="restartDeck()">Restart</button><button onclick="setFilter('needs',document.getElementById('btn-needs'))" id="btn-do-needs" style="display:none">🔴 Needs work</button><button class="primary" onclick="setFilter('all',document.querySelector('.fb'))">All cards</button></div></div>
+</div>
+<script>
+const CARDS=[
+// LANDFORMS & VALUES
+{id:1,topic:'landforms',topicLabel:'Landforms & values',q:'What is the difference between a landscape and a landform?',a:'A <strong>landscape</strong> is a large area of land with distinct features (e.g. desert, rainforest, coast).<br><br>A <strong>landform</strong> is a natural geographical feature within a landscape (e.g. mountain, sand dune, river, cliff).<br><br>Example: a desert is a landscape; a sand dune inside it is a landform.'},
+{id:2,topic:'landforms',topicLabel:'Landforms & values',q:'Is a mountain a landform or a landscape?',a:'A mountain is a <strong>landform</strong> — it is a specific natural geographical feature on the Earth\'s surface.<br><br>A mountain <em>range</em> could be considered part of a landscape (the broader area), but an individual mountain is a landform.'},
+{id:3,topic:'landforms',topicLabel:'Landforms & values',q:'What are the 4 values a landform or landscape can have?',a:'<strong>A</strong>esthetic — how it looks (natural beauty)<br><strong>S</strong>piritual — religious or cultural sacredness<br><strong>C</strong>ultural — heritage, tradition, identity<br><strong>E</strong>conomic — money (tourism, resources)<br><br>Remember: <strong>ASCE</strong>. A landform can hold all 4 values.'},
+{id:4,topic:'landforms',topicLabel:'Landforms & values',q:'What is the difference between spiritual and aesthetic value?',a:'<strong>Aesthetic value</strong> = how a place <em>looks</em> — its natural beauty and visual appeal.<br><br><strong>Spiritual value</strong> = deeper cultural or religious significance — symbolic meaning, sacred connections (e.g. First Nations peoples\' connection to Uluru).<br><br>Aesthetic is about beauty. Spiritual is about meaning.'},
+{id:5,topic:'landforms',topicLabel:'Landforms & values',q:'What is erosion and how is it caused?',a:'<strong>Erosion</strong> is the wearing away and transporting of soil and rock from one place to another.<br><br>Caused by <strong>water, wind, ice, and gravity</strong>. Human activities like deforestation and construction can accelerate it. Waves crashing against rock is a common cause of coastal erosion.'},
+{id:6,topic:'landforms',topicLabel:'Landforms & values',q:'What is the difference between weathering and erosion?',a:'<strong>Weathering</strong> = breaking down of rock <em>in place</em> (it doesn\'t move).<br><br><strong>Erosion</strong> = wearing away AND <em>transporting</em> material from one place to another.<br><br>Weathering breaks it apart. Erosion moves the pieces.'},
+
+// EARTH'S STRUCTURE
+{id:7,topic:'earth',topicLabel:'Earth\'s structure',q:'Describe the structure of the Earth (core, mantle, crust, lithosphere).',a:'<strong>Core</strong> — innermost layer. Iron and nickel. Solid inner core, liquid outer core. Very hot (~5000°C).<br><br><strong>Mantle</strong> — thickest layer. Semi-solid rock. Contains convection currents that move tectonic plates.<br><br><strong>Crust</strong> — thinnest outer layer. Continental (thick, land) and oceanic (thin, under oceans).<br><br><strong>Lithosphere</strong> — crust + upper mantle. Broken into tectonic plates.'},
+{id:8,topic:'earth',topicLabel:'Earth\'s structure',q:'What is the second layer of the Earth after the core?',a:'The <strong>mantle</strong>. It sits between the core and the crust. It\'s the thickest layer, made of semi-solid silicate rock, and contains the convection currents that drive tectonic plate movement.'},
+{id:9,topic:'earth',topicLabel:'Earth\'s structure',q:'How do tectonic plates move?',a:'Tectonic plates move due to <strong>convection currents</strong> within the semi-fluid mantle. Heat from the Earth\'s core causes the mantle material to rise (hot) and sink (cool) in circular patterns. These currents drag the tectonic plates along on top.'},
+
+// PLATE TECTONICS
+{id:10,topic:'plates',topicLabel:'Plate tectonics',q:'How many types of plate boundaries are there? Name them.',a:'<strong>4 types:</strong><br><br>1. <strong>Convergent (subduction)</strong> — oceanic plate dives under continental<br>2. <strong>Convergent (collision)</strong> — two continental plates collide<br>3. <strong>Divergent</strong> — plates move apart<br>4. <strong>Transform (conservative)</strong> — plates slide past each other'},
+{id:11,topic:'plates',topicLabel:'Plate tectonics',q:'What happens at a convergent subduction boundary?',a:'An <strong>oceanic plate dives under a continental plate</strong> (because oceanic is denser). This is called <strong>subduction</strong>.<br><br>The subducting plate melts → magma rises → <strong>volcanic activity</strong>, deep ocean trenches, island arcs, and strong earthquakes.'},
+{id:12,topic:'plates',topicLabel:'Plate tectonics',q:'What is created at a convergent collision boundary?',a:'<strong>Mountain ranges.</strong><br><br>When two continental plates collide, neither can subduct (both too thick). They crumple and fold upward, creating mountains like the <strong>Himalayas</strong>.'},
+{id:13,topic:'plates',topicLabel:'Plate tectonics',q:'What does a divergent boundary cause?',a:'Plates move <strong>apart</strong>. Magma rises from the mantle to fill the gap.<br><br>Creates: <strong>seafloor spreading, mid-ocean ridges, new oceanic crust</strong>. Can cause earthquakes and some volcanic activity.'},
+{id:14,topic:'plates',topicLabel:'Plate tectonics',q:'What do transform boundaries create?',a:'<strong>Violent earthquakes.</strong><br><br>Plates slide past each other horizontally. Stress builds up along the boundary, then releases suddenly as an earthquake. No volcanoes or mountains are formed. Example: San Andreas Fault.'},
+{id:15,topic:'plates',topicLabel:'Plate tectonics',q:'What is the Ring of Fire?',a:'The area around the <strong>Pacific Ocean</strong> where many tectonic plates meet, causing intense seismic activity.<br><br>Contains ~75% of the world\'s volcanoes and ~90% of earthquakes. Forms a horseshoe shape through NZ, Indonesia, Japan, Alaska, and the Americas.'},
+
+// EARTHQUAKES & VOLCANOES
+{id:16,topic:'quakes',topicLabel:'Earthquakes & volcanoes',q:'What is the epicentre of an earthquake?',a:'The <strong>epicentre</strong> is the point on the <strong>Earth\'s surface directly above</strong> the underground location (focus) where the earthquake originates. Seismic waves spread outward from this point, causing the shaking felt during the event.'},
+{id:17,topic:'quakes',topicLabel:'Earthquakes & volcanoes',q:'What is the difference between the epicentre and the focus?',a:'<strong>Focus</strong> = where the earthquake <strong>originates underground</strong> (where rocks first break/slip).<br><br><strong>Epicentre</strong> = the point on the <strong>surface directly above</strong> the focus.<br><br>Focus is below ground. Epicentre is on the surface.'},
+{id:18,topic:'quakes',topicLabel:'Earthquakes & volcanoes',q:'At what type of plate boundary would you expect large earthquakes?',a:'<strong>Transform</strong> and <strong>convergent</strong> boundaries produce the largest earthquakes.<br><br>Transform: stress builds as plates grind past each other, then releases violently.<br>Convergent: enormous forces as plates collide or subduct.<br><br>But earthquakes are possible at all boundary types.'},
+{id:19,topic:'quakes',topicLabel:'Earthquakes & volcanoes',q:'How do underwater volcanoes form?',a:'Three ways:<br><br><strong>1. Subduction zones:</strong> One plate forced beneath another → melts → magma rises → erupts underwater.<br><br><strong>2. Mid-ocean ridges (divergent):</strong> Plates move apart → magma fills the gap → creates underwater volcanoes and new crust.<br><br><strong>3. Hotspots:</strong> Stationary heat sources in the mantle create plumes of magma that rise and erupt (e.g. Hawaii).'},
+{id:20,topic:'quakes',topicLabel:'Earthquakes & volcanoes',q:'What type of tectonic plate movement causes tsunamis?',a:'Tsunamis are primarily caused by <strong>subduction</strong> at convergent plate boundaries.<br><br>An undersea earthquake suddenly displaces a large volume of water vertically when the ocean floor shifts, generating enormous waves that travel across the ocean.'},
+
+// RAINFORESTS
+{id:21,topic:'rainforest',topicLabel:'Rainforests',q:'What is a biome?',a:'A <strong>biome</strong> is a major ecological community that includes ecosystems with similar <strong>climates and organisms</strong>.<br><br>Examples: tropical rainforest, desert, grassland, tundra, taiga.'},
+{id:22,topic:'rainforest',topicLabel:'Rainforests',q:'Describe the tropical rainforest climate in 3 words.',a:'<strong>Hot, wet, humid.</strong><br><br>• Warm all year round with little temperature variation<br>• Very high rainfall all year round<br>• High moisture/humidity in the air'},
+{id:23,topic:'rainforest',topicLabel:'Rainforests',q:'Name the 4 layers of the rainforest from top to bottom.',a:'1. <strong>Emergent</strong> — tallest trees above the canopy. Birds, bats.<br>2. <strong>Canopy</strong> — thick umbrella of treetops. Birds, snakes, sloths, monkeys.<br>3. <strong>Understory</strong> — dim, below canopy. Smaller trees, shrubs.<br>4. <strong>Forest floor</strong> — very dark (2–3% sunlight). Insects, snakes, lizards.'},
+{id:24,topic:'rainforest',topicLabel:'Rainforests',q:'What percentage of sunlight reaches the forest floor?',a:'Only <strong>2–3%</strong> of sunlight reaches the forest floor.<br><br>The canopy layer blocks most of the light, keeping the forest floor very dark and damp.'},
+{id:25,topic:'rainforest',topicLabel:'Rainforests',q:'How does the canopy affect the layers underneath?',a:'The canopy:<br>• <strong>Creates shade</strong> by blocking sunlight (only 2–3% reaches the floor)<br>• <strong>Keeps lower layers humid</strong> but at consistent temperatures<br>• <strong>Intercepts rainfall</strong> — prevents heavy rain from hitting the lower layers directly'},
+{id:26,topic:'rainforest',topicLabel:'Rainforests',q:'What are epiphytes? Are they parasites?',a:'<strong>Epiphytes</strong> are plants that grow on other plants (usually trees) <strong>without taking nutrients from their host</strong>.<br><br>They are <strong>NOT parasites</strong>. They get nutrients from the air, rain, and debris that collects around them. Examples: orchids, ferns.'},
+{id:27,topic:'rainforest',topicLabel:'Rainforests',q:'What wildlife lives in the canopy layer?',a:'<strong>Birds, snakes, sloths, monkeys.</strong><br><br>The canopy gets the most sunlight and has the most food, so it\'s the most biodiverse layer of the rainforest.'},
+{id:28,topic:'rainforest',topicLabel:'Rainforests',q:'What wildlife lives on the forest floor?',a:'<strong>Insects, snakes, lizards, paddymelons.</strong><br><br>The forest floor is dark and damp with decomposing leaves and fallen trees. Organisms here are adapted to low-light conditions.'},
+
+// DEFORESTATION
+{id:29,topic:'deforestation',topicLabel:'Deforestation',q:'What is the main cause of deforestation?',a:'<strong>Agriculture (farming)</strong> — clearing land for crops and livestock.<br><br>Other causes: urbanisation, mining, logging (wood and paper).<br><br>Example: palm oil plantations require clearing vast areas of rainforest.'},
+{id:30,topic:'deforestation',topicLabel:'Deforestation',q:'Who poses the most threat to rainforests?',a:'<strong>Humans.</strong><br><br>Through agriculture, urbanisation, mining, and logging — all human activities are the primary drivers of deforestation.'},
+{id:31,topic:'deforestation',topicLabel:'Deforestation',q:'What are 2 disadvantages of protected areas?',a:'1. People are <strong>limited in their ability to earn money</strong> from resources — can increase poverty and hardship.<br><br>2. They are <strong>expensive to maintain and monitor</strong> — providing boardwalks/pathways, maintenance, and monitoring tourists/visitors.'},
+{id:32,topic:'deforestation',topicLabel:'Deforestation',q:'What is alley cropping?',a:'<strong>Alley cropping</strong> is a sustainable agriculture strategy where people <strong>plant crops among alleyways of trees</strong>.<br><br>It uses forests for both food production and forest resources in a sustainable manner — without destroying the forest completely.'},
+{id:33,topic:'deforestation',topicLabel:'Deforestation',q:'Name two ways to reduce deforestation.',a:'1. <strong>Sustainable use</strong> of the rainforest (alley cropping, eliminating use of original/old-growth rainforest, using forest plantations instead).<br><br>2. <strong>Expand protected areas</strong> — limit the use of and access to the rainforest to preserve habitats.'},
+
+// MAP SKILLS
+{id:34,topic:'maps',topicLabel:'Map skills',q:'What does BOLTSS stand for?',a:'<strong>B</strong> — Border<br><strong>O</strong> — Orientation (compass/north arrow)<br><strong>L</strong> — Legend (key for symbols)<br><strong>T</strong> — Title<br><strong>S</strong> — Scale<br><strong>S</strong> — Source<br><br>These are the 6 mapping conventions every map should have.'},
+{id:35,topic:'maps',topicLabel:'Map skills',q:'How do you give a 4-figure grid reference?',a:'<strong>"Along the corridor, up the stairs."</strong><br><br>1. Read the <strong>easting</strong> (horizontal number along the bottom) first<br>2. Then read the <strong>northing</strong> (vertical number up the side)<br><br>Example: easting 03, northing 79 = <strong>0379</strong>. Identifies a whole grid square.'},
+{id:36,topic:'maps',topicLabel:'Map skills',q:'How do you give a 6-figure grid reference?',a:'Like a 4-figure reference but with a <strong>3rd digit for each</strong> to pinpoint a location within the square.<br><br>1. Easting (2 digits) + estimate 3rd digit (0–9) for how far across<br>2. Northing (2 digits) + estimate 3rd digit for how far up<br><br>Example: <strong>035792</strong> = easting 03.5, northing 79.2'},
+{id:37,topic:'maps',topicLabel:'Map skills',q:'When asked "which direction is X FROM Y" — how do you answer?',a:'<strong>Stand at Y</strong> and <strong>point toward X</strong>. The direction you point is the answer.<br><br>Example: "Which direction is Martindale FROM Place Fell?" → Stand at Place Fell, point to Martindale → answer: <strong>North East</strong>.'},
+{id:38,topic:'maps',topicLabel:'Map skills',q:'What is a contour interval?',a:'The <strong>contour interval</strong> is the difference in height/elevation between each contour line on a map.<br><br>For example, if the interval is 100 m, each contour line represents a 100 m increase in elevation.'},
+{id:39,topic:'maps',topicLabel:'Map skills',q:'How do you tell if a slope is steep or gentle from contour lines?',a:'<strong>Lines close together</strong> = <strong>steep slope</strong> (big elevation change over short distance).<br><br><strong>Lines far apart</strong> = <strong>gentle slope</strong> (gradual change over longer distance).<br><br>Packed tight = steep. Spread out = gentle.'},
+{id:40,topic:'maps',topicLabel:'Map skills',q:'What is a spot height?',a:'A <strong>spot height</strong> is an exact elevation/height marked on a map with a dot and number (e.g. ▲ 501m).<br><br>It is more precise than reading from contour lines alone.'},
+{id:41,topic:'maps',topicLabel:'Map skills',q:'How do you find the highest possible elevation on a contour map?',a:'Find the highest contour line, then the maximum possible height is <strong>one contour interval minus 0.1</strong> above it.<br><br>Example: highest contour = 14,000 m, interval = 1000 m → highest possible point = <strong>14,999 m</strong> (just below the next line that isn\'t shown).'},
+{id:42,topic:'maps',topicLabel:'Map skills',q:'In grid references, do you read eastings or northings first?',a:'<strong>Eastings first</strong> — always.<br><br>Remember: "Along the corridor (eastings), up the stairs (northings)."<br><br>Horizontal number first, then vertical.'},
+];
+
+const STORAGE_KEY='yr7geo_ratings_v1';
+let deck=[],currentIdx=0,isFlipped=false,cardRatings={};
+function saveRatings(){try{window.storage.set(STORAGE_KEY,JSON.stringify(cardRatings))}catch(e){}try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(cardRatings))}catch(e){}}
+async function loadRatings(){try{const r=await window.storage.get(STORAGE_KEY);if(r&&r.value){cardRatings=JSON.parse(r.value);return}}catch(e){}try{const s=sessionStorage.getItem(STORAGE_KEY);if(s){cardRatings=JSON.parse(s);return}}catch(e){}cardRatings={}}
+function topicBg(t){return{landforms:'#E8F5E9',earth:'#F5EDE0',plates:'#FCEAEA',quakes:'#FDF3E3',rainforest:'#E8F5E9',deforestation:'#F0EDFB',maps:'#EBF3FB'}[t]||'#f5f4f0'}
+function topicFg(t){return{landforms:'#0d3d1f',earth:'#4A2F1B',plates:'#5a1010',quakes:'#5a3c06',rainforest:'#0d3d1f',deforestation:'#2c1d7a',maps:'#0d2447'}[t]||'#444'}
+function countNeeds(){return CARDS.filter(c=>cardRatings[c.id]==='again').length}
+function countKnowit(){return CARDS.filter(c=>cardRatings[c.id]==='good').length}
+function countUnrated(){return CARDS.filter(c=>!cardRatings[c.id]).length}
+function updateCounts(){const n=countNeeds(),k=countKnowit();document.getElementById('needs-count').textContent=n;document.getElementById('knowit-count').textContent=k;document.getElementById('unrated-count').textContent=countUnrated();document.getElementById('st-needs').textContent=n;document.getElementById('st-knowit').textContent=k;document.getElementById('st-total').textContent=n+k}
+function setFilter(f,btn){document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active','active-n','active-k'));if(f==='needs')btn.classList.add('active-n');else if(f==='knowit')btn.classList.add('active-k');else btn.classList.add('active');if(f==='needs'){deck=CARDS.filter(c=>cardRatings[c.id]==='again');if(!deck.length){alert('No "Needs work" cards yet!');deck=[...CARDS]}}else if(f==='knowit'){deck=CARDS.filter(c=>cardRatings[c.id]==='good');if(!deck.length){alert('No "Know it!" cards yet!');deck=[...CARDS]}}else if(f==='unrated'){deck=CARDS.filter(c=>!cardRatings[c.id]);if(!deck.length){alert('All rated!');deck=[...CARDS]}}else if(f==='all')deck=[...CARDS];else deck=CARDS.filter(c=>c.topic===f);shuffle(deck);currentIdx=0;isFlipped=false;document.getElementById('done-screen').style.display='none';document.getElementById('card-area').style.display='block';document.getElementById('card-inner').classList.remove('flipped');document.getElementById('answer-input').value='';showCard();updateProgress()}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
+function showCard(){if(!deck.length)return;const c=deck[currentIdx];document.getElementById('topic-badge').textContent=c.topicLabel;document.getElementById('topic-badge').style.cssText=`background:${topicBg(c.topic)};color:${topicFg(c.topic)}`;document.getElementById('card-q').textContent=c.q;document.getElementById('topic-badge-back').textContent=c.topicLabel;document.getElementById('topic-badge-back').style.cssText=`background:${topicBg(c.topic)};color:${topicFg(c.topic)}`;document.getElementById('card-a').innerHTML=c.a;document.getElementById('card-num').textContent=(currentIdx+1)+' of '+deck.length;const r=cardRatings[c.id];document.getElementById('card-area').className='card-area'+(r==='again'?' outline-again':r==='good'?' outline-good':'');document.getElementById('btn-prev').disabled=currentIdx===0;document.getElementById('btn-next').disabled=currentIdx===deck.length-1;requestAnimationFrame(()=>{const s=document.getElementById('card-spacer');s.innerHTML=document.getElementById('card-a').innerHTML;s.style.minHeight=Math.max(200,document.getElementById('card-front').scrollHeight,document.getElementById('card-back').scrollHeight)+'px'})}
+function flipCard(){if(isFlipped)return;isFlipped=true;const t=document.getElementById('answer-input').value.trim(),d=document.getElementById('your-answer-display');if(t){d.textContent=t;d.classList.remove('empty')}else{d.textContent='(no answer written)';d.classList.add('empty')}document.getElementById('card-inner').classList.add('flipped');requestAnimationFrame(()=>{document.getElementById('card-spacer').style.minHeight=Math.max(200,document.getElementById('card-back').scrollHeight)+'px'})}
+function unflipCard(){if(!isFlipped)return;isFlipped=false;document.getElementById('card-inner').classList.remove('flipped');requestAnimationFrame(()=>{document.getElementById('card-spacer').style.minHeight=Math.max(200,document.getElementById('card-front').scrollHeight)+'px'})}
+function rate(r){cardRatings[deck[currentIdx].id]=r;saveRatings();updateCounts();document.getElementById('card-area').className='card-area'+(r==='again'?' outline-again':' outline-good');setTimeout(()=>{if(currentIdx<deck.length-1)nextCard();else showDone()},300)}
+function nextCard(){if(currentIdx<deck.length-1){currentIdx++;resetToFront()}else showDone()}
+function prevCard(){if(currentIdx>0){currentIdx--;resetToFront()}}
+function resetToFront(){isFlipped=false;document.getElementById('card-inner').classList.remove('flipped');document.getElementById('answer-input').value='';showCard();updateProgress()}
+function updateProgress(){const r=deck.filter(c=>cardRatings[c.id]).length,p=deck.length?Math.round(r/deck.length*100):0;document.getElementById('prog-fill').style.width=p+'%';document.getElementById('prog-label').textContent=r+' / '+deck.length+' rated'}
+function showDone(){document.getElementById('card-area').style.display='none';document.getElementById('card-num').textContent='';document.getElementById('done-screen').style.display='block';const n=countNeeds(),k=countKnowit();document.getElementById('done-title').textContent=k>n?'🎉 Great work!':'💪 Keep going!';document.getElementById('done-msg').textContent=k+' in Know it!, '+n+' in Needs work.';document.getElementById('btn-do-needs').style.display=n>0?'':'none'}
+function restartDeck(){document.getElementById('done-screen').style.display='none';document.getElementById('card-area').style.display='block';shuffle(deck);currentIdx=0;resetToFront()}
+async function init(){await loadRatings();deck=[...CARDS];shuffle(deck);showCard();updateCounts();updateProgress()}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Study Hub — Maths & Science</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;padding:1.5rem}
+.wrap{max-width:620px;margin:0 auto;padding-bottom:3rem}
+
+.hero{background:linear-gradient(135deg,#1a3a5c 0%,#2d1b69 100%);border-radius:14px;padding:2rem;margin-bottom:1.5rem;text-align:center}
+.hero .sub{font-size:13px;color:rgba(255,255,255,0.7)}
+.hero h1{font-size:22px;font-weight:500;color:white;margin:4px 0}
+.hero .desc{font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px}
+.hero .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.hero .badge{background:rgba(255,255,255,0.12);border-radius:20px;padding:3px 12px;font-size:11px;color:rgba(255,255,255,0.8)}
+
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:8px;margin-top:1.5rem;padding-left:4px}
+
+.cards{display:flex;flex-direction:column;gap:10px}
+
+.resource-card{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:1.25rem;text-decoration:none;color:inherit;display:flex;align-items:center;gap:1.25rem;transition:all 0.15s;cursor:pointer}
+.resource-card:hover{border-color:#2d1b69;box-shadow:0 2px 12px rgba(45,27,105,0.08);transform:translateY(-1px)}
+
+.icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.icon-blue{background:#EBF3FB}
+.icon-purple{background:#F0EDFB}
+.icon-green{background:#E8F5E9}
+.icon-amber{background:#FDF3E3}
+
+.rc-body{flex:1}
+.rc-title{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:3px}
+.rc-desc{font-size:12px;color:#5f5e5a;line-height:1.5;margin-bottom:6px}
+.rc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{display:inline-block;background:#f5f4f0;border-radius:20px;padding:2px 8px;font-size:10px;color:#5f5e5a}
+
+.arrow{color:#ccc;font-size:18px;flex-shrink:0;transition:color 0.15s}
+.resource-card:hover .arrow{color:#2d1b69}
+
+.footer{text-align:center;margin-top:2rem;font-size:11px;color:#bbb;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="sub">Queensland Curriculum · Australian Curriculum v9.0</div>
+    <h1>Year 7 Study Hub</h1>
+    <div class="desc">Interactive study guides, flashcards and quizzes</div>
+    <div class="badges">
+      <span class="badge">Maths</span>
+      <span class="badge">Science</span>
+      <span class="badge">Geography</span>
+      <span class="badge">Study guides</span>
+      <span class="badge">Flashcards</span>
+      <span class="badge">Quizzes</span>
+    </div>
+  </div>
+
+  <!-- MATHS -->
+  <div class="section-label">📐 Mathematics</div>
+  <div class="cards">
+    <a class="resource-card" href="yr7_maths_measurement.html">
+      <div class="icon icon-blue">📐</div>
+      <div class="rc-body">
+        <div class="rc-title">Measurement — Study Guide</div>
+        <div class="rc-desc">Area of rectangles, triangles & parallelograms. Volume of rectangular prisms. Unit conversions. Interactive calculators, worked examples, practice questions and quiz.</div>
+        <div class="rc-tags">
+          <span class="tag">AC9M7M01</span>
+          <span class="tag">AC9M7M02</span>
+          <span class="tag">Area</span>
+          <span class="tag">Volume</span>
+          <span class="tag">Units</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+
+  <!-- SCIENCE -->
+  <div class="section-label">🔬 Science — Physics</div>
+  <div class="cards">
+    <a class="resource-card" href="yr7_science_physics.html">
+      <div class="icon icon-purple">⚡</div>
+      <div class="rc-body">
+        <div class="rc-title">Forces — Study Guide</div>
+        <div class="rc-desc">Types of forces, balanced & unbalanced forces, net force, gravity & weight (W = m × g), force diagrams, and how mass affects motion. Interactive force diagram builder, worked examples, practice and quiz.</div>
+        <div class="rc-tags">
+          <span class="tag">AC9S7U04</span>
+          <span class="tag">Forces</span>
+          <span class="tag">Gravity</span>
+          <span class="tag">Net force</span>
+          <span class="tag">Mass & motion</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+
+    <a class="resource-card" href="yr7_physics_flashcards.html">
+      <div class="icon icon-green">🃏</div>
+      <div class="rc-body">
+        <div class="rc-title">Forces — Flashcards (Exam Revision)</div>
+        <div class="rc-desc">54 flashcards based on the teacher's revision sheet. Covers forces, net force calculations, speed/distance/time, F=ma, simple machines & levers, terminal velocity, inertia. Write your answer, flip to compare, rate and track progress.</div>
+        <div class="rc-tags">
+          <span class="tag">54 cards</span>
+          <span class="tag">Exam questions</span>
+          <span class="tag">S = D/T</span>
+          <span class="tag">F = ma</span>
+          <span class="tag">Levers</span>
+          <span class="tag">Saves progress</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+
+  <!-- GEOGRAPHY -->
+  <div class="section-label">🌍 Geography</div>
+  <div class="cards">
+    <a class="resource-card" href="yr7_geography.html">
+      <div class="icon icon-green">🏔️</div>
+      <div class="rc-body">
+        <div class="rc-title">Landscapes & Landforms — Study Guide</div>
+        <div class="rc-desc">Landforms vs landscapes, 4 values (ASCE), Earth's structure, plate tectonics, earthquakes & volcanoes, tropical rainforests, deforestation, BOLTSS, contour lines, grid references. Interactive quiz and checklist.</div>
+        <div class="rc-tags">
+          <span class="tag">Plate tectonics</span>
+          <span class="tag">Rainforests</span>
+          <span class="tag">Map skills</span>
+          <span class="tag">BOLTSS</span>
+          <span class="tag">Contour lines</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+
+    <a class="resource-card" href="yr7_geography_flashcards.html">
+      <div class="icon icon-amber">🃏</div>
+      <div class="rc-body">
+        <div class="rc-title">Landscapes & Landforms — Flashcards</div>
+        <div class="rc-desc">42 flashcards covering all revision sheet topics. Write your answer, flip to compare, rate as "Needs work" or "Know it!" — progress saves between sessions.</div>
+        <div class="rc-tags">
+          <span class="tag">42 cards</span>
+          <span class="tag">Exam questions</span>
+          <span class="tag">Saves progress</span>
+          <span class="tag">Filter by topic</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+
+    <a class="resource-card" href="yr7_geography_podcasts.html">
+      <div class="icon icon-green">🎧</div>
+      <div class="rc-body">
+        <div class="rc-title">Landscapes & Landforms — Audio Revision</div>
+        <div class="rc-desc">8 short audio episodes covering every topic. Listen on any device — play individually or all at once. Adjustable speed and voice. Scripts included.</div>
+        <div class="rc-tags">
+          <span class="tag">8 episodes</span>
+          <span class="tag">~15 min total</span>
+          <span class="tag">Play all or pick one</span>
+          <span class="tag">Speed control</span>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    Year 7 · Queensland Curriculum · Australian Curriculum v9.0<br>
+    More topics coming soon
+  </div>
+
+</div>
+</body>
+</html>

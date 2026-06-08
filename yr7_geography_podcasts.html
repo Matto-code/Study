@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Geography — Audio Revision Podcasts</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:680px;margin:0 auto;padding-bottom:3rem}
+.hero{background:#1a6b3c;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.controls-bar{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.controls-bar label{font-size:12px;color:#5f5e5a}
+.controls-bar select{border:1px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;flex:1;max-width:240px}
+.speed-btn{padding:4px 10px;border:1px solid #ccc;border-radius:6px;font-size:11px;cursor:pointer;background:white;color:#5f5e5a}
+.speed-btn.active{background:#1a6b3c;color:white;border-color:#1a6b3c}
+.ep{background:white;border:1px solid #e0dfd8;border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all 0.2s}
+.ep.playing{border-color:#1a6b3c;box-shadow:0 0 0 1px #1a6b3c}
+.ep-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.ep-num{width:32px;height:32px;border-radius:50%;background:#E8F5E9;color:#1a6b3c;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.ep.playing .ep-num{background:#1a6b3c;color:white}
+.ep-info{flex:1}
+.ep-title{font-size:14px;font-weight:500;color:#2c2c2a}
+.ep-duration{font-size:11px;color:#aaa;margin-top:1px}
+.ep-play{width:38px;height:38px;border-radius:50%;border:1.5px solid #1a6b3c;background:white;color:#1a6b3c;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;transition:all 0.15s}
+.ep-play:hover{background:#1a6b3c;color:white}
+.ep.playing .ep-play{background:#1a6b3c;color:white}
+.ep-progress{height:3px;background:#e0dfd8;margin:0 16px}
+.ep-progress-fill{height:100%;background:#1a6b3c;border-radius:2px;width:0%;transition:width 0.3s}
+.ep-body{display:none;padding:0 16px 14px;font-size:12px;color:#5f5e5a;line-height:1.6}
+.ep-body.show{display:block}
+.ep-body p{margin-bottom:0.5rem}
+.ep-toggle{font-size:11px;color:#aaa;cursor:pointer;padding:6px 16px 10px;display:block;text-align:center}
+.ep-toggle:hover{color:#1a6b3c}
+.play-all-btn{width:100%;padding:12px;background:#1a6b3c;color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;margin-bottom:1rem}
+.play-all-btn:hover{background:#237a47}
+.stop-btn{width:100%;padding:10px;background:white;color:#5f5e5a;border:1px solid #ccc;border-radius:10px;font-size:13px;cursor:pointer;margin-bottom:1rem;display:none}
+.now-playing{background:#E8F5E9;border-radius:8px;padding:10px 14px;font-size:12px;color:#0d3d1f;margin-bottom:1rem;display:none;text-align:center}
+.now-playing .np-title{font-weight:600;font-size:13px}
+.highlight{background:#fffde7;border-radius:2px;padding:0 2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+  <h1>🎧 Geography Audio Revision</h1>
+  <p>Landscapes & Landforms — 8 short episodes. Listen on any device.</p>
+</div>
+
+<div class="controls-bar">
+  <label>Voice:</label>
+  <select id="voice-select" onchange="selectedVoice=this.value"></select>
+  <label style="margin-left:8px">Speed:</label>
+  <button class="speed-btn" onclick="setSpeed(0.85,this)">Slow</button>
+  <button class="speed-btn active" onclick="setSpeed(1,this)">1×</button>
+  <button class="speed-btn" onclick="setSpeed(1.2,this)">1.2×</button>
+  <button class="speed-btn" onclick="setSpeed(1.5,this)">1.5×</button>
+</div>
+
+<div class="now-playing" id="now-playing">
+  <div class="np-title" id="np-title"></div>
+  <div id="np-status">Playing...</div>
+</div>
+
+<button class="play-all-btn" id="play-all-btn" onclick="playAll()">▶ Play all episodes</button>
+<button class="stop-btn" id="stop-btn" onclick="stopAll()">⏹ Stop</button>
+
+<div id="episodes"></div>
+</div>
+
+<script>
+const EPISODES = [
+{num:1, title:"Landforms & Values", duration:"~2 min", script:`Welcome to your Geography revision podcast — Landforms and Values.
+
+Let's start with the basics. A landscape is a large area of land — think desert, rainforest, or coastline. A landform is a specific natural feature within that landscape — like a mountain, a sand dune, a river, or a cliff. Easy way to remember: the landscape is the big picture, the landform is a feature inside it. A desert is a landscape. A sand dune in that desert is a landform.
+
+Now, landforms can have four types of value — remember A.S.C.E. A for Aesthetic — that's how it looks, its natural beauty. S for Spiritual — religious or sacred significance, like First Nations peoples' deep connection to Uluru. C for Cultural — heritage, tradition, and identity. And E for Economic — money, like tourism or mining resources. A landform like the Great Barrier Reef can hold all four values at once.
+
+One more key concept: weathering versus erosion. Weathering breaks rock apart where it sits — it doesn't move. Erosion wears material away AND transports it somewhere else. Wind, water, ice, and gravity drive both processes. Waves smashing against a cliff? That's coastal erosion.
+
+That's your landforms and values sorted. Remember A.S.C.E!`},
+
+{num:2, title:"Earth's Structure", duration:"~2 min", script:`Geography revision podcast — Earth's Structure.
+
+Picture the Earth like a boiled egg. The yolk is the core, the white is the mantle, and the shell is the crust.
+
+The core is the innermost layer — made of iron and nickel, incredibly hot at around 5000 degrees Celsius. It has a solid inner core and a liquid outer core, and it generates Earth's magnetic field.
+
+The mantle is the thickest layer, sitting above the core. It's made of semi-solid rock — not quite liquid, not quite solid. The really important thing about the mantle is that it contains convection currents. Heat from the core makes the mantle material rise when hot and sink when cool, creating circular currents — like water boiling in a pot. These currents are what move the tectonic plates.
+
+The crust is the thinnest outer layer — the Earth's shell. There are two types: continental crust, which is thicker and forms the land we stand on, and oceanic crust, which is thinner and sits under the oceans.
+
+Finally, the lithosphere — this is the crust plus the upper part of the mantle combined. The lithosphere is broken into tectonic plates that float on the semi-fluid mantle below. And those convection currents? They're the engine that drives everything.`},
+
+{num:3, title:"Plate Tectonics", duration:"~2 min", script:`Geography revision podcast — Plate Tectonics.
+
+The Earth's surface is cracked into giant pieces called tectonic plates — they fit together like a jigsaw puzzle and float on the mantle. Where these plates meet, we call those plate boundaries. And that's where all the action happens.
+
+There are four types of plate boundary.
+
+Number one: Convergent Subduction. Two plates move toward each other. The denser oceanic plate dives under the continental plate — this diving is called subduction. The subducting plate melts, magma rises, and you get volcanoes, deep ocean trenches, and powerful earthquakes.
+
+Number two: Convergent Collision. Two continental plates smash into each other. Neither can subduct because they're both too thick. Instead, they crumple and fold upward, creating mountain ranges — the Himalayas were formed this way when India crashed into Asia.
+
+Number three: Divergent. Plates move apart. Magma rises from the mantle to fill the gap, creating new oceanic crust and mid-ocean ridges. This is called seafloor spreading.
+
+Number four: Transform. Plates slide past each other horizontally. Stress builds up, then releases suddenly as violent earthquakes. No volcanoes, no mountains — just earthquakes.
+
+And the Ring of Fire? That's the horseshoe-shaped zone around the Pacific Ocean where loads of plates meet. It has about 75 percent of the world's volcanoes and 90 percent of earthquakes.`},
+
+{num:4, title:"Earthquakes & Volcanoes", duration:"~1.5 min", script:`Geography revision podcast — Earthquakes and Volcanoes.
+
+Earthquakes happen when stress builds up at plate boundaries and then releases suddenly. Two key terms you must know: the focus and the epicentre.
+
+The focus is where the earthquake starts underground — the actual point where rocks break or slip. The epicentre is the point on the Earth's surface directly above the focus. Focus is below ground, epicentre is on the surface right above it. The biggest earthquakes happen at transform and convergent boundaries.
+
+Now volcanoes. They form when magma from the mantle rises through cracks in the crust. Three main ways. First, at subduction zones — an oceanic plate dives under, melts, and magma erupts upward. Second, at mid-ocean ridges where plates pull apart and magma fills the gap. Third, hotspots — stationary heat sources in the mantle that punch through the plate above, like in Hawaii.
+
+And tsunamis? They're caused when a sudden undersea earthquake at a subduction zone shifts the ocean floor vertically, pushing an enormous volume of water upward, generating massive waves.`},
+
+{num:5, title:"Tropical Rainforests", duration:"~2 min", script:`Geography revision podcast — Tropical Rainforests.
+
+First up — what's a biome? It's a major ecological community with similar climates and organisms. The tropical rainforest is one type of biome.
+
+The rainforest climate in three words: hot, wet, and humid. Warm all year round with little temperature change, very high rainfall throughout the year, and lots of moisture in the air.
+
+The rainforest has four layers, from top to bottom.
+
+The Emergent layer is the very top — the tallest trees poking above everything else, getting full sunlight. You'll find birds and bats up here.
+
+The Canopy is the main umbrella of treetops. This is the most important layer because it blocks most of the sunlight, intercepts rainfall, and keeps the layers below consistently humid. Monkeys, sloths, birds, and snakes live here.
+
+The Understory sits below the canopy. It's dim and humid, with smaller trees and shrubs.
+
+The Forest Floor is right at the bottom — and here's a key exam fact — only 2 to 3 percent of sunlight reaches the forest floor. It's dark and damp, home to insects, snakes, and lizards.
+
+One more thing — epiphytes. These are plants that grow on other plants, usually trees, but they are NOT parasites. They get their nutrients from the air, rain, and debris around them. Orchids are a common example.`},
+
+{num:6, title:"Deforestation", duration:"~1.5 min", script:`Geography revision podcast — Deforestation.
+
+Who poses the most threat to rainforests? Humans.
+
+The main cause of deforestation is agriculture — clearing land for farming, crops, and livestock. Think palm oil plantations. Other causes include urbanisation, mining for resources, and logging for wood and paper.
+
+So how do we manage this? Two main strategies.
+
+First: Protected Areas. Limiting access to and use of rainforest areas. But there are disadvantages — people can't earn money from the resources, increasing poverty. And protected areas are expensive to maintain with boardwalks, monitoring, and enforcement.
+
+Second: Sustainable Use. This includes eliminating the use of original rainforest — meaning don't cut down old-growth forest. Use forest plantations instead. There's also alley cropping — planting crops among alleyways of trees, so you get food production without destroying the forest.
+
+The key takeaway: by using plantations instead of original forest, we can preserve endangered species habitats while still meeting human needs.`},
+
+{num:7, title:"Map Skills & BOLTSS", duration:"~1.5 min", script:`Geography revision podcast — Map Skills.
+
+First, the six mapping conventions — BOLTSS. B for Border. O for Orientation — a compass rose or north arrow. L for Legend — the key explaining symbols. T for Title. S for Scale. And S for Source. Every proper map needs all six. If the exam asks what's missing, check each one.
+
+Compass directions: North, North-East, East, South-East, South, South-West, West, North-West. When a question asks "which direction is X FROM Y" — stand at Y and point toward X. The direction you point is your answer.
+
+Grid references — remember "along the corridor, up the stairs." Eastings first, then northings. Always.
+
+For a four-figure grid reference: read the easting number along the bottom, then the northing number up the side. Easting 03, northing 79 gives you 0379.
+
+For a six-figure grid reference: same thing but add a third digit to each for precision within the grid square. Estimate how far across and how far up. So 035, 792 pinpoints a specific location.`},
+
+{num:8, title:"Contour Lines", duration:"~1.5 min", script:`Geography revision podcast — Contour Lines.
+
+Contour lines connect points of equal elevation on a map. The contour interval is the height difference between each line — if the interval is 100 metres, each line is 100 metres higher than the last.
+
+Here's the golden rule: lines close together mean a steep slope. Lines far apart mean a gentle slope. Packed tight equals steep. Spread out equals gentle.
+
+Spot heights are exact elevations marked with a dot and number, like 501 metres.
+
+A common exam question: what's the highest possible point on the map? Find the highest contour line, then the answer is one interval minus a tiny bit. So if the highest contour is 14,000 metres and the interval is 1000 metres, the highest possible point is 14,999 metres — just below where the next line would be.
+
+For rivers: they flow from high to low elevation. The V shapes in contour lines point upstream, meaning uphill.
+
+And if you're asked where to build a house, choose flat ground where contour lines are far apart, near water, and NOT on a steep slope or flood zone.
+
+That's all eight topics covered. Good luck with the exam!`}
+];
+
+let selectedVoice = '';
+let currentRate = 1;
+let currentEpIndex = -1;
+let isPlayingAll = false;
+let utterance = null;
+
+// Build voice selector
+function loadVoices() {
+  const sel = document.getElementById('voice-select');
+  const voices = speechSynthesis.getVoices();
+  sel.innerHTML = '';
+  // Prefer Australian/UK English voices
+  const sorted = voices.filter(v => v.lang.startsWith('en')).sort((a, b) => {
+    const aScore = (a.lang.includes('AU') ? 3 : a.lang.includes('GB') ? 2 : 1);
+    const bScore = (b.lang.includes('AU') ? 3 : b.lang.includes('GB') ? 2 : 1);
+    return bScore - aScore;
+  });
+  sorted.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = v.name.replace(/Microsoft |Google |Apple /g, '') + ' (' + v.lang + ')';
+    sel.appendChild(opt);
+  });
+  if (sorted.length) selectedVoice = sorted[0].name;
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function setSpeed(rate, btn) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Build episode list
+function buildEpisodes() {
+  const container = document.getElementById('episodes');
+  EPISODES.forEach((ep, idx) => {
+    const div = document.createElement('div');
+    div.className = 'ep';
+    div.id = 'ep-' + idx;
+    div.innerHTML = `
+      <div class="ep-header" onclick="toggleScript(${idx})">
+        <div class="ep-num">${ep.num}</div>
+        <div class="ep-info">
+          <div class="ep-title">${ep.title}</div>
+          <div class="ep-duration">${ep.duration}</div>
+        </div>
+        <div class="ep-play" onclick="event.stopPropagation();togglePlay(${idx})" id="play-btn-${idx}">▶</div>
+      </div>
+      <div class="ep-progress"><div class="ep-progress-fill" id="prog-${idx}"></div></div>
+      <div class="ep-toggle" onclick="toggleScript(${idx})" id="toggle-${idx}">Show script ▾</div>
+      <div class="ep-body" id="body-${idx}">${ep.script.split('\n\n').map(p => '<p>' + p.trim() + '</p>').join('')}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function toggleScript(idx) {
+  const body = document.getElementById('body-' + idx);
+  const toggle = document.getElementById('toggle-' + idx);
+  body.classList.toggle('show');
+  toggle.textContent = body.classList.contains('show') ? 'Hide script ▴' : 'Show script ▾';
+}
+
+function getVoice() {
+  return speechSynthesis.getVoices().find(v => v.name === selectedVoice) || null;
+}
+
+function togglePlay(idx) {
+  if (currentEpIndex === idx && speechSynthesis.speaking) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  playEpisode(idx);
+}
+
+function playEpisode(idx) {
+  const ep = EPISODES[idx];
+  currentEpIndex = idx;
+
+  // Update UI
+  document.querySelectorAll('.ep').forEach(e => e.classList.remove('playing'));
+  document.getElementById('ep-' + idx).classList.add('playing');
+  document.getElementById('play-btn-' + idx).textContent = '⏸';
+  document.getElementById('now-playing').style.display = 'block';
+  document.getElementById('np-title').textContent = 'Episode ' + ep.num + ': ' + ep.title;
+  document.getElementById('np-status').textContent = 'Playing...';
+  document.getElementById('stop-btn').style.display = 'block';
+
+  // Split into sentences for progress tracking
+  const text = ep.script.trim();
+  utterance = new SpeechSynthesisUtterance(text);
+  utterance.voice = getVoice();
+  utterance.rate = currentRate;
+  utterance.pitch = 1;
+
+  // Progress simulation
+  const words = text.split(/\s+/).length;
+  const estDuration = (words / 150) * 60 / currentRate; // ~150 words/min
+  let startTime = Date.now();
+  const progBar = document.getElementById('prog-' + idx);
+  
+  const progInterval = setInterval(() => {
+    if (!speechSynthesis.speaking) { clearInterval(progInterval); return; }
+    const elapsed = (Date.now() - startTime) / 1000;
+    const pct = Math.min(100, (elapsed / estDuration) * 100);
+    progBar.style.width = pct + '%';
+  }, 200);
+
+  utterance.onend = () => {
+    clearInterval(progInterval);
+    progBar.style.width = '100%';
+    document.getElementById('ep-' + idx).classList.remove('playing');
+    document.getElementById('play-btn-' + idx).textContent = '▶';
+    
+    // If playing all, go to next
+    if (isPlayingAll && idx < EPISODES.length - 1) {
+      setTimeout(() => playEpisode(idx + 1), 500);
+    } else {
+      isPlayingAll = false;
+      document.getElementById('now-playing').style.display = 'none';
+      document.getElementById('stop-btn').style.display = 'none';
+      document.getElementById('play-all-btn').textContent = '▶ Play all episodes';
+      currentEpIndex = -1;
+    }
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+function stopAll() {
+  speechSynthesis.cancel();
+  isPlayingAll = false;
+  currentEpIndex = -1;
+  document.querySelectorAll('.ep').forEach(e => e.classList.remove('playing'));
+  document.querySelectorAll('[id^="play-btn-"]').forEach(b => b.textContent = '▶');
+  document.getElementById('now-playing').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'none';
+  document.getElementById('play-all-btn').textContent = '▶ Play all episodes';
+}
+
+function playAll() {
+  if (speechSynthesis.speaking) { stopAll(); return; }
+  isPlayingAll = true;
+  document.getElementById('play-all-btn').textContent = '⏸ Pause';
+  playEpisode(0);
+}
+
+buildEpisodes();
+</script>
+</body>
+</html>

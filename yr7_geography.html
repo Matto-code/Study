@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Geography — Landscapes & Landforms</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:700px;margin:0 auto;padding-bottom:3rem}
+.hero{background:#1a6b3c;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.hero .bs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hero .b{background:rgba(255,255,255,0.18);border-radius:20px;padding:3px 10px;font-size:11px;color:white}
+.nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem}
+.nb{padding:6px 11px;border:1px solid #ccc;border-radius:20px;font-size:11px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.nb.active,.nb:hover{background:#1a6b3c;color:white;border-color:#1a6b3c}
+.sec{display:none}.sec.active{display:block}
+.card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card h2{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem}
+.card h3{font-size:13px;font-weight:500;color:#2c2c2a;margin-top:0.75rem;margin-bottom:0.4rem}
+.card p,.card li{font-size:13px;color:#5f5e5a;line-height:1.65}
+.card ul,.card ol{padding-left:1.2rem;margin-bottom:0.5rem}
+.card li{margin-bottom:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem}
+.four{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.5rem}
+@media(max-width:500px){.two,.three,.four{grid-template-columns:1fr 1fr}}
+.eb{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:13px;line-height:1.6;border-left:4px solid}
+.eb.green{background:#E8F5E9;border-color:#1a6b3c;color:#0d3d1f}
+.eb.blue{background:#EBF3FB;border-color:#1a4a8c;color:#0d2447}
+.eb.amber{background:#FDF3E3;border-color:#b87c12;color:#5a3c06}
+.eb.red{background:#FCEAEA;border-color:#b83232;color:#5a1010}
+.eb.purple{background:#F0EDFB;border-color:#5a3dbf;color:#2c1d7a}
+.eb.grey{background:#f5f4f0;border-color:#aaa;color:#2c2c2a}
+.eb.brown{background:#F5EDE0;border-color:#8B5E3C;color:#4A2F1B}
+.eb strong{font-weight:600}
+.tip{background:#FDF3E3;border-radius:8px;padding:8px 12px;font-size:12px;color:#5a3c06;margin-top:0.5rem;line-height:1.5}
+.tip::before{content:"💡 "}
+.info-bar{background:#E8F5E9;border-radius:8px;padding:8px 12px;font-size:12px;color:#0d3d1f;margin-bottom:0.75rem;line-height:1.5}
+.fbox{background:#1a6b3c;border-radius:10px;padding:0.75rem 1rem;margin:0.75rem 0;text-align:center}
+.fbox .ff{font-size:16px;font-weight:600;color:white;letter-spacing:0.3px}
+.fbox .fn{font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px}
+.worked{border:1px solid #e0dfd8;border-radius:10px;overflow:hidden;margin-bottom:0.75rem}
+.worked-q{background:#1a6b3c;padding:10px 14px;font-size:13px;font-weight:500;color:white;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.worked-q .chev{transition:transform 0.2s;font-size:12px}
+.worked-q.open .chev{transform:rotate(180deg)}
+.worked-body{display:none;padding:14px;background:white;font-size:13px;color:#2c2c2a;line-height:1.65}
+.worked-body.open{display:block}
+.answer{background:#E8F5E9;border-radius:6px;padding:8px 12px;font-size:13px;color:#0d3d1f;font-weight:500;margin-top:6px}
+.layer-card{border:1px solid #e0dfd8;border-radius:10px;padding:10px 12px;margin-bottom:6px}
+.layer-card .lname{font-size:13px;font-weight:600;margin-bottom:3px}
+.layer-card .ldesc{font-size:12px;color:#5f5e5a;line-height:1.5}
+.qbox{background:#f5f4f0;border-radius:10px;padding:1rem;margin-bottom:0.75rem}
+.qbox p{font-size:14px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem;line-height:1.5}
+.qopts{display:flex;flex-direction:column;gap:5px}
+.qo{padding:8px 12px;border:1px solid #ccc;border-radius:8px;font-size:13px;cursor:pointer;background:white;color:#5f5e5a;text-align:left}
+.qo:hover{background:#f5f4f0}
+.qo.correct{background:#E8F5E9;border-color:#1a6b3c;color:#0d3d1f}
+.qo.wrong{background:#FCEAEA;border-color:#b83232;color:#5a1010}
+.qfb{font-size:12px;margin-top:8px;padding:8px 10px;border-radius:8px;display:none;line-height:1.5}
+.qfb.show{display:block}
+.qfb.correct{background:#E8F5E9;color:#0d3d1f}
+.qfb.wrong{background:#FCEAEA;color:#5a1010}
+.sc{text-align:center;padding:0.75rem;background:#f5f4f0;border-radius:10px;margin-bottom:1rem}
+.sn{font-size:28px;font-weight:500;color:#1a6b3c}
+.sl{font-size:12px;color:#5f5e5a}
+.rbtn{width:100%;padding:9px;background:white;border:1px solid #ccc;border-radius:8px;font-size:13px;cursor:pointer;color:#5f5e5a}
+.cl{list-style:none;padding:0}
+.cl li{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#5f5e5a;padding:7px 0;border-bottom:1px solid #e0dfd8;line-height:1.5;cursor:pointer}
+.cl li:last-child{border-bottom:none}
+.cl li::before{content:"○";color:#ccc;flex-shrink:0;margin-top:1px}
+.cl li.done::before{content:"●";color:#1a6b3c}
+.cl li.done{color:#aaa;text-decoration:line-through}
+.chip{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500;margin:2px}
+.cg{background:#E8F5E9;color:#0d3d1f}
+.cb{background:#EBF3FB;color:#0d2447}
+.ca{background:#FDF3E3;color:#5a3c06}
+.cr{background:#FCEAEA;color:#5a1010}
+.cp{background:#F0EDFB;color:#2c1d7a}
+.cbr{background:#F5EDE0;color:#4A2F1B}
+.vid-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #e0dfd8;border-radius:8px;font-size:12px;color:#5f5e5a;text-decoration:none;margin:4px 4px 4px 0;transition:all 0.15s}
+.vid-link:hover{border-color:#1a6b3c;color:#1a6b3c;background:#E8F5E9}
+.boundary-card{border:1px solid #e0dfd8;border-radius:10px;padding:12px;margin-bottom:8px}
+.boundary-card .bname{font-size:13px;font-weight:600;margin-bottom:4px}
+.boundary-card .bdesc{font-size:12px;color:#5f5e5a;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+  <h1>Year 7 Geography — Landscapes &amp; Landforms</h1>
+  <p>Queensland Curriculum · Based on your teacher's revision materials</p>
+  <div class="bs">
+    <span class="b">Landforms &amp; values</span><span class="b">Earth's structure</span><span class="b">Plate tectonics</span><span class="b">Earthquakes &amp; volcanoes</span><span class="b">Rainforests</span><span class="b">Deforestation</span><span class="b">Map skills</span><span class="b">Contour lines</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb active" onclick="show('overview',this)">Overview</button>
+  <button class="nb" onclick="show('landforms',this)">Landforms &amp; values</button>
+  <button class="nb" onclick="show('earth',this)">Earth's structure</button>
+  <button class="nb" onclick="show('plates',this)">Plate tectonics</button>
+  <button class="nb" onclick="show('quakes',this)">Earthquakes &amp; volcanoes</button>
+  <button class="nb" onclick="show('rainforest',this)">Rainforests</button>
+  <button class="nb" onclick="show('deforestation',this)">Deforestation</button>
+  <button class="nb" onclick="show('maps',this)">Map skills</button>
+  <button class="nb" onclick="show('contour',this)">Contour lines</button>
+  <button class="nb" onclick="show('quiz',this)">Quiz</button>
+  <button class="nb" onclick="show('checklist',this)">Checklist</button>
+</div>
+
+<!-- ═══ OVERVIEW ═══ -->
+<div id="sec-overview" class="sec active">
+  <div class="card">
+    <h2>What you need to know</h2>
+    <div class="two" style="margin-top:0.5rem">
+      <div class="eb green"><strong>Landforms &amp; landscapes</strong><br>Definitions, difference, 4 types of value (ASCE)</div>
+      <div class="eb brown"><strong>Earth's structure</strong><br>Core, mantle, crust, lithosphere, tectonic plates</div>
+      <div class="eb red"><strong>Plate tectonics</strong><br>4 boundary types, Ring of Fire, convection currents</div>
+      <div class="eb amber"><strong>Earthquakes &amp; volcanoes</strong><br>Epicentre vs focus, tsunamis, how volcanoes form</div>
+      <div class="eb green"><strong>Tropical rainforests</strong><br>Biome, climate, 4 layers, wildlife, epiphytes</div>
+      <div class="eb purple"><strong>Deforestation</strong><br>Causes, protected areas, sustainable use</div>
+      <div class="eb blue"><strong>Map skills</strong><br>BOLTSS, grid references (4 &amp; 6 figure), compass</div>
+      <div class="eb brown"><strong>Contour lines</strong><br>Intervals, steep/gentle slopes, spot heights, erosion</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🎬 Revision videos from your teacher</h2>
+    <a class="vid-link" href="https://www.youtube.com/watch?v=RA2-Vc4PIOY" target="_blank">▶ Plate Tectonics explainer</a>
+    <a class="vid-link" href="https://www.youtube.com/watch?v=hhxjAAnwNKM" target="_blank">▶ Plate Tectonics song (Flo Rida parody)</a>
+    <a class="vid-link" href="https://www.youtube.com/watch?v=uh4dTLJ9q9o" target="_blank">▶ Lava — Disney (volcanoes!)</a>
+    <a class="vid-link" href="https://www.youtube.com/watch?v=jFU6jh3R1vg&t=1s" target="_blank">▶ WED Chant (revision)</a>
+    <a class="vid-link" href="https://www.kidcyber.com.au/tropical-rainforest" target="_blank">📖 Kidcyber — Tropical Rainforests</a>
+    <a class="vid-link" href="https://www.3dgeography.co.uk/rainforests" target="_blank">📖 3D Geography — Rainforests</a>
+  </div>
+</div>
+
+<!-- ═══ LANDFORMS & VALUES ═══ -->
+<div id="sec-landforms" class="sec">
+  <div class="card">
+    <h2>Landscape vs Landform</h2>
+    <div class="two">
+      <div class="eb green"><strong>Landscape</strong><br>A large area of land with distinct visual features that make it look different from other areas. It's the "big picture" of an area.<br><br>Examples: desert, rainforest, coast, mountain range, farmland</div>
+      <div class="eb blue"><strong>Landform</strong><br>A <strong>natural geographical feature</strong> or shape on the Earth's surface. It's a specific feature within a landscape.<br><br>Examples: mountain, sand dune, river, valley, cliff, reef</div>
+    </div>
+    <div class="tip">A desert is a <em>landscape</em>. A sand dune inside that desert is a <em>landform</em>. The landscape is the big picture; the landform is a specific feature within it.</div>
+  </div>
+  <div class="card">
+    <h2>The 4 values of landforms — ASCE</h2>
+    <div class="info-bar">Landforms and landscapes can hold one or more of these 4 types of value. Remember <strong>ASCE</strong>.</div>
+    <div class="four">
+      <div style="text-align:center;padding:10px;background:#E8F5E9;border-radius:10px"><div style="font-size:20px">🎨</div><div style="font-size:12px;font-weight:600;color:#0d3d1f">Aesthetic</div><div style="font-size:11px;color:#5f5e5a">How it looks — natural beauty</div></div>
+      <div style="text-align:center;padding:10px;background:#F0EDFB;border-radius:10px"><div style="font-size:20px">🙏</div><div style="font-size:12px;font-weight:600;color:#2c1d7a">Spiritual</div><div style="font-size:11px;color:#5f5e5a">Religious or cultural sacredness</div></div>
+      <div style="text-align:center;padding:10px;background:#EBF3FB;border-radius:10px"><div style="font-size:20px">🏛️</div><div style="font-size:12px;font-weight:600;color:#0d2447">Cultural</div><div style="font-size:11px;color:#5f5e5a">Heritage, tradition, identity</div></div>
+      <div style="text-align:center;padding:10px;background:#FDF3E3;border-radius:10px"><div style="font-size:20px">💰</div><div style="font-size:12px;font-weight:600;color:#5a3c06">Economic</div><div style="font-size:11px;color:#5f5e5a">Money — tourism, resources</div></div>
+    </div>
+    <div class="tip"><strong>Aesthetic</strong> = how a place looks. <strong>Spiritual</strong> = religious/symbolic significance (e.g. First Nations connections to Uluru). They're different! Aesthetic is about beauty; spiritual is about deeper meaning.</div>
+    <div class="eb grey" style="margin-top:0.75rem"><strong>Example: Great Barrier Reef</strong><br>Aesthetic ✓ (beautiful), Spiritual ✓ (First Nations connection), Cultural ✓ (First Nations heritage), Economic ✓ (tourism). It holds all 4 values.</div>
+    <div class="eb grey"><strong>Example: The Alps (mountains)</strong><br>Aesthetic ✓ (beautiful scenery), Economic ✓ (skiing tourism). Holds 2 values.</div>
+  </div>
+  <div class="card">
+    <h2>Weathering &amp; erosion</h2>
+    <div class="two">
+      <div class="eb brown"><strong>Weathering</strong><br>The breaking down of rock <strong>in place</strong> (it doesn't move). Caused by water, wind, ice, temperature changes, plants and chemicals.</div>
+      <div class="eb blue"><strong>Erosion</strong><br>The <strong>wearing away and transporting</strong> of soil and rock from one place to another. Caused by water, wind, ice, gravity. Waves crashing against cliffs is coastal erosion.</div>
+    </div>
+    <div class="tip">Weathering breaks rock apart where it sits. Erosion moves the broken pieces somewhere else. Both reshape landforms over time.</div>
+  </div>
+</div>
+
+<!-- ═══ EARTH'S STRUCTURE ═══ -->
+<div id="sec-earth" class="sec">
+  <div class="card">
+    <h2>Layers of the Earth</h2>
+    <div class="layer-card" style="border-left:4px solid #b83232"><div class="lname" style="color:#b83232">Core (innermost)</div><div class="ldesc">Made of iron and nickel. Has a <strong>solid inner core</strong> and <strong>liquid outer core</strong>. Extremely hot (~5000°C). Generates Earth's magnetic field.</div></div>
+    <div class="layer-card" style="border-left:4px solid #b87c12"><div class="lname" style="color:#b87c12">Mantle (middle)</div><div class="ldesc"><strong>Thickest layer.</strong> Made of semi-solid (semi-fluid) silicate rock. <strong>Convection currents</strong> in the mantle are what move the tectonic plates. The upper mantle is part of the lithosphere.</div></div>
+    <div class="layer-card" style="border-left:4px solid #1a6b3c"><div class="lname" style="color:#1a6b3c">Crust (outermost)</div><div class="ldesc">The <strong>thinnest layer</strong> — Earth's outer shell. Two types: <strong>continental crust</strong> (thick, lighter, forms land) and <strong>oceanic crust</strong> (thin, denser, under oceans).</div></div>
+    <div class="layer-card" style="border-left:4px solid #1a4a8c"><div class="lname" style="color:#1a4a8c">Lithosphere</div><div class="ldesc">The crust + the upper part of the mantle together. The lithosphere is broken into <strong>tectonic plates</strong> that float on the semi-fluid mantle below.</div></div>
+    <div class="tip">Convection currents are the engine: heat from the core causes the semi-fluid mantle to circulate like boiling water. This movement drags the tectonic plates along.</div>
+  </div>
+</div>
+
+<!-- ═══ PLATE TECTONICS ═══ -->
+<div id="sec-plates" class="sec">
+  <div class="card">
+    <h2>What are tectonic plates?</h2>
+    <div class="eb green">The Earth's surface (lithosphere) is broken into large pieces called <strong>tectonic plates</strong> that fit together like a giant jigsaw puzzle. These plates float on the semi-fluid mantle and move slowly due to <strong>convection currents</strong> — heat from the core creates circular currents in the mantle that drag the plates along.</div>
+  </div>
+  <div class="card">
+    <h2>4 types of plate boundaries</h2>
+    <div class="info-bar">Where plates meet = plate boundaries. Most earthquakes, volcanoes and mountain-building happen at these boundaries.</div>
+    <div class="boundary-card" style="border-left:4px solid #b83232"><div class="bname" style="color:#b83232">1. Convergent — Subduction</div><div class="bdesc">Plates move <strong>toward each other</strong>. An oceanic plate dives under a continental plate (because it's denser). This is called <strong>subduction</strong>. The subducting plate melts → magma rises → <strong>volcanic activity</strong>, deep ocean trenches, island arcs, and strong earthquakes.</div></div>
+    <div class="boundary-card" style="border-left:4px solid #b87c12"><div class="bname" style="color:#b87c12">2. Convergent — Collision</div><div class="bdesc">Two <strong>continental plates</strong> collide. Neither can subduct (both too thick/buoyant). They crumple and fold upward → <strong>mountain ranges</strong> (e.g. the Himalayas formed from India colliding with Asia). Also causes earthquakes.</div></div>
+    <div class="boundary-card" style="border-left:4px solid #1a6b3c"><div class="bname" style="color:#1a6b3c">3. Divergent</div><div class="bdesc">Plates move <strong>apart</strong>. Magma rises from the mantle to fill the gap → creates <strong>new oceanic crust</strong>, mid-ocean ridges, and seafloor spreading. Can cause earthquakes and volcanic activity.</div></div>
+    <div class="boundary-card" style="border-left:4px solid #5a3dbf"><div class="bname" style="color:#5a3dbf">4. Transform (Conservative)</div><div class="bdesc">Plates <strong>slide past each other</strong> horizontally. No crust is created or destroyed. Stress builds up → sudden release → <strong>violent earthquakes</strong> (e.g. San Andreas Fault). No volcanic activity.</div></div>
+  </div>
+  <div class="card">
+    <h2>The Ring of Fire</h2>
+    <div class="eb red"><strong>The Ring of Fire</strong> is the area around the <strong>Pacific Ocean</strong> where many tectonic plates meet. This zone has ~75% of the world's volcanoes and ~90% of earthquakes. It forms a horseshoe shape around the Pacific, passing through New Zealand, Indonesia, Japan, Alaska, and the west coasts of the Americas.</div>
+  </div>
+</div>
+
+<!-- ═══ EARTHQUAKES & VOLCANOES ═══ -->
+<div id="sec-quakes" class="sec">
+  <div class="card">
+    <h2>Earthquakes</h2>
+    <div class="eb red">Earthquakes occur when <strong>stress builds up</strong> at plate boundaries as plates push against, pull apart, or slide past each other. When the stress is released suddenly, the ground shakes.</div>
+    <div class="two" style="margin-top:0.75rem">
+      <div class="eb blue"><strong>Focus</strong><br>Where the earthquake <strong>originates</strong> — the point underground where rocks first break/slip.</div>
+      <div class="eb amber"><strong>Epicentre</strong><br>The point on the <strong>Earth's surface directly above</strong> the focus. This is where shaking is usually strongest.</div>
+    </div>
+    <div class="tip">Focus = underground origin. Epicentre = surface point directly above it. The epicentre is NOT the origin — it's the surface projection.</div>
+    <div class="eb grey" style="margin-top:0.5rem"><strong>Where do large earthquakes occur?</strong> At <strong>transform</strong> and <strong>convergent</strong> boundaries — but earthquakes can happen anywhere plates interact.</div>
+  </div>
+  <div class="card">
+    <h2>Volcanoes</h2>
+    <div class="eb brown">Volcanoes form when <strong>magma from the mantle</strong> rises through cracks in the crust and erupts on the surface. Three main ways:</div>
+    <div class="eb grey"><strong>Subduction zones:</strong> Oceanic plate subducts → melts → magma rises → erupts as volcano.</div>
+    <div class="eb grey"><strong>Mid-ocean ridges (divergent):</strong> Plates move apart → magma rises to fill the gap → creates underwater volcanoes and new crust.</div>
+    <div class="eb grey"><strong>Hotspots:</strong> Stationary heat sources in the mantle create plumes of magma that can punch through the plate above (e.g. Hawaiian islands).</div>
+  </div>
+  <div class="card">
+    <h2>Tsunamis</h2>
+    <div class="eb red">Tsunamis are caused by the sudden vertical displacement of a large volume of water, usually from an <strong>undersea earthquake at a subduction zone</strong>. When the ocean floor shifts, it pushes the water above it upward, generating enormous waves that travel across the ocean.</div>
+  </div>
+</div>
+
+<!-- ═══ RAINFORESTS ═══ -->
+<div id="sec-rainforest" class="sec">
+  <div class="card">
+    <h2>What is a biome?</h2>
+    <div class="eb green">A <strong>biome</strong> is a major ecological community that includes ecosystems with similar <strong>climates and organisms</strong>. Examples: rainforest, desert, grassland, tundra.</div>
+  </div>
+  <div class="card">
+    <h2>Tropical rainforest climate</h2>
+    <div class="three">
+      <div style="text-align:center;padding:10px;background:#FCEAEA;border-radius:10px"><div style="font-size:20px">🌡️</div><div style="font-size:13px;font-weight:600;color:#5a1010">Hot / Warm</div><div style="font-size:11px;color:#5f5e5a">Warm all year round<br>Little variation in temp</div></div>
+      <div style="text-align:center;padding:10px;background:#EBF3FB;border-radius:10px"><div style="font-size:20px">🌧️</div><div style="font-size:13px;font-weight:600;color:#0d2447">Wet</div><div style="font-size:11px;color:#5f5e5a">Very high rainfall<br>Wet all year round</div></div>
+      <div style="text-align:center;padding:10px;background:#E8F5E9;border-radius:10px"><div style="font-size:20px">💧</div><div style="font-size:13px;font-weight:600;color:#0d3d1f">Humid</div><div style="font-size:11px;color:#5f5e5a">Moisture in the air<br>Feels sticky/damp</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>The 4 layers of the rainforest (top → bottom)</h2>
+    <div class="layer-card" style="border-left:4px solid #1a6b3c;background:#f8fff8"><div class="lname" style="color:#1a6b3c">1. Emergent layer (top)</div><div class="ldesc">The tallest trees that poke above the canopy. Full sunlight. Wildlife: <strong>birds, bats, butterflies</strong>.</div></div>
+    <div class="layer-card" style="border-left:4px solid #2e7d32"><div class="lname" style="color:#2e7d32">2. Canopy layer</div><div class="ldesc">A thick, continuous "umbrella" of treetops. Gets most sunlight. <strong>Blocks light and intercepts rainfall</strong> for layers below. Keeps lower layers humid. Wildlife: <strong>birds, snakes, sloths, monkeys</strong>.</div></div>
+    <div class="layer-card" style="border-left:4px solid #558b2f"><div class="lname" style="color:#558b2f">3. Understory</div><div class="ldesc">Below the canopy. Dim light, warm, humid. Smaller trees, shrubs, young trees growing toward the canopy. Wildlife: <strong>frogs, insects, snakes, jaguars</strong>.</div></div>
+    <div class="layer-card" style="border-left:4px solid #8B5E3C"><div class="lname" style="color:#8B5E3C">4. Forest floor (bottom)</div><div class="ldesc">Very little sunlight — only <strong>2–3%</strong> reaches here. Dark, damp. Decomposing leaves and fallen trees. Wildlife: <strong>insects, snakes, lizards, paddymelons</strong>.</div></div>
+    <div class="tip">The canopy is the key layer — it blocks sunlight, intercepts rainfall, and keeps the lower layers consistently humid. This is why the forest floor is so dark.</div>
+  </div>
+  <div class="card">
+    <h2>Epiphytes</h2>
+    <div class="eb green"><strong>Epiphytes</strong> are plants that grow on other plants (usually trees) <strong>without taking nutrients from their host</strong>. They are NOT parasites. They get water and nutrients from the air, rain, and debris that collects around them. Orchids and ferns are common epiphytes.</div>
+  </div>
+</div>
+
+<!-- ═══ DEFORESTATION ═══ -->
+<div id="sec-deforestation" class="sec">
+  <div class="card">
+    <h2>Causes of deforestation</h2>
+    <div class="eb red"><strong>Agriculture (farming)</strong> — the main cause. Clearing land for crops and livestock, e.g. palm oil plantations.</div>
+    <div class="eb red"><strong>Urbanisation</strong> — building housing and infrastructure for growing populations.</div>
+    <div class="eb red"><strong>Mining</strong> — extracting resources from beneath the forest.</div>
+    <div class="eb red"><strong>Logging</strong> — harvesting wood, paper, and other forest resources.</div>
+    <div class="tip">Who poses the most threat to rainforests? <strong>Humans.</strong></div>
+  </div>
+  <div class="card">
+    <h2>Management strategies</h2>
+    <h3>1. Protected areas</h3>
+    <div class="eb green"><strong>What:</strong> Limit access to and use of rainforest areas to preserve them.</div>
+    <div class="eb amber"><strong>Disadvantages:</strong><br>• People are limited in their ability to earn money from resources — can increase poverty<br>• Expensive to maintain and monitor — boardwalks, pathways, monitoring visitors</div>
+    <h3>2. Sustainable use</h3>
+    <div class="eb green"><strong>Eliminating use of original rainforest:</strong> Avoiding cutting down old-growth forest that has never been logged. Use forest plantations instead to preserve endangered species habitats.</div>
+    <div class="eb green"><strong>Mixed use agriculture and forestry (alley cropping):</strong> Planting crops among alleyways of trees — using forests for food production in a sustainable way without destroying the forest.</div>
+    <div class="tip">Sustainable use reduces negative impacts on rainforests. By using plantations instead of original forest, endangered species habitats can be preserved.</div>
+  </div>
+</div>
+
+<!-- ═══ MAP SKILLS ═══ -->
+<div id="sec-maps" class="sec">
+  <div class="card">
+    <h2>BOLTSS — the 6 map conventions</h2>
+    <div class="info-bar">Every proper map should include all 6 of these. If you're asked "what conventions are missing?" — check each one.</div>
+    <div class="eb green"><strong>B</strong> — <strong>Border</strong>: a frame around the map</div>
+    <div class="eb blue"><strong>O</strong> — <strong>Orientation</strong>: a compass rose or north arrow</div>
+    <div class="eb purple"><strong>L</strong> — <strong>Legend</strong>: a key explaining symbols used</div>
+    <div class="eb amber"><strong>T</strong> — <strong>Title</strong>: what the map shows</div>
+    <div class="eb red"><strong>S</strong> — <strong>Scale</strong>: shows the ratio of map distance to real distance</div>
+    <div class="eb brown"><strong>S</strong> — <strong>Source</strong>: where the map data came from</div>
+  </div>
+  <div class="card">
+    <h2>Compass directions</h2>
+    <div class="eb blue">8 compass points: <strong>N, NE, E, SE, S, SW, W, NW</strong><br><br>When asked "which direction is X FROM Y" — stand at Y and point toward X. The direction you point is the answer.</div>
+    <div class="tip">"Which direction is Martindale FROM Place Fell?" → Stand at Place Fell, point to Martindale → answer: North East.</div>
+  </div>
+  <div class="card">
+    <h2>Grid references</h2>
+    <h3>4-figure grid reference</h3>
+    <div class="eb green"><strong>Along the corridor, up the stairs.</strong><br>1. Read the <strong>easting</strong> (horizontal number) first — go ALONG the bottom<br>2. Then read the <strong>northing</strong> (vertical number) — go UP the side<br><br>Example: <strong>0379</strong> means easting 03, northing 79. The reference identifies a whole grid square.</div>
+    <h3>6-figure grid reference</h3>
+    <div class="eb blue"><strong>More precise — pinpoints a location within a grid square.</strong><br>1. Read the easting (2 digits) then estimate a 3rd digit (0–9) for how far across the square<br>2. Read the northing (2 digits) then estimate a 3rd digit (0–9) for how far up the square<br><br>Example: <strong>035792</strong> means easting 03.5, northing 79.2 — a specific point within the square.</div>
+    <div class="tip">Always remember: <strong>along the corridor first (eastings), then up the stairs (northings)</strong>. Eastings BEFORE northings.</div>
+  </div>
+  <div class="card">
+    <h2>Scale and distance</h2>
+    <div class="eb amber">Maps use a <strong>scale</strong> to show how map distances relate to real distances. Use a ruler or paper edge to measure on the map, then compare to the scale bar to convert to real distance (km or m).</div>
+  </div>
+</div>
+
+<!-- ═══ CONTOUR LINES ═══ -->
+<div id="sec-contour" class="sec">
+  <div class="card">
+    <h2>What are contour lines?</h2>
+    <div class="eb green"><strong>Contour lines</strong> are lines on a map that connect points of <strong>equal elevation (height)</strong>. They show the shape of the land — whether it's flat, hilly, steep, or gentle.</div>
+    <div class="eb blue"><strong>Contour interval</strong> = the difference in height between each contour line. If the interval is 100 m, each line represents a 100 m increase in elevation.</div>
+  </div>
+  <div class="card">
+    <h2>Reading contour lines</h2>
+    <div class="two">
+      <div class="eb red"><strong>Lines close together</strong><br>= <strong>Steep slope</strong><br>Big elevation change over a short distance</div>
+      <div class="eb green"><strong>Lines far apart</strong><br>= <strong>Gentle slope</strong><br>Gradual elevation change over a larger distance</div>
+    </div>
+    <div class="eb amber"><strong>Spot height</strong> — an exact elevation marked with a dot and number on the map (e.g. ▲ 501m). More precise than reading contour lines.</div>
+    <div class="tip">When asked for the "highest possible point" — it's the next contour line value minus 0.1. For example, if the highest contour is 14000 m and the interval is 1000 m, the highest possible point is 14,999 m (just below the next line that doesn't exist on the map).</div>
+  </div>
+  <div class="card">
+    <h2>Key contour skills for the exam</h2>
+    <div class="eb grey"><strong>Finding elevation of a point:</strong> Find which two contour lines the point sits between, then estimate.</div>
+    <div class="eb grey"><strong>Calculating total elevation change:</strong> If walking from point A (200 m) to point B (500 m), the total change = 500 − 200 = 300 m uphill.</div>
+    <div class="eb grey"><strong>Identifying steep vs gentle:</strong> Circle areas where lines are packed tightly (steep) or spread wide apart (gentle).</div>
+    <div class="eb grey"><strong>Direction of river flow:</strong> Rivers flow from high to low elevation — the V-shapes in contour lines point upstream (uphill).</div>
+    <div class="eb grey"><strong>Best place to build a house:</strong> Choose flat ground (lines far apart), near water, and not on a steep slope or flood zone.</div>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="sec-quiz" class="sec">
+  <div class="sc"><div class="sn" id="qs">0 / 0</div><div class="sl">correct</div></div>
+  <div id="qq"></div>
+  <button class="rbtn" onclick="resetQuiz()">↺ Reset</button>
+</div>
+
+<!-- ═══ CHECKLIST ═══ -->
+<div id="sec-checklist" class="sec">
+  <div class="card">
+    <h2>Exam checklist — Landscapes &amp; Landforms</h2>
+    <ul class="cl">
+      <li onclick="tc(this)">I can define landscape and landform and explain the difference</li>
+      <li onclick="tc(this)">I can name the 4 values (Aesthetic, Spiritual, Cultural, Economic) and give examples</li>
+      <li onclick="tc(this)">I can explain the difference between aesthetic and spiritual value</li>
+      <li onclick="tc(this)">I can define weathering and erosion and explain the difference</li>
+      <li onclick="tc(this)">I can describe Earth's structure: core, mantle, crust, lithosphere</li>
+      <li onclick="tc(this)">I can explain how convection currents move tectonic plates</li>
+      <li onclick="tc(this)">I can name and describe all 4 plate boundary types</li>
+      <li onclick="tc(this)">I can explain what happens at each boundary (mountains, volcanoes, earthquakes, new crust)</li>
+      <li onclick="tc(this)">I can describe the Ring of Fire and explain why it's significant</li>
+      <li onclick="tc(this)">I can explain the difference between the epicentre and focus of an earthquake</li>
+      <li onclick="tc(this)">I can explain how volcanoes and tsunamis form</li>
+      <li onclick="tc(this)">I can define a biome and describe the tropical rainforest climate (hot, wet, humid)</li>
+      <li onclick="tc(this)">I can name the 4 rainforest layers and describe each one with wildlife examples</li>
+      <li onclick="tc(this)">I can explain what epiphytes are and how they get nutrients</li>
+      <li onclick="tc(this)">I can list the main causes of deforestation</li>
+      <li onclick="tc(this)">I can describe management strategies: protected areas and sustainable use (alley cropping)</li>
+      <li onclick="tc(this)">I can list all 6 BOLTSS map conventions</li>
+      <li onclick="tc(this)">I can give 4-figure and 6-figure grid references</li>
+      <li onclick="tc(this)">I can use compass directions including "X FROM Y" questions</li>
+      <li onclick="tc(this)">I can read contour lines: interval, steep/gentle slopes, spot heights</li>
+      <li onclick="tc(this)">I can calculate distance using a map's scale</li>
+      <li onclick="tc(this)">I can determine the highest possible elevation from a contour map</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Key facts to know</h2>
+    <div class="eb green"><strong>ASCE:</strong> Aesthetic, Spiritual, Cultural, Economic</div>
+    <div class="eb blue"><strong>BOLTSS:</strong> Border, Orientation, Legend, Title, Scale, Source</div>
+    <div class="eb red"><strong>4 boundary types:</strong> Convergent (subduction), Convergent (collision), Divergent, Transform</div>
+    <div class="eb amber"><strong>4 rainforest layers:</strong> Emergent → Canopy → Understory → Forest floor</div>
+    <div class="eb brown"><strong>Grid refs:</strong> Along the corridor (eastings), up the stairs (northings). Always eastings first.</div>
+    <div class="eb purple"><strong>Contour lines close together</strong> = steep. <strong>Far apart</strong> = gentle.</div>
+    <div class="eb green"><strong>Focus</strong> = underground origin. <strong>Epicentre</strong> = surface point directly above.</div>
+    <div class="eb grey"><strong>Forest floor receives only 2–3% of sunlight</strong></div>
+  </div>
+</div>
+
+</div>
+<script>
+function show(id,btn){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');btn.classList.add('active')}
+function tc(el){el.classList.toggle('done')}
+function tw(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+
+const Qs=[
+{q:'What is the difference between a landscape and a landform?',opts:['They mean the same thing','A landscape is the big picture area; a landform is a specific feature within it','A landform is bigger than a landscape','Landscapes are man-made; landforms are natural'],ans:1,exp:'A landscape is a large area (e.g. desert). A landform is a natural feature within it (e.g. sand dune).'},
+{q:'What are the 4 values a landform can have?',opts:['Agricultural, Social, Cultural, Economic','Aesthetic, Spiritual, Cultural, Economic','Aesthetic, Scientific, Cultural, Environmental','Artistic, Spiritual, Commercial, Educational'],ans:1,exp:'ASCE: Aesthetic (beauty), Spiritual (religious/sacred), Cultural (heritage/identity), Economic (money/tourism).'},
+{q:'What does the B in BOLTSS stand for?',opts:['Background','Base map','Border','Bearing'],ans:2,exp:'B = Border. BOLTSS: Border, Orientation, Legend, Title, Scale, Source.'},
+{q:'What is subduction?',opts:['Two plates moving apart','An oceanic plate diving under a continental plate at a convergent boundary','Plates sliding past each other','Magma cooling on the surface'],ans:1,exp:'Subduction occurs at convergent boundaries when an oceanic plate (denser) dives beneath a continental plate, causing volcanoes and earthquakes.'},
+{q:'What is the Ring of Fire?',opts:['A volcanic crater in Hawaii','The area around the Atlantic Ocean with most volcanoes','The area around the Pacific Ocean where many tectonic plates meet','The boundary between the crust and mantle'],ans:2,exp:'The Ring of Fire surrounds the Pacific Ocean where many plates meet, causing ~75% of the world\'s volcanoes and ~90% of earthquakes.'},
+{q:'What is the difference between the focus and epicentre of an earthquake?',opts:['They are the same thing','Focus is on the surface; epicentre is underground','Focus is the underground origin; epicentre is the surface point directly above','Focus is the weakest point; epicentre is the strongest'],ans:2,exp:'Focus = underground origin where rocks break. Epicentre = point on the surface directly above the focus.'},
+{q:'How many layers does the rainforest have? Name them top to bottom.',opts:['3: Canopy, Understory, Floor','4: Emergent, Canopy, Understory, Forest Floor','5: Crown, Canopy, Mid, Understory, Floor','2: Canopy and Floor'],ans:1,exp:'4 layers: Emergent (tallest trees), Canopy (main umbrella), Understory (dim), Forest Floor (dark, 2-3% sunlight).'},
+{q:'What percentage of sunlight reaches the forest floor?',opts:['About 25%','About 50%','About 10%','About 2-3%'],ans:3,exp:'Only 2-3% of sunlight reaches the forest floor because the canopy blocks most of it.'},
+{q:'What is the main cause of deforestation?',opts:['Natural disasters','Mining','Agriculture (farming)','Tourism'],ans:2,exp:'Agriculture (farming — crops and livestock, e.g. palm oil plantations) is the main cause of deforestation.'},
+{q:'What is alley cropping?',opts:['Cutting down trees in rows','Planting crops among alleyways of trees — sustainable mixed-use forestry','Building paths through the forest','Clearing forests for housing'],ans:1,exp:'Alley cropping is a sustainable strategy: planting crops between rows of trees, using the forest for food production without destroying it.'},
+{q:'In grid references, which do you read first — eastings or northings?',opts:['Northings (go up first)','Eastings (go along first)','It doesn\'t matter','The bigger number first'],ans:1,exp:'Always eastings first: "Along the corridor (eastings), up the stairs (northings)."'},
+{q:'What does it mean when contour lines are very close together?',opts:['Flat ground','Gentle slope','Steep slope','A valley'],ans:2,exp:'Contour lines close together = steep slope (big elevation change over short distance). Lines far apart = gentle slope.'},
+{q:'What type of plate boundary creates mountain ranges like the Himalayas?',opts:['Divergent','Transform','Convergent — collision','Convergent — subduction'],ans:2,exp:'Convergent collision: two continental plates collide, neither subducts, they crumple upward forming mountains.'},
+{q:'What are epiphytes?',opts:['Parasitic insects in the rainforest','Plants that grow on trees without taking nutrients from them','Animals that live in the emergent layer','Roots that absorb nutrients from the soil'],ans:1,exp:'Epiphytes grow on other plants (usually trees) but are NOT parasites. They get nutrients from air, rain, and debris around them.'},
+{q:'What do transform plate boundaries cause?',opts:['Volcanoes','Mountain ranges','New oceanic crust','Violent earthquakes'],ans:3,exp:'Transform boundaries: plates slide past each other → stress builds up → sudden release → violent earthquakes. No volcanoes or mountains.'},
+{q:'Which layer of Earth contains the convection currents that move tectonic plates?',opts:['Core','Crust','Mantle','Lithosphere'],ans:2,exp:'The mantle contains convection currents driven by heat from the core. These currents move the tectonic plates on top.'},
+];
+let answered=new Array(Qs.length).fill(null);
+function buildQuiz(){const c=document.getElementById('qq');c.innerHTML='';Qs.forEach((q,i)=>{const d=document.createElement('div');d.className='qbox';d.innerHTML='<p>Q'+(i+1)+': '+q.q+'</p><div class="qopts">'+q.opts.map((o,j)=>'<button class="qo" onclick="answer('+i+','+j+',this)">'+o+'</button>').join('')+'</div><div class="qfb" id="qf-'+i+'"></div>';c.appendChild(d)});updateScore()}
+function answer(i,j,btn){if(answered[i]!==null)return;const q=Qs[i],ok=j===q.ans;answered[i]=ok;btn.parentElement.querySelectorAll('.qo').forEach((b,k)=>{if(k===q.ans)b.classList.add('correct');else if(k===j&&!ok)b.classList.add('wrong');b.disabled=true});const fb=document.getElementById('qf-'+i);fb.className='qfb show '+(ok?'correct':'wrong');fb.textContent=(ok?'✓ ':'✗ ')+q.exp;updateScore()}
+function updateScore(){const d=answered.filter(a=>a!==null).length;document.getElementById('qs').textContent=answered.filter(a=>a===true).length+' / '+d}
+function resetQuiz(){answered=new Array(Qs.length).fill(null);buildQuiz()}
+buildQuiz();
+</script>
+</body>
+</html>
