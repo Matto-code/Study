@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>TIMES ATTACK // 30-Second Blitz</title>
+
+<!--
+  ============================================================
+  SETUP FOR A LIVE SHARED LEADERBOARD (optional but recommended
+  if you're hosting this on GitHub Pages so scores sync for
+  everyone who plays, not just on one phone):
+
+  1. Go to https://console.firebase.google.com on your phone
+  2. Create a free project (any name)
+  3. In the project, go to "Build > Realtime Database" and
+     click "Create Database" -> start in TEST MODE
+  4. Go to Project Settings (gear icon) > General > scroll to
+     "Your apps" > click the </> (web) icon > register app
+  5. Copy the firebaseConfig object it gives you and paste its
+     values into FIREBASE_CONFIG below, replacing the
+     "YOUR_..." placeholders
+  6. Save this file and re-upload it to GitHub
+
+  Skip all of this and the game still works fine — it'll just
+  save scores to this browser/device only instead of everyone
+  who opens the link.
+  ============================================================
+-->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+  :root{
+    --bg: #0a0518;
+    --bg2: #150a2e;
+    --grid: #7b2ff7;
+    --magenta: #ff2e88;
+    --cyan: #00fff2;
+    --yellow: #ffe600;
+    --green: #39ff8f;
+    --red: #ff3b3b;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: var(--bg);
+    font-family: 'VT323', monospace;
+    color: #fff;
+    overflow:hidden;
+    touch-action: manipulation;
+  }
+
+  /* ---------- BACKDROP ---------- */
+  #backdrop{
+    position:fixed; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse at 50% 18%, rgba(123,47,247,0.35), transparent 55%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 55%, #1a0b33 100%);
+    overflow:hidden;
+  }
+  #sun{
+    position:absolute; left:50%; top:14%; width:220px; height:220px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--yellow) 0px, var(--yellow) 4px,
+      var(--magenta) 4px, var(--magenta) 8px
+    );
+    box-shadow: 0 0 60px 10px rgba(255,46,136,0.55);
+    opacity:0.85;
+  }
+  #grid{
+    position:absolute; left:0; right:0; bottom:0; height:55%;
+    background-image:
+      linear-gradient(rgba(0,255,242,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,242,0.5) 1px, transparent 1px);
+    background-size: 60px 40px;
+    transform: perspective(220px) rotateX(60deg);
+    transform-origin: bottom;
+    animation: scroll 1.4s linear infinite;
+    opacity:0.55;
+  }
+  @keyframes scroll{
+    from{ background-position: 0 0, 0 0; }
+    to{ background-position: 0 40px, 0 0; }
+  }
+  #scanlines{
+    position:fixed; inset:0; z-index:5; pointer-events:none;
+    background: repeating-linear-gradient(
+      180deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px,
+      transparent 2px, transparent 4px
+    );
+    mix-blend-mode: overlay;
+  }
+  #vignette{
+    position:fixed; inset:0; z-index:6; pointer-events:none;
+    box-shadow: inset 0 0 18vw rgba(0,0,0,0.75);
+  }
+
+  /* ---------- LAYOUT ---------- */
+  #app{
+    position:relative; z-index:10;
+    height:100%; width:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding: 16px;
+  }
+
+  .screen{
+    width:100%; max-width:480px;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  .screen.active{ display:flex; }
+  #screen-versus.active{ gap:6px; }
+
+  .title{
+    font-family:'Press Start 2P', monospace;
+    font-size: clamp(20px, 6vw, 30px);
+    color: var(--yellow);
+    text-align:center;
+    text-shadow: 0 0 6px var(--yellow), 0 0 18px var(--magenta), 3px 3px 0 #000;
+    letter-spacing: 1px;
+    line-height:1.5;
+  }
+  .subtitle{
+    font-size: 20px;
+    color: var(--cyan);
+    text-shadow: 0 0 8px var(--cyan);
+    text-align:center;
+  }
+
+  .cabinet{
+    width:100%;
+    border: 3px solid var(--cyan);
+    border-radius: 10px;
+    background: rgba(10,5,24,0.7);
+    box-shadow: 0 0 0 4px #000, 0 0 24px rgba(0,255,242,0.35), inset 0 0 30px rgba(123,47,247,0.25);
+    padding: 22px 18px;
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+  }
+
+  .blink{ animation: blink 1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  button{
+    font-family:'Press Start 2P', monospace;
+    cursor:pointer;
+    border:none;
+    outline:none;
+  }
+
+  .btn-primary{
+    background: var(--magenta);
+    color:#fff;
+    font-size:15px;
+    padding: 16px 26px;
+    border-radius: 6px;
+    box-shadow: 0 5px 0 #9c0f4c, 0 0 20px rgba(255,46,136,0.6);
+    transition: transform .05s;
+    width:100%;
+  }
+  .btn-primary:active{ transform: translateY(4px); box-shadow: 0 1px 0 #9c0f4c; }
+
+  .btn-secondary{
+    background: transparent;
+    color: var(--cyan);
+    border: 2px solid var(--cyan);
+    font-size:12px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,255,242,0.4);
+    width:100%;
+  }
+
+  .btn-versus{
+    background: var(--grid);
+    color:#fff;
+    font-size:14px;
+    padding:16px 26px;
+    border-radius:6px;
+    box-shadow: 0 5px 0 #4a1f8f, 0 0 20px rgba(123,47,247,0.6);
+    width:100%;
+  }
+  .btn-versus:active{ transform: translateY(4px); box-shadow: 0 1px 0 #4a1f8f; }
+
+  /* ---------- GAME SCREEN (SOLO) ---------- */
+  #hud{
+    display:flex; justify-content:space-between; width:100%;
+    font-family:'Press Start 2P', monospace;
+    font-size: 13px;
+  }
+  #hud .label{ color: var(--cyan); }
+  #timer{ color: var(--yellow); }
+  #timer.urgent, .vTimer.urgent{ color: var(--red); animation: pulse .4s infinite; }
+  @keyframes pulse{ 50%{ transform:scale(1.15); } }
+  #scoreVal{ color: var(--green); }
+
+  #question{
+    font-family:'Press Start 2P', monospace;
+    font-size: clamp(30px, 9vw, 46px);
+    color:#fff;
+    text-shadow: 0 0 10px var(--cyan);
+    letter-spacing: 4px;
+  }
+
+  #answerBox{
+    width: 80%;
+    min-height: 54px;
+    background: #000;
+    border: 3px solid var(--yellow);
+    border-radius: 6px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Press Start 2P', monospace;
+    font-size: 26px;
+    color: var(--yellow);
+    box-shadow: 0 0 14px rgba(255,230,0,0.5) inset;
+    letter-spacing: 3px;
+  }
+  #answerBox.correct{ border-color: var(--green); color: var(--green); box-shadow: 0 0 20px var(--green) inset; }
+  #answerBox.wrong{ border-color: var(--red); color: var(--red); box-shadow: 0 0 20px var(--red) inset; }
+
+  #keypad{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .key{
+    background: #1a0b33;
+    color:#fff;
+    border: 2px solid var(--grid);
+    border-radius: 6px;
+    font-size: 18px;
+    padding: 14px 0;
+    box-shadow: 0 3px 0 #4a1f8f;
+  }
+  .key:active{ transform: translateY(2px); box-shadow:none; }
+  .key.func{ background:#3a0f2e; border-color: var(--magenta); color: var(--magenta); font-size:12px;}
+
+  /* ---------- RESULT SCREEN ---------- */
+  #finalScore{
+    font-family:'Press Start 2P', monospace;
+    font-size: 44px;
+    color: var(--green);
+    text-shadow: 0 0 14px var(--green);
+  }
+  #funnyLine, #versusRoast{
+    font-size: 22px;
+    color: var(--cyan);
+    text-align:center;
+    min-height: 50px;
+    padding: 0 6px;
+  }
+  #nameInput, .nameFieldSmall{
+    width: 80%;
+    background:#000;
+    border: 3px solid var(--cyan);
+    color: var(--yellow);
+    font-family:'Press Start 2P', monospace;
+    font-size: 15px;
+    padding: 12px;
+    text-align:center;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+  #nameInput::placeholder, .nameFieldSmall::placeholder{ color: #445; }
+
+  /* ---------- LEADERBOARD ---------- */
+  .lbTabs{ display:flex; gap:8px; width:100%; }
+  .lbTab{ flex:1; }
+  .lbTab.active{ background: var(--cyan); color:#000; box-shadow:0 0 14px rgba(0,255,242,0.7); }
+
+  #leaderList{
+    width:100%;
+    list-style:none;
+    margin:0; padding:0;
+    display:flex; flex-direction:column; gap:8px;
+    max-height: 38vh;
+    overflow-y:auto;
+  }
+  #leaderList li{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:18px;
+    background: rgba(123,47,247,0.15);
+    border-left: 4px solid var(--magenta);
+    padding: 8px 12px;
+    border-radius: 4px;
+    gap:8px;
+  }
+  #leaderList li.me{
+    border-left-color: var(--green);
+    background: rgba(57,255,143,0.12);
+  }
+  #leaderList .rank{ color: var(--yellow); width: 30px; flex-shrink:0; }
+  #leaderList .nm{ flex:1; color:#fff; padding-left:6px;}
+  #leaderList .sc{ color: var(--cyan); flex-shrink:0; }
+
+  .small{ font-size:14px; color:#889; text-align:center; }
+
+  /* ---------- VERSUS SETUP ---------- */
+  #screen-versusSetup .cabinet{ gap:16px; }
+
+  /* ---------- VERSUS GAME ---------- */
+  #versusArena{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  .vHalf{
+    display:flex; flex-direction:column; align-items:center;
+    gap:5px;
+    padding:8px 4px;
+  }
+  .vTop{ transform:rotate(180deg); }
+  .vName{
+    font-family:'Press Start 2P', monospace;
+    font-size:11px;
+    color: var(--magenta);
+    letter-spacing:1px;
+  }
+  .vScore{
+    font-family:'Press Start 2P', monospace;
+    font-size:18px;
+    color: var(--green);
+  }
+  .vQuestion{
+    font-family:'Press Start 2P', monospace;
+    font-size:20px;
+    color:#fff;
+    text-shadow: 0 0 8px var(--cyan);
+    letter-spacing:2px;
+  }
+  .vAnswerBox{
+    width:70%;
+    min-height:32px;
+    background:#000;
+    border:2px solid var(--yellow);
+    border-radius:5px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Press Start 2P', monospace;
+    font-size:16px;
+    color: var(--yellow);
+  }
+  .vAnswerBox.correct{ border-color: var(--green); color: var(--green); }
+  .vAnswerBox.wrong{ border-color: var(--red); color: var(--red); }
+  .vKeypad{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:5px;
+    width:78%;
+  }
+  .vKey{
+    background:#1a0b33;
+    color:#fff;
+    border:2px solid var(--grid);
+    border-radius:5px;
+    font-size:13px;
+    padding:8px 0;
+    box-shadow: 0 2px 0 #4a1f8f;
+  }
+  .vKey:active{ transform:translateY(2px); box-shadow:none; }
+  .vKey.func{ background:#3a0f2e; border-color: var(--magenta); color: var(--magenta); font-size:10px; }
+
+  .vDivider{
+    display:flex; align-items:center; justify-content:center;
+    padding:6px 0;
+    font-family:'Press Start 2P', monospace;
+  }
+  .vTimer{
+    color: var(--yellow);
+    font-size:18px;
+    text-shadow:0 0 8px var(--yellow);
+  }
+
+  /* ---------- VERSUS RESULT ---------- */
+  #versusWinnerLine{
+    font-family:'Press Start 2P', monospace;
+    font-size:20px;
+    color: var(--green);
+    text-shadow: 0 0 10px var(--green);
+    text-align:center;
+  }
+  #versusScoreLine{
+    font-size:22px;
+    color:#fff;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div id="backdrop">
+  <div id="sun"></div>
+  <div id="grid"></div>
+</div>
+<div id="scanlines"></div>
+<div id="vignette"></div>
+
+<div id="app">
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="title">TIMES<br>ATTACK</div>
+    <div class="subtitle">30-SECOND BLITZ</div>
+    <div class="cabinet">
+      <div style="font-size:16px; text-align:center; color:#cbd;">
+        Answer as many × facts (1–12) as you can before the clock runs out.
+      </div>
+      <button class="btn-primary blink" id="startBtn">▶ SOLO BLITZ</button>
+      <button class="btn-versus" id="goVersusBtn">⚔ VERSUS MODE</button>
+      <button class="btn-secondary" id="viewLeaderboardBtn">🏆 HIGH SCORES</button>
+    </div>
+  </div>
+
+  <!-- SOLO GAME SCREEN -->
+  <div class="screen" id="screen-game">
+    <div id="hud">
+      <div><span class="label">TIME</span> <span id="timer">30</span></div>
+      <div><span class="label">SCORE</span> <span id="scoreVal">0</span></div>
+    </div>
+    <div id="question">7 × 8</div>
+    <div id="answerBox">&nbsp;</div>
+    <div id="keypad">
+      <button class="key" data-k="1">1</button>
+      <button class="key" data-k="2">2</button>
+      <button class="key" data-k="3">3</button>
+      <button class="key" data-k="4">4</button>
+      <button class="key" data-k="5">5</button>
+      <button class="key" data-k="6">6</button>
+      <button class="key" data-k="7">7</button>
+      <button class="key" data-k="8">8</button>
+      <button class="key" data-k="9">9</button>
+      <button class="key func" data-k="back">⌫</button>
+      <button class="key" data-k="0">0</button>
+      <button class="key func" data-k="enter">↵</button>
+    </div>
+  </div>
+
+  <!-- SOLO RESULT SCREEN -->
+  <div class="screen" id="screen-result">
+    <div class="title" style="font-size:20px;">TIME'S UP!</div>
+    <div id="finalScore">0</div>
+    <div id="funnyLine">Loading roast...</div>
+    <input id="nameInput" maxlength="10" placeholder="ENTER NAME">
+    <button class="btn-primary" id="submitScoreBtn">SAVE SCORE</button>
+    <button class="btn-secondary" id="playAgainBtn">PLAY AGAIN</button>
+    <button class="btn-secondary" id="resultHomeBtn">MAIN MENU</button>
+  </div>
+
+  <!-- VERSUS SETUP SCREEN -->
+  <div class="screen" id="screen-versusSetup">
+    <div class="title" style="font-size:20px;">VERSUS MODE</div>
+    <div class="cabinet">
+      <div style="font-size:16px; text-align:center; color:#cbd;">
+        Two players, one phone. Pass it between you — same 30 seconds, own questions, own score.
+      </div>
+      <input id="p1NameInput" class="nameFieldSmall" maxlength="10" placeholder="PLAYER 1 NAME">
+      <input id="p2NameInput" class="nameFieldSmall" maxlength="10" placeholder="PLAYER 2 NAME">
+      <button class="btn-versus" id="startVersusBtn">START MATCH</button>
+      <button class="btn-secondary" id="versusSetupBackBtn">BACK</button>
+    </div>
+  </div>
+
+  <!-- VERSUS GAME SCREEN -->
+  <div class="screen" id="screen-versus">
+    <div id="versusArena">
+      <div class="vHalf vTop" data-player="2">
+        <div class="vName" id="p2NameLabel">PLAYER 2</div>
+        <div class="vScore" id="p2ScoreVal">0</div>
+        <div class="vQuestion" id="p2Question">1 × 1</div>
+        <div class="vAnswerBox" id="p2AnswerBox">&nbsp;</div>
+        <div class="vKeypad">
+          <button class="vKey" data-k="1">1</button>
+          <button class="vKey" data-k="2">2</button>
+          <button class="vKey" data-k="3">3</button>
+          <button class="vKey" data-k="4">4</button>
+          <button class="vKey" data-k="5">5</button>
+          <button class="vKey" data-k="6">6</button>
+          <button class="vKey" data-k="7">7</button>
+          <button class="vKey" data-k="8">8</button>
+          <button class="vKey" data-k="9">9</button>
+          <button class="vKey func" data-k="back">⌫</button>
+          <button class="vKey" data-k="0">0</button>
+          <button class="vKey func" data-k="enter">↵</button>
+        </div>
+      </div>
+
+      <div class="vDivider"><span class="vTimer" id="versusTimer">30</span></div>
+
+      <div class="vHalf vBottom" data-player="1">
+        <div class="vName" id="p1NameLabel">PLAYER 1</div>
+        <div class="vScore" id="p1ScoreVal">0</div>
+        <div class="vQuestion" id="p1Question">1 × 1</div>
+        <div class="vAnswerBox" id="p1AnswerBox">&nbsp;</div>
+        <div class="vKeypad">
+          <button class="vKey" data-k="1">1</button>
+          <button class="vKey" data-k="2">2</button>
+          <button class="vKey" data-k="3">3</button>
+          <button class="vKey" data-k="4">4</button>
+          <button class="vKey" data-k="5">5</button>
+          <button class="vKey" data-k="6">6</button>
+          <button class="vKey" data-k="7">7</button>
+          <button class="vKey" data-k="8">8</button>
+          <button class="vKey" data-k="9">9</button>
+          <button class="vKey func" data-k="back">⌫</button>
+          <button class="vKey" data-k="0">0</button>
+          <button class="vKey func" data-k="enter">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSUS RESULT SCREEN -->
+  <div class="screen" id="screen-versusResult">
+    <div class="title" style="font-size:20px;">MATCH OVER</div>
+    <div id="versusWinnerLine">PLAYER 1 WINS!</div>
+    <div id="versusScoreLine">0 - 0</div>
+    <div id="versusRoast"></div>
+    <button class="btn-primary" id="saveVersusBtn">SAVE TO HALL OF FAME</button>
+    <button class="btn-versus" id="versusRematchBtn">REMATCH</button>
+    <button class="btn-secondary" id="versusHomeBtn">MAIN MENU</button>
+  </div>
+
+  <!-- LEADERBOARD SCREEN -->
+  <div class="screen" id="screen-leaderboard">
+    <div class="title" style="font-size:22px;">🏆 HIGH SCORES</div>
+    <div class="lbTabs">
+      <button class="btn-secondary lbTab active" id="tabSoloBtn">SOLO</button>
+      <button class="btn-secondary lbTab" id="tabVersusBtn">VERSUS</button>
+    </div>
+    <ul id="leaderList"></ul>
+    <div class="small" id="storageNote">Scores are shared with anyone who opens this game.</div>
+    <button class="btn-primary" id="backToStartBtn">BACK</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const screens = {
+    start: document.getElementById('screen-start'),
+    game: document.getElementById('screen-game'),
+    result: document.getElementById('screen-result'),
+    versusSetup: document.getElementById('screen-versusSetup'),
+    versus: document.getElementById('screen-versus'),
+    versusResult: document.getElementById('screen-versusResult'),
+    leaderboard: document.getElementById('screen-leaderboard'),
+  };
+  function show(name){
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /* ============================================================
+     STORAGE LAYER
+     Priority: Firebase (if configured) > Claude window.storage
+     (if running inside Claude) > in-memory (session only)
+  ============================================================ */
+  const FIREBASE_CONFIG = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+  };
+
+  let fbDb = null;
+  let fbInitAttempted = false;
+  function firebaseReady(){
+    if(fbDb) return true;
+    if(fbInitAttempted) return false;
+    fbInitAttempted = true;
+    if(typeof firebase === 'undefined') return false;
+    if(!FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY') return false;
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      fbDb = firebase.database();
+      return true;
+    }catch(e){ console.error('Firebase init failed', e); return false; }
+  }
+
+  const hasPersistentStorage = (typeof window.storage !== 'undefined'
+    && typeof window.storage.get === 'function'
+    && typeof window.storage.set === 'function');
+
+  const memoryStore = { leaderboard: [], versusLog: [] };
+
+  async function addEntry(key, entry){
+    if(firebaseReady()){
+      try{ await fbDb.ref(key).push(entry); return; }
+      catch(e){ console.error('Firebase write failed, falling back', e); }
+    }
+    if(hasPersistentStorage){
+      try{
+        let list = [];
+        try{
+          const res = await window.storage.get(key, true);
+          if(res && res.value) list = JSON.parse(res.value);
+        }catch(e){ /* key doesn't exist yet */ }
+        list.push(entry);
+        await window.storage.set(key, JSON.stringify(list), true);
+        return;
+      }catch(e){ console.error('window.storage write failed, falling back to memory', e); }
+    }
+    memoryStore[key] = memoryStore[key] || [];
+    memoryStore[key].push(entry);
+  }
+
+  async function loadList(key){
+    if(firebaseReady()){
+      try{
+        const snap = await fbDb.ref(key).limitToLast(50).once('value');
+        const val = snap.val() || {};
+        return Object.values(val);
+      }catch(e){ console.error('Firebase read failed, falling back', e); }
+    }
+    if(hasPersistentStorage){
+      try{
+        const res = await window.storage.get(key, true);
+        if(res && res.value) return JSON.parse(res.value);
+      }catch(e){ /* key doesn't exist yet */ }
+    }
+    return memoryStore[key] || [];
+  }
+
+  function storageModeLabel(){
+    if(firebaseReady()) return 'Live shared leaderboard — synced with everyone who plays this link.';
+    if(hasPersistentStorage) return 'Scores are shared with anyone who opens this game.';
+    return 'Scores this session only. Add a Firebase config (see the code comments) to make this permanent on GitHub.';
+  }
+
+  /* ============================================================
+     SOLO MODE
+  ============================================================ */
+  let score = 0;
+  let timeLeft = 30;
+  let timerInterval = null;
+  let current = { a:1, b:1, answer:1 };
+  let typed = '';
+  let lastQ = '';
+  let gameActive = false;
+
+  const questionEl = document.getElementById('question');
+  const answerBox = document.getElementById('answerBox');
+  const timerEl = document.getElementById('timer');
+  const scoreEl = document.getElementById('scoreVal');
+
+  function newQuestion(){
+    let a, b, key;
+    do{
+      a = 1 + Math.floor(Math.random()*12);
+      b = 1 + Math.floor(Math.random()*12);
+      key = a+'x'+b;
+    } while(key === lastQ);
+    lastQ = key;
+    current = { a, b, answer: a*b };
+    questionEl.textContent = a + ' × ' + b;
+    typed = '';
+    answerBox.textContent = '\u00A0';
+    answerBox.classList.remove('correct','wrong');
+  }
+
+  function updateAnswerDisplay(){
+    answerBox.textContent = typed.length ? typed : '\u00A0';
+  }
+
+  function flash(cls){
+    answerBox.classList.remove('correct','wrong');
+    void answerBox.offsetWidth;
+    answerBox.classList.add(cls);
+  }
+
+  function checkAnswer(){
+    if(!typed.length) return;
+    const val = parseInt(typed, 10);
+    if(val === current.answer){
+      score++;
+      scoreEl.textContent = score;
+      flash('correct');
+      setTimeout(newQuestion, 80);
+    } else {
+      flash('wrong');
+      setTimeout(()=>{ typed=''; updateAnswerDisplay(); answerBox.classList.remove('wrong'); }, 220);
+    }
+  }
+
+  function pressKey(k){
+    if(!gameActive) return;
+    if(k === 'back'){ typed = typed.slice(0,-1); updateAnswerDisplay(); return; }
+    if(k === 'enter'){ checkAnswer(); return; }
+    if(typed.length >= 3) return;
+    typed += k;
+    updateAnswerDisplay();
+    if(typed.length === String(current.answer).length){ checkAnswer(); }
+  }
+
+  document.getElementById('keypad').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.key');
+    if(!btn) return;
+    pressKey(btn.dataset.k);
+  });
+
+  window.addEventListener('keydown', (e)=>{
+    if(!gameActive) return;
+    if(e.key >= '0' && e.key <= '9') pressKey(e.key);
+    else if(e.key === 'Backspace') pressKey('back');
+    else if(e.key === 'Enter') pressKey('enter');
+  });
+
+  function startGame(){
+    score = 0;
+    timeLeft = 30;
+    typed = '';
+    lastQ = '';
+    scoreEl.textContent = '0';
+    timerEl.textContent = '30';
+    timerEl.classList.remove('urgent');
+    gameActive = true;
+    newQuestion();
+    show('game');
+    timerInterval = setInterval(()=>{
+      timeLeft--;
+      timerEl.textContent = timeLeft;
+      if(timeLeft <= 7) timerEl.classList.add('urgent');
+      if(timeLeft <= 0){
+        clearInterval(timerInterval);
+        endGame();
+      }
+    }, 1000);
+  }
+
+  function endGame(){
+    gameActive = false;
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('funnyLine').textContent = getRoast(score);
+    document.getElementById('nameInput').value = '';
+    show('result');
+  }
+
+  function getRoast(s){
+    const tiers = [
+      { max: 0, lines: [
+        "A big fat ZERO. Even a Magic 8-Ball gets one right sometimes.",
+        "GAME OVER. Did you unplug the console halfway through, or is this really your maths?",
+        "Zero points. Somewhere, your calculator is laughing at you.",
+      ]},
+      { max: 3, lines: [
+        "Rough. My toaster does maths faster, and it only has two settings.",
+        "Did you sit on the keypad instead of pressing it?",
+        "That score wouldn't beat a sleepy goldfish. Run it back.",
+      ]},
+      { max: 6, lines: [
+        "Not great, not terrible. Like a level 1 boss you should've squashed.",
+        "You're technically better than a rock. Barely.",
+        "A few correct! Somewhere between 'trying' and 'napping.'",
+      ]},
+      { max: 9, lines: [
+        "Getting warmer. Still slower than dial-up internet, but warmer.",
+        "Decent! You're climbing out of the tutorial level now.",
+        "Middling. Solid B-movie villain energy — not a total disaster.",
+      ]},
+      { max: 13, lines: [
+        "Now we're talking! Respectable arcade score right there.",
+        "Not bad at all — you'd survive at least one round against a calculator.",
+        "Solid! Your times tables are finally loading properly.",
+      ]},
+      { max: 17, lines: [
+        "Whoa, look at you go! Teacher's about to frame this scorecard.",
+        "Impressive! You just out-mathed most sleepy Monday mornings.",
+        "Sharp reflexes! You're basically a maths speedrunner now.",
+      ]},
+      { max: 21, lines: [
+        "Certified maths machine. Are you SURE you're in Year 7 and not secretly a teacher?",
+        "Big number energy. Calculators are starting to feel nervous.",
+        "Elite tier! That's a genuine high-score-table flex.",
+      ]},
+      { max: 25, lines: [
+        "LEGENDARY. Somewhere, a calculator just handed in its resignation.",
+        "Absolutely destroyed it. Times tables have left the chat.",
+        "Ridiculous score. You're basically a human abacus at this point.",
+      ]},
+      { max: Infinity, lines: [
+        "ERROR 404: HUMAN NOT FOUND. Are you secretly a supercomputer in disguise?",
+        "That score should be illegal. Someone check this kid for a chip in his brain.",
+        "GODLIKE. Frame this. Tell the school. Tell everyone.",
+      ]},
+    ];
+    const tier = tiers.find(t => s <= t.max);
+    return tier.lines[Math.floor(Math.random() * tier.lines.length)];
+  }
+
+  document.getElementById('startBtn').addEventListener('click', startGame);
+  document.getElementById('playAgainBtn').addEventListener('click', startGame);
+  document.getElementById('resultHomeBtn').addEventListener('click', ()=> show('start'));
+
+  document.getElementById('submitScoreBtn').addEventListener('click', async ()=>{
+    let name = document.getElementById('nameInput').value.trim().toUpperCase();
+    if(!name) name = 'PLAYER 1';
+    name = name.slice(0, 10);
+    await addEntry('leaderboard', { name, score, date: Date.now() });
+    currentLBTab = 'solo';
+    await refreshLeaderboardView(name, score);
+    show('leaderboard');
+  });
+
+  /* ============================================================
+     VERSUS MODE
+  ============================================================ */
+  let versusActive = false;
+  let versusTimeLeft = 30;
+  let versusInterval = null;
+  let players = {
+    1: { name:'PLAYER 1', score:0, current:null, typed:'', lastQ:'' },
+    2: { name:'PLAYER 2', score:0, current:null, typed:'', lastQ:'' },
+  };
+
+  function newVersusQuestion(p){
+    const pl = players[p];
+    let a, b, key;
+    do{
+      a = 1 + Math.floor(Math.random()*12);
+      b = 1 + Math.floor(Math.random()*12);
+      key = a+'x'+b;
+    } while(key === pl.lastQ);
+    pl.lastQ = key;
+    pl.current = { a, b, answer: a*b };
+    pl.typed = '';
+    document.getElementById('p'+p+'Question').textContent = a + ' × ' + b;
+    const box = document.getElementById('p'+p+'AnswerBox');
+    box.textContent = '\u00A0';
+    box.classList.remove('correct','wrong');
+  }
+
+  function updateVersusAnswerDisplay(p){
+    const box = document.getElementById('p'+p+'AnswerBox');
+    box.textContent = players[p].typed.length ? players[p].typed : '\u00A0';
+  }
+
+  function flashVersus(p, cls){
+    const box = document.getElementById('p'+p+'AnswerBox');
+    box.classList.remove('correct','wrong');
+    void box.offsetWidth;
+    box.classList.add(cls);
+  }
+
+  function checkVersusAnswer(p){
+    const pl = players[p];
+    if(!pl.typed.length) return;
+    const val = parseInt(pl.typed, 10);
+    if(val === pl.current.answer){
+      pl.score++;
+      document.getElementById('p'+p+'ScoreVal').textContent = pl.score;
+      flashVersus(p, 'correct');
+      setTimeout(()=> newVersusQuestion(p), 80);
+    } else {
+      flashVersus(p, 'wrong');
+      setTimeout(()=>{
+        pl.typed = '';
+        updateVersusAnswerDisplay(p);
+        document.getElementById('p'+p+'AnswerBox').classList.remove('wrong');
+      }, 220);
+    }
+  }
+
+  function pressVersusKey(p, k){
+    if(!versusActive) return;
+    const pl = players[p];
+    if(k === 'back'){ pl.typed = pl.typed.slice(0,-1); updateVersusAnswerDisplay(p); return; }
+    if(k === 'enter'){ checkVersusAnswer(p); return; }
+    if(pl.typed.length >= 3) return;
+    pl.typed += k;
+    updateVersusAnswerDisplay(p);
+    if(pl.typed.length === String(pl.current.answer).length){ checkVersusAnswer(p); }
+  }
+
+  document.getElementById('screen-versus').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.vKey');
+    if(!btn) return;
+    const half = btn.closest('.vHalf');
+    pressVersusKey(half.dataset.player, btn.dataset.k);
+  });
+
+  let lastP1Name = 'PLAYER 1';
+  let lastP2Name = 'PLAYER 2';
+
+  function startVersusGame(useLastNames){
+    if(!useLastNames){
+      lastP1Name = (document.getElementById('p1NameInput').value.trim() || 'PLAYER 1').toUpperCase().slice(0,10);
+      lastP2Name = (document.getElementById('p2NameInput').value.trim() || 'PLAYER 2').toUpperCase().slice(0,10);
+    }
+    players = {
+      1: { name:lastP1Name, score:0, current:null, typed:'', lastQ:'' },
+      2: { name:lastP2Name, score:0, current:null, typed:'', lastQ:'' },
+    };
+    document.getElementById('p1NameLabel').textContent = lastP1Name;
+    document.getElementById('p2NameLabel').textContent = lastP2Name;
+    document.getElementById('p1ScoreVal').textContent = '0';
+    document.getElementById('p2ScoreVal').textContent = '0';
+    versusTimeLeft = 30;
+    const vt = document.getElementById('versusTimer');
+    vt.textContent = '30';
+    vt.classList.remove('urgent');
+    versusActive = true;
+    newVersusQuestion(1);
+    newVersusQuestion(2);
+    show('versus');
+    versusInterval = setInterval(()=>{
+      versusTimeLeft--;
+      vt.textContent = versusTimeLeft;
+      if(versusTimeLeft <= 7) vt.classList.add('urgent');
+      if(versusTimeLeft <= 0){
+        clearInterval(versusInterval);
+        endVersusGame();
+      }
+    }, 1000);
+  }
+
+  function getVersusRoast(winner, loser){
+    const margin = winner.score - loser.score;
+    const lines = [
+      winner.name+' absolutely destroyed '+loser.name+' — by '+margin+' whole answers.',
+      loser.name+', maybe stick to a calculator next time. '+winner.name+' is unstoppable today.',
+      "Somewhere, "+loser.name+"'s pride just took "+margin+' points of damage.',
+      winner.name+' wins! '+loser.name+' put up a fight though... a small, mathematically weak fight.',
+      'Not even close. '+winner.name+' by '+margin+'. '+loser.name+', we need to talk.',
+      winner.name+' is basically running a maths sweatshop right now, and '+loser.name+' works there.',
+    ];
+    return lines[Math.floor(Math.random()*lines.length)];
+  }
+
+  function getVersusTieRoast(){
+    const lines = [
+      "A tie?! Nobody wins. Nobody loses. Everybody's a little disappointed.",
+      "Dead even. Somewhere a coin is being flipped to settle this properly.",
+      "A perfect stalemate. Rematch immediately, this cannot stand.",
+    ];
+    return lines[Math.floor(Math.random()*lines.length)];
+  }
+
+  let lastVersusResult = null;
+
+  function endVersusGame(){
+    versusActive = false;
+    const p1 = players[1], p2 = players[2];
+    let winnerLine, roast, winnerName;
+    if(p1.score === p2.score){
+      winnerLine = "IT'S A TIE!";
+      roast = getVersusTieRoast();
+      winnerName = 'TIE';
+    } else {
+      const winner = p1.score > p2.score ? p1 : p2;
+      const loser = p1.score > p2.score ? p2 : p1;
+      winnerLine = winner.name + ' WINS!';
+      roast = getVersusRoast(winner, loser);
+      winnerName = winner.name;
+    }
+    lastVersusResult = { p1: p1.name, p1score: p1.score, p2: p2.name, p2score: p2.score, winner: winnerName, date: Date.now() };
+    document.getElementById('versusWinnerLine').textContent = winnerLine;
+    document.getElementById('versusScoreLine').textContent = p1.name+': '+p1.score+'   |   '+p2.name+': '+p2.score;
+    document.getElementById('versusRoast').textContent = roast;
+    show('versusResult');
+  }
+
+  document.getElementById('goVersusBtn').addEventListener('click', ()=> show('versusSetup'));
+  document.getElementById('versusSetupBackBtn').addEventListener('click', ()=> show('start'));
+  document.getElementById('startVersusBtn').addEventListener('click', ()=> startVersusGame(false));
+  document.getElementById('versusRematchBtn').addEventListener('click', ()=> startVersusGame(true));
+  document.getElementById('versusHomeBtn').addEventListener('click', ()=> show('start'));
+
+  document.getElementById('saveVersusBtn').addEventListener('click', async ()=>{
+    if(!lastVersusResult) return;
+    await addEntry('versusLog', lastVersusResult);
+    currentLBTab = 'versus';
+    await refreshLeaderboardView();
+    show('leaderboard');
+  });
+
+  /* ============================================================
+     LEADERBOARD SCREEN
+  ============================================================ */
+  let currentLBTab = 'solo';
+
+  async function refreshLeaderboardView(highlightName, highlightScore){
+    document.getElementById('tabSoloBtn').classList.toggle('active', currentLBTab === 'solo');
+    document.getElementById('tabVersusBtn').classList.toggle('active', currentLBTab === 'versus');
+    const listEl = document.getElementById('leaderList');
+    listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">Loading...</li>';
+
+    if(currentLBTab === 'solo'){
+      const list = await loadList('leaderboard');
+      list.sort((a,b)=> b.score - a.score);
+      const top = list.slice(0, 10);
+      listEl.innerHTML = '';
+      if(top.length === 0){
+        listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">No scores yet. Be the first!</li>';
+      } else {
+        top.forEach((entry, i)=>{
+          const li = document.createElement('li');
+          if(highlightName && entry.name === highlightName && entry.score === highlightScore) li.classList.add('me');
+          li.innerHTML = '<span class="rank">#'+(i+1)+'</span><span class="nm">'+escapeHtml(entry.name)+'</span><span class="sc">'+entry.score+'</span>';
+          listEl.appendChild(li);
+        });
+      }
+    } else {
+      const list = await loadList('versusLog');
+      list.sort((a,b)=> (b.date||0) - (a.date||0));
+      const top = list.slice(0, 10);
+      listEl.innerHTML = '';
+      if(top.length === 0){
+        listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">No matches yet. Start a Versus game!</li>';
+      } else {
+        top.forEach((entry)=>{
+          const li = document.createElement('li');
+          const winnerLabel = entry.winner === 'TIE' ? 'TIE' : entry.winner;
+          li.innerHTML = '<span class="nm">'+escapeHtml(entry.p1)+' '+entry.p1score+' – '+entry.p2score+' '+escapeHtml(entry.p2)+'</span><span class="sc">'+escapeHtml(winnerLabel)+'</span>';
+          listEl.appendChild(li);
+        });
+      }
+    }
+    document.getElementById('storageNote').textContent = storageModeLabel();
+  }
+
+  document.getElementById('viewLeaderboardBtn').addEventListener('click', async ()=>{
+    currentLBTab = 'solo';
+    await refreshLeaderboardView();
+    show('leaderboard');
+  });
+  document.getElementById('tabSoloBtn').addEventListener('click', ()=>{ currentLBTab = 'solo'; refreshLeaderboardView(); });
+  document.getElementById('tabVersusBtn').addEventListener('click', ()=>{ currentLBTab = 'versus'; refreshLeaderboardView(); });
+  document.getElementById('backToStartBtn').addEventListener('click', ()=> show('start'));
+
+})();
+</script>
+
+</body>
+</html>
