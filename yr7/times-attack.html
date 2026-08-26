@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>TIMES ATTACK // 30-Second Blitz</title>
+<title>TIMES ATTACK // Solo Blitz</title>
 
 <!--
   ============================================================
@@ -25,6 +25,11 @@
   Skip all of this and the game still works fine — it'll just
   save scores to this browser/device only instead of everyone
   who opens the link.
+
+  NOTE: Personal bests, streaks, and the weak-tables tracker are
+  always kept local to this device/browser (not shared via
+  Firebase), since "your best" and "your weak spots" only make
+  sense per-player.
   ============================================================
 -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -116,10 +121,11 @@
     display:none;
     flex-direction:column;
     align-items:center;
-    gap:18px;
+    gap:16px;
+    max-height: 100%;
+    overflow-y: auto;
   }
   .screen.active{ display:flex; }
-  #screen-versus.active{ gap:6px; }
 
   .title{
     font-family:'Press Start 2P', monospace;
@@ -143,8 +149,8 @@
     border-radius: 10px;
     background: rgba(10,5,24,0.7);
     box-shadow: 0 0 0 4px #000, 0 0 24px rgba(0,255,242,0.35), inset 0 0 30px rgba(123,47,247,0.25);
-    padding: 22px 18px;
-    display:flex; flex-direction:column; align-items:center; gap:14px;
+    padding: 20px 18px;
+    display:flex; flex-direction:column; align-items:center; gap:12px;
   }
 
   .blink{ animation: blink 1s steps(1) infinite; }
@@ -180,28 +186,60 @@
     width:100%;
   }
 
-  .btn-versus{
+  .btn-daily{
+    background: #1a7ab8;
+    color:#fff;
+    font-size:14px;
+    padding:14px 24px;
+    border-radius:6px;
+    box-shadow: 0 5px 0 #0e4d75, 0 0 20px rgba(26,122,184,0.6);
+    width:100%;
+  }
+  .btn-daily:active{ transform: translateY(4px); box-shadow: 0 1px 0 #0e4d75; }
+
+  .btn-focus{
     background: var(--grid);
     color:#fff;
     font-size:14px;
-    padding:16px 26px;
+    padding:14px 24px;
     border-radius:6px;
     box-shadow: 0 5px 0 #4a1f8f, 0 0 20px rgba(123,47,247,0.6);
     width:100%;
   }
-  .btn-versus:active{ transform: translateY(4px); box-shadow: 0 1px 0 #4a1f8f; }
+  .btn-focus:active{ transform: translateY(4px); box-shadow: 0 1px 0 #4a1f8f; }
 
-  /* ---------- GAME SCREEN (SOLO) ---------- */
+  .diffRow{ display:flex; gap:8px; width:100%; }
+  .diffBtn{
+    flex:1;
+    background: transparent;
+    color: var(--cyan);
+    border: 2px solid var(--grid);
+    font-size:11px;
+    padding:10px 4px;
+    border-radius:6px;
+  }
+  .diffBtn.active{ background: var(--grid); color:#fff; box-shadow:0 0 12px rgba(123,47,247,0.7); }
+
+  /* ---------- GAME SCREEN (SOLO/DAILY/FOCUS) ---------- */
   #hud{
     display:flex; justify-content:space-between; width:100%;
     font-family:'Press Start 2P', monospace;
-    font-size: 13px;
+    font-size: 12px;
   }
   #hud .label{ color: var(--cyan); }
   #timer{ color: var(--yellow); }
-  #timer.urgent, .vTimer.urgent{ color: var(--red); animation: pulse .4s infinite; }
+  #timer.urgent{ color: var(--red); animation: pulse .4s infinite; }
   @keyframes pulse{ 50%{ transform:scale(1.15); } }
   #scoreVal{ color: var(--green); }
+  #streakVal{ color: var(--magenta); }
+  #streakVal.hot{ color: var(--yellow); text-shadow:0 0 8px var(--yellow); }
+
+  #modeLabel{
+    font-size:12px;
+    color: #889;
+    text-align:center;
+    letter-spacing:1px;
+  }
 
   #question{
     font-family:'Press Start 2P', monospace;
@@ -252,14 +290,32 @@
     color: var(--green);
     text-shadow: 0 0 14px var(--green);
   }
-  #funnyLine, #versusRoast{
+  #resultBanners{
+    display:flex; flex-direction:column; gap:6px; width:100%;
+  }
+  .best-banner{
+    font-family:'Press Start 2P', monospace;
+    font-size:11px;
+    text-align:center;
+    padding:8px;
+    border-radius:6px;
+    background: rgba(255,230,0,0.12);
+    color: var(--yellow);
+    border:1px solid var(--yellow);
+  }
+  .best-banner.streak{
+    background: rgba(255,46,136,0.12);
+    color: var(--magenta);
+    border-color: var(--magenta);
+  }
+  #funnyLine{
     font-size: 22px;
     color: var(--cyan);
     text-align:center;
-    min-height: 50px;
+    min-height: 40px;
     padding: 0 6px;
   }
-  #nameInput, .nameFieldSmall{
+  #nameInput{
     width: 80%;
     background:#000;
     border: 3px solid var(--cyan);
@@ -271,7 +327,7 @@
     border-radius: 6px;
     text-transform: uppercase;
   }
-  #nameInput::placeholder, .nameFieldSmall::placeholder{ color: #445; }
+  #nameInput::placeholder{ color: #445; }
 
   /* ---------- LEADERBOARD ---------- */
   .lbTabs{ display:flex; gap:8px; width:100%; }
@@ -283,7 +339,7 @@
     list-style:none;
     margin:0; padding:0;
     display:flex; flex-direction:column; gap:8px;
-    max-height: 38vh;
+    max-height: 34vh;
     overflow-y:auto;
   }
   #leaderList li{
@@ -305,95 +361,29 @@
 
   .small{ font-size:14px; color:#889; text-align:center; }
 
-  /* ---------- VERSUS SETUP ---------- */
-  #screen-versusSetup .cabinet{ gap:16px; }
+  /* ---------- WEAK SPOTS ---------- */
+  #weakSpotHint{
+    font-size:14px;
+    color: var(--yellow);
+    text-align:center;
+  }
 
-  /* ---------- VERSUS GAME ---------- */
-  #versusArena{
+  #weakList{
     width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:0;
+    list-style:none;
+    margin:0; padding:0;
+    display:flex; flex-direction:column; gap:6px;
   }
-  .vHalf{
-    display:flex; flex-direction:column; align-items:center;
-    gap:5px;
-    padding:8px 4px;
-  }
-  .vTop{ transform:rotate(180deg); }
-  .vName{
-    font-family:'Press Start 2P', monospace;
-    font-size:11px;
-    color: var(--magenta);
-    letter-spacing:1px;
-  }
-  .vScore{
-    font-family:'Press Start 2P', monospace;
-    font-size:18px;
-    color: var(--green);
-  }
-  .vQuestion{
-    font-family:'Press Start 2P', monospace;
-    font-size:20px;
-    color:#fff;
-    text-shadow: 0 0 8px var(--cyan);
-    letter-spacing:2px;
-  }
-  .vAnswerBox{
-    width:70%;
-    min-height:32px;
-    background:#000;
-    border:2px solid var(--yellow);
-    border-radius:5px;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Press Start 2P', monospace;
+  #weakList li{
+    display:flex; justify-content:space-between; align-items:center;
     font-size:16px;
-    color: var(--yellow);
+    background: rgba(255,46,136,0.1);
+    border-left: 4px solid var(--magenta);
+    padding: 8px 12px;
+    border-radius: 4px;
   }
-  .vAnswerBox.correct{ border-color: var(--green); color: var(--green); }
-  .vAnswerBox.wrong{ border-color: var(--red); color: var(--red); }
-  .vKeypad{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap:5px;
-    width:78%;
-  }
-  .vKey{
-    background:#1a0b33;
-    color:#fff;
-    border:2px solid var(--grid);
-    border-radius:5px;
-    font-size:13px;
-    padding:8px 0;
-    box-shadow: 0 2px 0 #4a1f8f;
-  }
-  .vKey:active{ transform:translateY(2px); box-shadow:none; }
-  .vKey.func{ background:#3a0f2e; border-color: var(--magenta); color: var(--magenta); font-size:10px; }
-
-  .vDivider{
-    display:flex; align-items:center; justify-content:center;
-    padding:6px 0;
-    font-family:'Press Start 2P', monospace;
-  }
-  .vTimer{
-    color: var(--yellow);
-    font-size:18px;
-    text-shadow:0 0 8px var(--yellow);
-  }
-
-  /* ---------- VERSUS RESULT ---------- */
-  #versusWinnerLine{
-    font-family:'Press Start 2P', monospace;
-    font-size:20px;
-    color: var(--green);
-    text-shadow: 0 0 10px var(--green);
-    text-align:center;
-  }
-  #versusScoreLine{
-    font-size:22px;
-    color:#fff;
-    text-align:center;
-  }
+  #weakList li .wl-table{ color:#fff; }
+  #weakList li .wl-pct{ color: var(--yellow); }
 </style>
 </head>
 <body>
@@ -410,22 +400,28 @@
   <!-- START SCREEN -->
   <div class="screen active" id="screen-start">
     <div class="title">TIMES<br>ATTACK</div>
-    <div class="subtitle">30-SECOND BLITZ</div>
+    <div class="subtitle" id="startSubtitle">SOLO BLITZ</div>
     <div class="cabinet">
       <div style="font-size:16px; text-align:center; color:#cbd;">
-        Answer as many × facts (1–12) as you can before the clock runs out.
+        Answer as many × facts as you can before the clock runs out.
       </div>
+      <div id="weakSpotHint"></div>
       <button class="btn-primary blink" id="startBtn">▶ SOLO BLITZ</button>
-      <button class="btn-versus" id="goVersusBtn">⚔ VERSUS MODE</button>
+      <button class="btn-daily" id="dailyBtn">🗓️ DAILY CHALLENGE</button>
+      <button class="btn-focus" id="focusBtn">🎯 FOCUS MODE</button>
       <button class="btn-secondary" id="viewLeaderboardBtn">🏆 HIGH SCORES</button>
+      <button class="btn-secondary" id="viewWeakSpotsBtn">📊 MY WEAK SPOTS</button>
+      <button class="btn-secondary" id="goSettingsBtn">⚙ SETTINGS</button>
     </div>
   </div>
 
-  <!-- SOLO GAME SCREEN -->
+  <!-- GAME SCREEN (used by Solo / Daily / Focus) -->
   <div class="screen" id="screen-game">
+    <div id="modeLabel">SOLO BLITZ</div>
     <div id="hud">
       <div><span class="label">TIME</span> <span id="timer">30</span></div>
       <div><span class="label">SCORE</span> <span id="scoreVal">0</span></div>
+      <div><span class="label">STREAK</span> <span id="streakVal">0</span></div>
     </div>
     <div id="question">7 × 8</div>
     <div id="answerBox">&nbsp;</div>
@@ -445,101 +441,71 @@
     </div>
   </div>
 
-  <!-- SOLO RESULT SCREEN -->
+  <!-- RESULT SCREEN -->
   <div class="screen" id="screen-result">
-    <div class="title" style="font-size:20px;">TIME'S UP!</div>
+    <div class="title" style="font-size:20px;" id="resultTitle">TIME'S UP!</div>
     <div id="finalScore">0</div>
+    <div id="resultBanners"></div>
     <div id="funnyLine">Loading roast...</div>
-    <input id="nameInput" maxlength="10" placeholder="ENTER NAME">
-    <button class="btn-primary" id="submitScoreBtn">SAVE SCORE</button>
+    <div id="saveScoreArea" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:12px;">
+      <input id="nameInput" maxlength="10" placeholder="ENTER NAME">
+      <button class="btn-primary" id="submitScoreBtn" style="width:100%;">SAVE SCORE</button>
+    </div>
     <button class="btn-secondary" id="playAgainBtn">PLAY AGAIN</button>
     <button class="btn-secondary" id="resultHomeBtn">MAIN MENU</button>
   </div>
 
-  <!-- VERSUS SETUP SCREEN -->
-  <div class="screen" id="screen-versusSetup">
-    <div class="title" style="font-size:20px;">VERSUS MODE</div>
+  <!-- SETTINGS SCREEN -->
+  <div class="screen" id="screen-settings">
+    <div class="title" style="font-size:20px;">SETTINGS</div>
     <div class="cabinet">
       <div style="font-size:16px; text-align:center; color:#cbd;">
-        Two players, one phone. Pass it between you — same 30 seconds, own questions, own score.
+        Game length
       </div>
-      <input id="p1NameInput" class="nameFieldSmall" maxlength="10" placeholder="PLAYER 1 NAME">
-      <input id="p2NameInput" class="nameFieldSmall" maxlength="10" placeholder="PLAYER 2 NAME">
-      <button class="btn-versus" id="startVersusBtn">START MATCH</button>
-      <button class="btn-secondary" id="versusSetupBackBtn">BACK</button>
+      <div id="durationDisplay" style="font-family:'Press Start 2P', monospace; font-size:34px; color:var(--yellow); text-shadow:0 0 12px var(--yellow);">60s</div>
+      <input type="range" id="durationSlider" min="10" max="120" step="5" value="60" style="width:90%;">
+      <div style="display:flex; justify-content:space-between; width:90%; font-size:14px; color:#889;">
+        <span>10s min</span>
+        <span>2:00 max</span>
+      </div>
+
+      <div style="font-size:16px; text-align:center; color:#cbd; margin-top:10px;">
+        Difficulty (Solo &amp; Daily Challenge)
+      </div>
+      <div class="diffRow">
+        <button class="diffBtn" id="diffEasyBtn" data-diff="easy">EASY<br><span style="font-size:9px;">2–5×</span></button>
+        <button class="diffBtn active" id="diffNormalBtn" data-diff="normal">NORMAL<br><span style="font-size:9px;">2–12×</span></button>
+        <button class="diffBtn" id="diffHardBtn" data-diff="hard">HARD<br><span style="font-size:9px;">6–12×</span></button>
+      </div>
+
+      <button class="btn-primary" id="saveSettingsBtn">SAVE</button>
+      <button class="btn-secondary" id="settingsBackBtn">BACK</button>
     </div>
-  </div>
-
-  <!-- VERSUS GAME SCREEN -->
-  <div class="screen" id="screen-versus">
-    <div id="versusArena">
-      <div class="vHalf vTop" data-player="2">
-        <div class="vName" id="p2NameLabel">PLAYER 2</div>
-        <div class="vScore" id="p2ScoreVal">0</div>
-        <div class="vQuestion" id="p2Question">1 × 1</div>
-        <div class="vAnswerBox" id="p2AnswerBox">&nbsp;</div>
-        <div class="vKeypad">
-          <button class="vKey" data-k="1">1</button>
-          <button class="vKey" data-k="2">2</button>
-          <button class="vKey" data-k="3">3</button>
-          <button class="vKey" data-k="4">4</button>
-          <button class="vKey" data-k="5">5</button>
-          <button class="vKey" data-k="6">6</button>
-          <button class="vKey" data-k="7">7</button>
-          <button class="vKey" data-k="8">8</button>
-          <button class="vKey" data-k="9">9</button>
-          <button class="vKey func" data-k="back">⌫</button>
-          <button class="vKey" data-k="0">0</button>
-          <button class="vKey func" data-k="enter">↵</button>
-        </div>
-      </div>
-
-      <div class="vDivider"><span class="vTimer" id="versusTimer">30</span></div>
-
-      <div class="vHalf vBottom" data-player="1">
-        <div class="vName" id="p1NameLabel">PLAYER 1</div>
-        <div class="vScore" id="p1ScoreVal">0</div>
-        <div class="vQuestion" id="p1Question">1 × 1</div>
-        <div class="vAnswerBox" id="p1AnswerBox">&nbsp;</div>
-        <div class="vKeypad">
-          <button class="vKey" data-k="1">1</button>
-          <button class="vKey" data-k="2">2</button>
-          <button class="vKey" data-k="3">3</button>
-          <button class="vKey" data-k="4">4</button>
-          <button class="vKey" data-k="5">5</button>
-          <button class="vKey" data-k="6">6</button>
-          <button class="vKey" data-k="7">7</button>
-          <button class="vKey" data-k="8">8</button>
-          <button class="vKey" data-k="9">9</button>
-          <button class="vKey func" data-k="back">⌫</button>
-          <button class="vKey" data-k="0">0</button>
-          <button class="vKey func" data-k="enter">↵</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VERSUS RESULT SCREEN -->
-  <div class="screen" id="screen-versusResult">
-    <div class="title" style="font-size:20px;">MATCH OVER</div>
-    <div id="versusWinnerLine">PLAYER 1 WINS!</div>
-    <div id="versusScoreLine">0 - 0</div>
-    <div id="versusRoast"></div>
-    <button class="btn-primary" id="saveVersusBtn">SAVE TO HALL OF FAME</button>
-    <button class="btn-versus" id="versusRematchBtn">REMATCH</button>
-    <button class="btn-secondary" id="versusHomeBtn">MAIN MENU</button>
   </div>
 
   <!-- LEADERBOARD SCREEN -->
   <div class="screen" id="screen-leaderboard">
     <div class="title" style="font-size:22px;">🏆 HIGH SCORES</div>
     <div class="lbTabs">
-      <button class="btn-secondary lbTab active" id="tabSoloBtn">SOLO</button>
-      <button class="btn-secondary lbTab" id="tabVersusBtn">VERSUS</button>
+      <button class="btn-secondary lbTab active" id="tabAllTimeBtn">ALL-TIME</button>
+      <button class="btn-secondary lbTab" id="tabTodayBtn">TODAY</button>
     </div>
     <ul id="leaderList"></ul>
     <div class="small" id="storageNote">Scores are shared with anyone who opens this game.</div>
     <button class="btn-primary" id="backToStartBtn">BACK</button>
+  </div>
+
+  <!-- WEAK SPOTS SCREEN -->
+  <div class="screen" id="screen-weakspots">
+    <div class="title" style="font-size:20px;">📊 WEAK SPOTS</div>
+    <div class="cabinet">
+      <div style="font-size:14px; text-align:center; color:#cbd;">
+        Based on every question answered across all modes on this device.
+      </div>
+      <ul id="weakList"></ul>
+      <button class="btn-focus" id="weakspotsFocusBtn">🎯 PRACTICE THESE</button>
+      <button class="btn-secondary" id="weakspotsBackBtn">BACK</button>
+    </div>
   </div>
 
 </div>
@@ -550,10 +516,9 @@
     start: document.getElementById('screen-start'),
     game: document.getElementById('screen-game'),
     result: document.getElementById('screen-result'),
-    versusSetup: document.getElementById('screen-versusSetup'),
-    versus: document.getElementById('screen-versus'),
-    versusResult: document.getElementById('screen-versusResult'),
+    settings: document.getElementById('screen-settings'),
     leaderboard: document.getElementById('screen-leaderboard'),
+    weakspots: document.getElementById('screen-weakspots'),
   };
   function show(name){
     Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -567,7 +532,7 @@
   }
 
   /* ============================================================
-     STORAGE LAYER
+     STORAGE LAYER — SHARED (leaderboards)
      Priority: Firebase (if configured) > Claude window.storage
      (if running inside Claude) > in-memory (session only)
   ============================================================ */
@@ -597,7 +562,7 @@
     && typeof window.storage.get === 'function'
     && typeof window.storage.set === 'function');
 
-  const memoryStore = { leaderboard: [], versusLog: [] };
+  const memoryStore = { leaderboard: [], dailyLeaderboard: [] };
 
   async function addEntry(key, entry){
     if(firebaseReady()){
@@ -623,7 +588,7 @@
   async function loadList(key){
     if(firebaseReady()){
       try{
-        const snap = await fbDb.ref(key).limitToLast(50).once('value');
+        const snap = await fbDb.ref(key).limitToLast(100).once('value');
         const val = snap.val() || {};
         return Object.values(val);
       }catch(e){ console.error('Firebase read failed, falling back', e); }
@@ -644,28 +609,276 @@
   }
 
   /* ============================================================
-     SOLO MODE
+     STORAGE LAYER — PERSONAL (settings, personal bests, weak
+     tables). Always local to this device, never shared/Firebase.
   ============================================================ */
+  const personalMemory = {};
+
+  async function getPersonal(key, fallback){
+    if(hasPersistentStorage){
+      try{
+        const res = await window.storage.get(key, false);
+        if(res && res.value) return JSON.parse(res.value);
+      }catch(e){ /* not set yet */ }
+    }
+    if(personalMemory[key] !== undefined) return personalMemory[key];
+    return fallback;
+  }
+
+  async function setPersonal(key, value){
+    if(hasPersistentStorage){
+      try{ await window.storage.set(key, JSON.stringify(value), false); return; }
+      catch(e){ console.error('Could not save personal data, falling back to memory', e); }
+    }
+    personalMemory[key] = value;
+  }
+
+  /* ============================================================
+     SETTINGS — game length (10s-120s) + difficulty, per-device
+  ============================================================ */
+  let GAME_DURATION = 60;
+  let DIFFICULTY = 'normal';
+  const SETTINGS_KEY = 'times-attack-settings';
+
+  const FACTOR_SETS = {
+    easy:   [2,3,4,5],
+    normal: [2,3,4,5,6,7,8,9,11,12],
+    hard:   [6,7,8,9,11,12],
+  };
+  const ALL_TRACKED_FACTORS = FACTOR_SETS.normal;
+
+  function formatDuration(s){
+    if(s < 60) return s + 's';
+    const m = Math.floor(s/60), r = s%60;
+    return m + ':' + String(r).padStart(2,'0');
+  }
+
+  function urgentThreshold(){
+    return Math.max(3, Math.round(GAME_DURATION * 0.2));
+  }
+
+  async function loadSettings(){
+    const s = await getPersonal(SETTINGS_KEY, { duration: 60, difficulty: 'normal' });
+    return {
+      duration: s.duration || 60,
+      difficulty: FACTOR_SETS[s.difficulty] ? s.difficulty : 'normal',
+    };
+  }
+
+  async function saveSettings(duration, difficulty){
+    await setPersonal(SETTINGS_KEY, { duration, difficulty });
+  }
+
+  function applyDurationToUI(){
+    const label = formatDuration(GAME_DURATION).toUpperCase();
+    document.getElementById('startSubtitle').textContent = label + ' · ' + DIFFICULTY.toUpperCase();
+  }
+
+  function setDifficultyButtons(diff){
+    document.querySelectorAll('.diffBtn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.diff === diff);
+    });
+  }
+
+  /* ============================================================
+     WEAK-TABLES TRACKER
+  ============================================================ */
+  const TABLE_STATS_KEY = 'times-attack-tablestats';
+  let tableStats = {}; // { "2": {correct, wrong}, ... }
+
+  function blankTableStats(){
+    const obj = {};
+    ALL_TRACKED_FACTORS.forEach(f => obj[f] = { correct: 0, wrong: 0 });
+    return obj;
+  }
+
+  async function loadTableStats(){
+    const loaded = await getPersonal(TABLE_STATS_KEY, null);
+    const base = blankTableStats();
+    if(loaded){
+      ALL_TRACKED_FACTORS.forEach(f=>{
+        if(loaded[f]) base[f] = { correct: loaded[f].correct||0, wrong: loaded[f].wrong||0 };
+      });
+    }
+    return base;
+  }
+
+  function saveTableStats(){
+    setPersonal(TABLE_STATS_KEY, tableStats); // fire and forget, don't block gameplay
+  }
+
+  function recordAnswer(a, b, isCorrect){
+    [a, b].forEach(f=>{
+      if(!tableStats[f]) tableStats[f] = { correct:0, wrong:0 };
+      if(isCorrect) tableStats[f].correct++;
+      else tableStats[f].wrong++;
+    });
+    saveTableStats();
+  }
+
+  function getWeakestFactors(minAttempts, limit){
+    const rows = ALL_TRACKED_FACTORS.map(f=>{
+      const s = tableStats[f] || { correct:0, wrong:0 };
+      const total = s.correct + s.wrong;
+      const rate = total > 0 ? s.wrong / total : 0;
+      return { factor: f, total, wrong: s.wrong, correct: s.correct, rate };
+    });
+    const qualified = rows.filter(r => r.total >= minAttempts);
+    qualified.sort((a,b)=> b.rate - a.rate || b.total - a.total);
+    return qualified.slice(0, limit);
+  }
+
+  function renderWeakSpotHint(){
+    const hintEl = document.getElementById('weakSpotHint');
+    const weakest = getWeakestFactors(3, 1);
+    if(weakest.length === 0){
+      hintEl.textContent = '';
+      return;
+    }
+    const top = weakest[0];
+    hintEl.textContent = '⚠ Your trickiest table right now: ' + top.factor + '×  (' + Math.round(top.rate*100) + '% missed)';
+  }
+
+  function renderWeakSpotsScreen(){
+    const listEl = document.getElementById('weakList');
+    const rows = ALL_TRACKED_FACTORS.map(f=>{
+      const s = tableStats[f] || { correct:0, wrong:0 };
+      const total = s.correct + s.wrong;
+      const rate = total > 0 ? s.wrong / total : null;
+      return { factor: f, total, rate };
+    });
+    rows.sort((a,b)=>{
+      if(a.rate === null && b.rate === null) return a.factor - b.factor;
+      if(a.rate === null) return 1;
+      if(b.rate === null) return -1;
+      return b.rate - a.rate;
+    });
+    listEl.innerHTML = '';
+    rows.forEach(r=>{
+      const li = document.createElement('li');
+      const pctText = r.total === 0 ? 'no data yet' : Math.round(r.rate*100) + '% missed (' + r.total + ' seen)';
+      li.innerHTML = '<span class="wl-table">' + r.factor + '× table</span><span class="wl-pct">' + pctText + '</span>';
+      listEl.appendChild(li);
+    });
+  }
+
+  /* ============================================================
+     PERSONAL BESTS (score + streak), per mode, per-device
+  ============================================================ */
+  const PERSONAL_BEST_KEY = 'times-attack-personalbest';
+  let personalBests = { solo: {bestScore:0,bestStreak:0}, daily: {bestScore:0,bestStreak:0}, focus: {bestScore:0,bestStreak:0} };
+
+  async function loadPersonalBests(){
+    const loaded = await getPersonal(PERSONAL_BEST_KEY, null);
+    const base = { solo: {bestScore:0,bestStreak:0}, daily: {bestScore:0,bestStreak:0}, focus: {bestScore:0,bestStreak:0} };
+    if(loaded){
+      ['solo','daily','focus'].forEach(m=>{
+        if(loaded[m]) base[m] = { bestScore: loaded[m].bestScore||0, bestStreak: loaded[m].bestStreak||0 };
+      });
+    }
+    return base;
+  }
+
+  function savePersonalBests(){
+    setPersonal(PERSONAL_BEST_KEY, personalBests);
+  }
+
+  /* ============================================================
+     DAILY CHALLENGE — seeded question set, same for every
+     player on the same calendar day (regardless of device)
+  ============================================================ */
+  function mulberry32(seed){
+    return function(){
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function hashStringToSeed(str){
+    let h = 0;
+    for(let i=0;i<str.length;i++){ h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+    return h;
+  }
+
+  function todayKey(){
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
+  function buildDailyQuestions(){
+    const seed = hashStringToSeed('times-attack-daily-' + todayKey());
+    const rng = mulberry32(seed);
+    const pool = FACTOR_SETS.normal;
+    const qs = [];
+    let lastKey = '';
+    for(let i=0;i<80;i++){
+      let a, b, key, attempts = 0;
+      do{
+        a = pool[Math.floor(rng()*pool.length)];
+        b = pool[Math.floor(rng()*pool.length)];
+        key = a+'x'+b;
+        attempts++;
+      } while(key === lastKey && attempts < 5);
+      lastKey = key;
+      qs.push({a,b});
+    }
+    return qs;
+  }
+
+  let dailyQuestions = [];
+  let dailyIndex = 0;
+
+  /* ============================================================
+     GAME (shared engine for Solo / Daily / Focus)
+  ============================================================ */
+  let activeMode = 'solo'; // 'solo' | 'daily' | 'focus'
   let score = 0;
-  let timeLeft = 30;
+  let timeLeft = 60;
   let timerInterval = null;
   let current = { a:1, b:1, answer:1 };
   let typed = '';
   let lastQ = '';
   let gameActive = false;
+  let currentStreak = 0;
+  let bestStreakThisRound = 0;
+  let focusFactors = [];
 
   const questionEl = document.getElementById('question');
   const answerBox = document.getElementById('answerBox');
   const timerEl = document.getElementById('timer');
   const scoreEl = document.getElementById('scoreVal');
+  const streakEl = document.getElementById('streakVal');
+  const modeLabelEl = document.getElementById('modeLabel');
+
+  function randomFromPool(pool){
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function nextFactors(){
+    if(activeMode === 'daily'){
+      const q = dailyQuestions[dailyIndex % dailyQuestions.length];
+      dailyIndex++;
+      return [q.a, q.b];
+    }
+    if(activeMode === 'focus' && focusFactors.length){
+      const a = randomFromPool(focusFactors);
+      const b = randomFromPool(FACTOR_SETS.normal);
+      return [a, b];
+    }
+    const pool = FACTOR_SETS[DIFFICULTY] || FACTOR_SETS.normal;
+    return [randomFromPool(pool), randomFromPool(pool)];
+  }
 
   function newQuestion(){
     let a, b, key;
+    let attempts = 0;
     do{
-      a = 1 + Math.floor(Math.random()*12);
-      b = 1 + Math.floor(Math.random()*12);
+      [a, b] = nextFactors();
       key = a+'x'+b;
-    } while(key === lastQ);
+      attempts++;
+    } while(key === lastQ && attempts < 6);
     lastQ = key;
     current = { a, b, answer: a*b };
     questionEl.textContent = a + ' × ' + b;
@@ -684,15 +897,27 @@
     answerBox.classList.add(cls);
   }
 
+  function updateStreakDisplay(){
+    streakEl.textContent = currentStreak;
+    streakEl.classList.toggle('hot', currentStreak >= 5);
+  }
+
   function checkAnswer(){
     if(!typed.length) return;
     const val = parseInt(typed, 10);
-    if(val === current.answer){
+    const isCorrect = (val === current.answer);
+    recordAnswer(current.a, current.b, isCorrect);
+    if(isCorrect){
       score++;
+      currentStreak++;
+      bestStreakThisRound = Math.max(bestStreakThisRound, currentStreak);
       scoreEl.textContent = score;
+      updateStreakDisplay();
       flash('correct');
       setTimeout(newQuestion, 80);
     } else {
+      currentStreak = 0;
+      updateStreakDisplay();
       flash('wrong');
       setTimeout(()=>{ typed=''; updateAnswerDisplay(); answerBox.classList.remove('wrong'); }, 220);
     }
@@ -721,13 +946,30 @@
     else if(e.key === 'Enter') pressKey('enter');
   });
 
-  function startGame(){
+  const MODE_LABELS = { solo: 'SOLO BLITZ', daily: 'DAILY CHALLENGE', focus: 'FOCUS MODE' };
+
+  function startGame(mode){
+    activeMode = mode;
+    modeLabelEl.textContent = MODE_LABELS[mode] || 'SOLO BLITZ';
+
+    if(mode === 'daily'){
+      dailyQuestions = buildDailyQuestions();
+      dailyIndex = 0;
+    }
+    if(mode === 'focus'){
+      const weakest = getWeakestFactors(3, 4);
+      focusFactors = weakest.length ? weakest.map(w=>w.factor) : FACTOR_SETS.normal;
+    }
+
     score = 0;
-    timeLeft = 30;
+    currentStreak = 0;
+    bestStreakThisRound = 0;
+    timeLeft = GAME_DURATION;
     typed = '';
     lastQ = '';
     scoreEl.textContent = '0';
-    timerEl.textContent = '30';
+    updateStreakDisplay();
+    timerEl.textContent = timeLeft;
     timerEl.classList.remove('urgent');
     gameActive = true;
     newQuestion();
@@ -735,20 +977,12 @@
     timerInterval = setInterval(()=>{
       timeLeft--;
       timerEl.textContent = timeLeft;
-      if(timeLeft <= 7) timerEl.classList.add('urgent');
+      if(timeLeft <= urgentThreshold()) timerEl.classList.add('urgent');
       if(timeLeft <= 0){
         clearInterval(timerInterval);
         endGame();
       }
     }, 1000);
-  }
-
-  function endGame(){
-    gameActive = false;
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('funnyLine').textContent = getRoast(score);
-    document.getElementById('nameInput').value = '';
-    show('result');
   }
 
   function getRoast(s){
@@ -803,245 +1037,177 @@
     return tier.lines[Math.floor(Math.random() * tier.lines.length)];
   }
 
-  document.getElementById('startBtn').addEventListener('click', startGame);
-  document.getElementById('playAgainBtn').addEventListener('click', startGame);
+  const RESULT_TITLES = { solo: "TIME'S UP!", daily: "CHALLENGE COMPLETE!", focus: "FOCUS COMPLETE!" };
+
+  function endGame(){
+    gameActive = false;
+    document.getElementById('resultTitle').textContent = RESULT_TITLES[activeMode] || "TIME'S UP!";
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('funnyLine').textContent = getRoast(score);
+    document.getElementById('nameInput').value = '';
+
+    // Personal bests
+    const pb = personalBests[activeMode] || {bestScore:0, bestStreak:0};
+    const bannerEl = document.getElementById('resultBanners');
+    bannerEl.innerHTML = '';
+    let newBest = false;
+    if(score > pb.bestScore){
+      pb.bestScore = score;
+      newBest = true;
+      const b = document.createElement('div');
+      b.className = 'best-banner';
+      b.textContent = '🏅 NEW BEST SCORE for this mode!';
+      bannerEl.appendChild(b);
+    }
+    if(bestStreakThisRound > pb.bestStreak){
+      pb.bestStreak = bestStreakThisRound;
+      newBest = true;
+      const b = document.createElement('div');
+      b.className = 'best-banner streak';
+      b.textContent = '🔥 NEW BEST STREAK: ' + bestStreakThisRound + ' in a row!';
+      bannerEl.appendChild(b);
+    }
+    if(newBest){
+      personalBests[activeMode] = pb;
+      savePersonalBests();
+    }
+
+    // Show/hide the save-to-leaderboard UI depending on mode
+    const saveArea = document.getElementById('saveScoreArea');
+    const submitBtn = document.getElementById('submitScoreBtn');
+    if(activeMode === 'focus'){
+      saveArea.style.display = 'none';
+    } else {
+      saveArea.style.display = 'flex';
+      submitBtn.textContent = activeMode === 'daily' ? 'SAVE TO TODAY\'S BOARD' : 'SAVE SCORE';
+    }
+
+    renderWeakSpotHint();
+    show('result');
+  }
+
+  document.getElementById('startBtn').addEventListener('click', ()=> startGame('solo'));
+  document.getElementById('dailyBtn').addEventListener('click', ()=> startGame('daily'));
+  document.getElementById('focusBtn').addEventListener('click', ()=> startGame('focus'));
+  document.getElementById('playAgainBtn').addEventListener('click', ()=> startGame(activeMode));
   document.getElementById('resultHomeBtn').addEventListener('click', ()=> show('start'));
 
   document.getElementById('submitScoreBtn').addEventListener('click', async ()=>{
     let name = document.getElementById('nameInput').value.trim().toUpperCase();
     if(!name) name = 'PLAYER 1';
     name = name.slice(0, 10);
-    await addEntry('leaderboard', { name, score, date: Date.now() });
-    currentLBTab = 'solo';
-    await refreshLeaderboardView(name, score);
+    if(activeMode === 'daily'){
+      await addEntry('dailyLeaderboard', { name, score, date: Date.now(), day: todayKey() });
+      await refreshLeaderboardView('today', name, score);
+    } else {
+      await addEntry('leaderboard', { name, score, date: Date.now() });
+      await refreshLeaderboardView('alltime', name, score);
+    }
     show('leaderboard');
   });
 
   /* ============================================================
-     VERSUS MODE
+     LEADERBOARD SCREEN — ALL-TIME (Solo) and TODAY (Daily)
   ============================================================ */
-  let versusActive = false;
-  let versusTimeLeft = 30;
-  let versusInterval = null;
-  let players = {
-    1: { name:'PLAYER 1', score:0, current:null, typed:'', lastQ:'' },
-    2: { name:'PLAYER 2', score:0, current:null, typed:'', lastQ:'' },
-  };
+  let currentLBTab = 'alltime';
 
-  function newVersusQuestion(p){
-    const pl = players[p];
-    let a, b, key;
-    do{
-      a = 1 + Math.floor(Math.random()*12);
-      b = 1 + Math.floor(Math.random()*12);
-      key = a+'x'+b;
-    } while(key === pl.lastQ);
-    pl.lastQ = key;
-    pl.current = { a, b, answer: a*b };
-    pl.typed = '';
-    document.getElementById('p'+p+'Question').textContent = a + ' × ' + b;
-    const box = document.getElementById('p'+p+'AnswerBox');
-    box.textContent = '\u00A0';
-    box.classList.remove('correct','wrong');
-  }
+  async function refreshLeaderboardView(tab, highlightName, highlightScore){
+    if(tab) currentLBTab = tab;
+    document.getElementById('tabAllTimeBtn').classList.toggle('active', currentLBTab === 'alltime');
+    document.getElementById('tabTodayBtn').classList.toggle('active', currentLBTab === 'today');
 
-  function updateVersusAnswerDisplay(p){
-    const box = document.getElementById('p'+p+'AnswerBox');
-    box.textContent = players[p].typed.length ? players[p].typed : '\u00A0';
-  }
-
-  function flashVersus(p, cls){
-    const box = document.getElementById('p'+p+'AnswerBox');
-    box.classList.remove('correct','wrong');
-    void box.offsetWidth;
-    box.classList.add(cls);
-  }
-
-  function checkVersusAnswer(p){
-    const pl = players[p];
-    if(!pl.typed.length) return;
-    const val = parseInt(pl.typed, 10);
-    if(val === pl.current.answer){
-      pl.score++;
-      document.getElementById('p'+p+'ScoreVal').textContent = pl.score;
-      flashVersus(p, 'correct');
-      setTimeout(()=> newVersusQuestion(p), 80);
-    } else {
-      flashVersus(p, 'wrong');
-      setTimeout(()=>{
-        pl.typed = '';
-        updateVersusAnswerDisplay(p);
-        document.getElementById('p'+p+'AnswerBox').classList.remove('wrong');
-      }, 220);
-    }
-  }
-
-  function pressVersusKey(p, k){
-    if(!versusActive) return;
-    const pl = players[p];
-    if(k === 'back'){ pl.typed = pl.typed.slice(0,-1); updateVersusAnswerDisplay(p); return; }
-    if(k === 'enter'){ checkVersusAnswer(p); return; }
-    if(pl.typed.length >= 3) return;
-    pl.typed += k;
-    updateVersusAnswerDisplay(p);
-    if(pl.typed.length === String(pl.current.answer).length){ checkVersusAnswer(p); }
-  }
-
-  document.getElementById('screen-versus').addEventListener('click', (e)=>{
-    const btn = e.target.closest('.vKey');
-    if(!btn) return;
-    const half = btn.closest('.vHalf');
-    pressVersusKey(half.dataset.player, btn.dataset.k);
-  });
-
-  let lastP1Name = 'PLAYER 1';
-  let lastP2Name = 'PLAYER 2';
-
-  function startVersusGame(useLastNames){
-    if(!useLastNames){
-      lastP1Name = (document.getElementById('p1NameInput').value.trim() || 'PLAYER 1').toUpperCase().slice(0,10);
-      lastP2Name = (document.getElementById('p2NameInput').value.trim() || 'PLAYER 2').toUpperCase().slice(0,10);
-    }
-    players = {
-      1: { name:lastP1Name, score:0, current:null, typed:'', lastQ:'' },
-      2: { name:lastP2Name, score:0, current:null, typed:'', lastQ:'' },
-    };
-    document.getElementById('p1NameLabel').textContent = lastP1Name;
-    document.getElementById('p2NameLabel').textContent = lastP2Name;
-    document.getElementById('p1ScoreVal').textContent = '0';
-    document.getElementById('p2ScoreVal').textContent = '0';
-    versusTimeLeft = 30;
-    const vt = document.getElementById('versusTimer');
-    vt.textContent = '30';
-    vt.classList.remove('urgent');
-    versusActive = true;
-    newVersusQuestion(1);
-    newVersusQuestion(2);
-    show('versus');
-    versusInterval = setInterval(()=>{
-      versusTimeLeft--;
-      vt.textContent = versusTimeLeft;
-      if(versusTimeLeft <= 7) vt.classList.add('urgent');
-      if(versusTimeLeft <= 0){
-        clearInterval(versusInterval);
-        endVersusGame();
-      }
-    }, 1000);
-  }
-
-  function getVersusRoast(winner, loser){
-    const margin = winner.score - loser.score;
-    const lines = [
-      winner.name+' absolutely destroyed '+loser.name+' — by '+margin+' whole answers.',
-      loser.name+', maybe stick to a calculator next time. '+winner.name+' is unstoppable today.',
-      "Somewhere, "+loser.name+"'s pride just took "+margin+' points of damage.',
-      winner.name+' wins! '+loser.name+' put up a fight though... a small, mathematically weak fight.',
-      'Not even close. '+winner.name+' by '+margin+'. '+loser.name+', we need to talk.',
-      winner.name+' is basically running a maths sweatshop right now, and '+loser.name+' works there.',
-    ];
-    return lines[Math.floor(Math.random()*lines.length)];
-  }
-
-  function getVersusTieRoast(){
-    const lines = [
-      "A tie?! Nobody wins. Nobody loses. Everybody's a little disappointed.",
-      "Dead even. Somewhere a coin is being flipped to settle this properly.",
-      "A perfect stalemate. Rematch immediately, this cannot stand.",
-    ];
-    return lines[Math.floor(Math.random()*lines.length)];
-  }
-
-  let lastVersusResult = null;
-
-  function endVersusGame(){
-    versusActive = false;
-    const p1 = players[1], p2 = players[2];
-    let winnerLine, roast, winnerName;
-    if(p1.score === p2.score){
-      winnerLine = "IT'S A TIE!";
-      roast = getVersusTieRoast();
-      winnerName = 'TIE';
-    } else {
-      const winner = p1.score > p2.score ? p1 : p2;
-      const loser = p1.score > p2.score ? p2 : p1;
-      winnerLine = winner.name + ' WINS!';
-      roast = getVersusRoast(winner, loser);
-      winnerName = winner.name;
-    }
-    lastVersusResult = { p1: p1.name, p1score: p1.score, p2: p2.name, p2score: p2.score, winner: winnerName, date: Date.now() };
-    document.getElementById('versusWinnerLine').textContent = winnerLine;
-    document.getElementById('versusScoreLine').textContent = p1.name+': '+p1.score+'   |   '+p2.name+': '+p2.score;
-    document.getElementById('versusRoast').textContent = roast;
-    show('versusResult');
-  }
-
-  document.getElementById('goVersusBtn').addEventListener('click', ()=> show('versusSetup'));
-  document.getElementById('versusSetupBackBtn').addEventListener('click', ()=> show('start'));
-  document.getElementById('startVersusBtn').addEventListener('click', ()=> startVersusGame(false));
-  document.getElementById('versusRematchBtn').addEventListener('click', ()=> startVersusGame(true));
-  document.getElementById('versusHomeBtn').addEventListener('click', ()=> show('start'));
-
-  document.getElementById('saveVersusBtn').addEventListener('click', async ()=>{
-    if(!lastVersusResult) return;
-    await addEntry('versusLog', lastVersusResult);
-    currentLBTab = 'versus';
-    await refreshLeaderboardView();
-    show('leaderboard');
-  });
-
-  /* ============================================================
-     LEADERBOARD SCREEN
-  ============================================================ */
-  let currentLBTab = 'solo';
-
-  async function refreshLeaderboardView(highlightName, highlightScore){
-    document.getElementById('tabSoloBtn').classList.toggle('active', currentLBTab === 'solo');
-    document.getElementById('tabVersusBtn').classList.toggle('active', currentLBTab === 'versus');
     const listEl = document.getElementById('leaderList');
     listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">Loading...</li>';
 
-    if(currentLBTab === 'solo'){
-      const list = await loadList('leaderboard');
-      list.sort((a,b)=> b.score - a.score);
-      const top = list.slice(0, 10);
-      listEl.innerHTML = '';
-      if(top.length === 0){
-        listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">No scores yet. Be the first!</li>';
-      } else {
-        top.forEach((entry, i)=>{
-          const li = document.createElement('li');
-          if(highlightName && entry.name === highlightName && entry.score === highlightScore) li.classList.add('me');
-          li.innerHTML = '<span class="rank">#'+(i+1)+'</span><span class="nm">'+escapeHtml(entry.name)+'</span><span class="sc">'+entry.score+'</span>';
-          listEl.appendChild(li);
-        });
-      }
+    let list;
+    if(currentLBTab === 'today'){
+      const all = await loadList('dailyLeaderboard');
+      list = all.filter(e => e.day === todayKey());
     } else {
-      const list = await loadList('versusLog');
-      list.sort((a,b)=> (b.date||0) - (a.date||0));
-      const top = list.slice(0, 10);
-      listEl.innerHTML = '';
-      if(top.length === 0){
-        listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">No matches yet. Start a Versus game!</li>';
-      } else {
-        top.forEach((entry)=>{
-          const li = document.createElement('li');
-          const winnerLabel = entry.winner === 'TIE' ? 'TIE' : entry.winner;
-          li.innerHTML = '<span class="nm">'+escapeHtml(entry.p1)+' '+entry.p1score+' – '+entry.p2score+' '+escapeHtml(entry.p2)+'</span><span class="sc">'+escapeHtml(winnerLabel)+'</span>';
-          listEl.appendChild(li);
-        });
-      }
+      list = await loadList('leaderboard');
+    }
+    list.sort((a,b)=> b.score - a.score);
+    const top = list.slice(0, 10);
+    listEl.innerHTML = '';
+    if(top.length === 0){
+      listEl.innerHTML = '<li class="small" style="justify-content:center; border:none; background:none;">' +
+        (currentLBTab === 'today' ? 'No Daily Challenge scores yet today.' : 'No scores yet. Be the first!') + '</li>';
+    } else {
+      top.forEach((entry, i)=>{
+        const li = document.createElement('li');
+        if(highlightName && entry.name === highlightName && entry.score === highlightScore) li.classList.add('me');
+        li.innerHTML = '<span class="rank">#'+(i+1)+'</span><span class="nm">'+escapeHtml(entry.name)+'</span><span class="sc">'+entry.score+'</span>';
+        listEl.appendChild(li);
+      });
     }
     document.getElementById('storageNote').textContent = storageModeLabel();
   }
 
   document.getElementById('viewLeaderboardBtn').addEventListener('click', async ()=>{
-    currentLBTab = 'solo';
-    await refreshLeaderboardView();
+    await refreshLeaderboardView('alltime');
     show('leaderboard');
   });
-  document.getElementById('tabSoloBtn').addEventListener('click', ()=>{ currentLBTab = 'solo'; refreshLeaderboardView(); });
-  document.getElementById('tabVersusBtn').addEventListener('click', ()=>{ currentLBTab = 'versus'; refreshLeaderboardView(); });
+  document.getElementById('tabAllTimeBtn').addEventListener('click', ()=> refreshLeaderboardView('alltime'));
+  document.getElementById('tabTodayBtn').addEventListener('click', ()=> refreshLeaderboardView('today'));
   document.getElementById('backToStartBtn').addEventListener('click', ()=> show('start'));
+
+  /* ============================================================
+     WEAK SPOTS SCREEN
+  ============================================================ */
+  document.getElementById('viewWeakSpotsBtn').addEventListener('click', ()=>{
+    renderWeakSpotsScreen();
+    show('weakspots');
+  });
+  document.getElementById('weakspotsBackBtn').addEventListener('click', ()=> show('start'));
+  document.getElementById('weakspotsFocusBtn').addEventListener('click', ()=> startGame('focus'));
+
+  /* ============================================================
+     SETTINGS SCREEN
+  ============================================================ */
+  document.getElementById('goSettingsBtn').addEventListener('click', ()=>{
+    const slider = document.getElementById('durationSlider');
+    slider.value = GAME_DURATION;
+    document.getElementById('durationDisplay').textContent = formatDuration(GAME_DURATION);
+    setDifficultyButtons(DIFFICULTY);
+    show('settings');
+  });
+
+  document.getElementById('durationSlider').addEventListener('input', (e)=>{
+    document.getElementById('durationDisplay').textContent = formatDuration(parseInt(e.target.value, 10));
+  });
+
+  document.querySelectorAll('.diffBtn').forEach(btn=>{
+    btn.addEventListener('click', ()=> setDifficultyButtons(btn.dataset.diff));
+  });
+
+  document.getElementById('saveSettingsBtn').addEventListener('click', async ()=>{
+    const slider = document.getElementById('durationSlider');
+    let val = parseInt(slider.value, 10);
+    val = Math.max(10, Math.min(120, val));
+    GAME_DURATION = val;
+    const activeDiffBtn = document.querySelector('.diffBtn.active');
+    DIFFICULTY = activeDiffBtn ? activeDiffBtn.dataset.diff : 'normal';
+    await saveSettings(val, DIFFICULTY);
+    applyDurationToUI();
+    show('start');
+  });
+
+  document.getElementById('settingsBackBtn').addEventListener('click', ()=> show('start'));
+
+  /* ============================================================
+     INITIAL LOAD
+  ============================================================ */
+  (async function init(){
+    const s = await loadSettings();
+    GAME_DURATION = s.duration;
+    DIFFICULTY = s.difficulty;
+    applyDurationToUI();
+
+    tableStats = await loadTableStats();
+    renderWeakSpotHint();
+
+    personalBests = await loadPersonalBests();
+  })();
 
 })();
 </script>
