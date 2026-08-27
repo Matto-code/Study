@@ -492,6 +492,8 @@
     </div>
     <ul id="leaderList"></ul>
     <div class="small" id="storageNote">Scores are shared with anyone who opens this game.</div>
+    <button class="btn-secondary" id="shareLbBtn">📤 SHARE THIS BOARD</button>
+    <div class="small" id="shareStatus"></div>
     <button class="btn-primary" id="backToStartBtn">BACK</button>
   </div>
 
@@ -537,10 +539,10 @@
      (if running inside Claude) > in-memory (session only)
   ============================================================ */
   const FIREBASE_CONFIG = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
+    apiKey: "AIzaSyAQeLPMiMrwF74ykGfGHRSK1nLn-Wet5lg",
+    authDomain: "times-attack-724dd.firebaseapp.com",
+    databaseURL: "https://times-attack-724dd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "times-attack-724dd",
   };
 
   let fbDb = null;
@@ -1151,6 +1153,39 @@
   document.getElementById('tabTodayBtn').addEventListener('click', ()=> refreshLeaderboardView('today'));
   document.getElementById('backToStartBtn').addEventListener('click', ()=> show('start'));
 
+  function buildShareUrl(){
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.searchParams.set('screen', 'leaderboard');
+    url.searchParams.set('tab', currentLBTab);
+    return url.toString();
+  }
+
+  document.getElementById('shareLbBtn').addEventListener('click', async ()=>{
+    const statusEl = document.getElementById('shareStatus');
+    const url = buildShareUrl();
+    const shareData = {
+      title: 'Times Attack — High Scores',
+      text: currentLBTab === 'today' ? 'Check out today\'s Daily Challenge scores!' : 'Check out the Times Attack high scores!',
+      url,
+    };
+    try{
+      if(navigator.share){
+        await navigator.share(shareData);
+        return;
+      }
+      throw new Error('no native share');
+    }catch(e){
+      try{
+        await navigator.clipboard.writeText(url);
+        statusEl.textContent = '✅ Link copied! Paste it anywhere to share.';
+      }catch(e2){
+        statusEl.textContent = url;
+      }
+      setTimeout(()=>{ statusEl.textContent = ''; }, 5000);
+    }
+  });
+
   /* ============================================================
      WEAK SPOTS SCREEN
   ============================================================ */
@@ -1207,6 +1242,13 @@
     renderWeakSpotHint();
 
     personalBests = await loadPersonalBests();
+
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('screen') === 'leaderboard'){
+      const tab = params.get('tab') === 'today' ? 'today' : 'alltime';
+      await refreshLeaderboardView(tab);
+      show('leaderboard');
+    }
   })();
 
 })();
