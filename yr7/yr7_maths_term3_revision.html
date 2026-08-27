@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Maths — Term 3 Revision</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:700px;margin:0 auto;padding-bottom:3rem}
+
+.hero{background:#1a3a5c;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.hero .bs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hero .b{background:rgba(255,255,255,0.18);border-radius:20px;padding:3px 10px;font-size:11px;color:white}
+.ac{display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:500;margin-bottom:8px}
+
+.nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem}
+.nb{padding:6px 14px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.nb.active,.nb:hover{background:#1a3a5c;color:white;border-color:#1a3a5c}
+
+.sec{display:none}.sec.active{display:block}
+
+.card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card h2{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem}
+.card h3{font-size:13px;font-weight:500;color:#2c2c2a;margin-top:0.75rem;margin-bottom:0.4rem}
+.card p,.card li{font-size:13px;color:#5f5e5a;line-height:1.65}
+.card ul,.card ol{padding-left:1.2rem;margin-bottom:0.5rem}
+.card li{margin-bottom:3px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem}
+@media(max-width:500px){.two,.three{grid-template-columns:1fr}}
+
+/* Formula box */
+.formula-box{background:#EEF3F8;border-radius:10px;padding:14px 18px;margin-bottom:10px;text-align:center}
+.formula{font-size:19px;font-weight:700;color:#1a3a5c;font-family:'Courier New',monospace}
+.formula-name{font-size:11px;color:#5f5e5a;margin-top:4px;text-transform:uppercase;letter-spacing:0.3px}
+
+/* Coloured explanation boxes */
+.eb{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:13px;line-height:1.6;border-left:4px solid}
+.eb.blue{background:#EBF3FB;border-color:#1a3a5c;color:#0d2438}
+.eb.green{background:#E6F5EE;border-color:#1a7a4a;color:#0d3d25}
+.eb.amber{background:#FDF3E3;border-color:#B8721E;color:#5c380f}
+.eb.purple{background:#F0EDFB;border-color:#5B3FA8;color:#2e1f54}
+.eb strong{color:inherit}
+
+/* Calculator card */
+.calc-card{background:#FAFAF8;border:1px solid #e0dfd8;border-radius:10px;padding:14px;margin-bottom:8px}
+.calc-card label{display:block;font-size:12px;color:#5f5e5a;margin-bottom:4px;margin-top:8px;font-weight:500}
+.calc-card label:first-child{margin-top:0}
+.calc-card input{width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:14px}
+.calc-result{margin-top:10px;padding:10px;background:#E6F5EE;border-radius:8px;font-size:13px;font-weight:600;color:#0d3d25;text-align:center}
+
+/* Worked examples (collapsible) */
+.worked{border:1px solid #e0dfd8;border-radius:8px;margin-bottom:8px;overflow:hidden}
+.worked-q{padding:10px 14px;background:#FAFAF8;font-size:13px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#2c2c2a}
+.worked-q:hover{background:#f0efe9}
+.chevron{transition:transform 0.2s;font-size:11px;color:#999}
+.worked.open .chevron{transform:rotate(180deg)}
+.worked-body{display:none;padding:12px 14px;border-top:1px solid #e0dfd8}
+.worked.open .worked-body{display:block}
+.step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:#1a3a5c;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:#3d3d3a;line-height:1.5}
+.math{font-family:'Courier New',monospace;font-weight:700;color:#1a3a5c}
+.answer{background:#E6F5EE;color:#0d3d25;font-weight:600;font-size:13px;padding:8px 10px;border-radius:6px;margin-top:6px}
+.tip{background:#FDF3E3;color:#5c380f;font-size:12px;padding:8px 10px;border-radius:6px;margin-top:6px}
+
+/* Vocab chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{display:inline-block;border-radius:20px;padding:4px 12px;font-size:11.5px;font-weight:500}
+.cb{background:#EBF3FB;color:#1a3a5c}
+.cg{background:#E6F5EE;color:#0d3d25}
+.ca{background:#FDF3E3;color:#5c380f}
+.cp{background:#F0EDFB;color:#2e1f54}
+
+/* Practice questions */
+.pq{border:1px solid #e0dfd8;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.pq-q{font-size:13px;font-weight:500;color:#2c2c2a;margin-bottom:8px}
+.pq input{width:100%;max-width:220px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;font-size:13px;margin-right:8px}
+.pq button{padding:7px 14px;border:none;border-radius:6px;background:#1a3a5c;color:white;font-size:12px;font-weight:600;cursor:pointer}
+.pq-fb{margin-top:8px;font-size:12.5px;padding:8px 10px;border-radius:6px;display:none}
+.pq-fb.correct{background:#E6F5EE;color:#0d3d25;display:block}
+.pq-fb.wrong{background:#FBEAEA;color:#7A1F1F;display:block}
+
+/* Quiz */
+.qcard{border:1px solid #e0dfd8;border-radius:10px;padding:14px;margin-bottom:10px}
+.qcard .qn{font-size:13px;font-weight:500;color:#2c2c2a;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;padding:9px 12px;border:1px solid #ccc;border-radius:8px;background:white;font-size:13px;color:#2c2c2a;margin-bottom:6px;cursor:pointer}
+.opt:hover{border-color:#1a3a5c}
+.opt.correct{background:#E6F5EE;border-color:#1a7a4a;color:#0d3d25;font-weight:600}
+.opt.wrong{background:#FBEAEA;border-color:#B8341F;color:#7A1F1F}
+.opt.disabled{pointer-events:none}
+.qfb{font-size:12.5px;color:#5f5e5a;margin-top:6px;line-height:1.5}
+.scorebar{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.scorebar b{color:#1a3a5c;font-size:16px}
+.reset-btn{padding:6px 14px;border:1px solid #1a3a5c;border-radius:20px;background:white;color:#1a3a5c;font-size:12px;cursor:pointer;font-weight:600}
+
+/* Checklist */
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #eeece6}
+.cl-item:last-child{border-bottom:none}
+.cl-item input{margin-top:2px;width:16px;height:16px;flex-shrink:0}
+.cl-item label{font-size:13px;color:#3d3d3a;line-height:1.5}
+.cl-item.done label{text-decoration:line-through;color:#aaa}
+.cl-progress{background:#EBF3FB;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#1a3a5c;font-weight:600}
+
+.footer{text-align:center;margin-top:2rem;font-size:11px;color:#bbb;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="ac">Queensland Curriculum · Year 7 Maths</div>
+    <h1>Term 3 Revision</h1>
+    <p>Fractions &amp; Percentages · Algebra · Equations · Decimals · Ratio</p>
+    <div class="bs">
+      <span class="b">⚠️ Non-calculator exam</span>
+      <span class="b">Mental strategies</span>
+      <span class="b">Worked examples</span>
+      <span class="b">Quiz</span>
+      <span class="b">Checklist</span>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nb active" data-sec="s-overview">Overview</button>
+    <button class="nb" data-sec="s-fp">Fractions &amp; %</button>
+    <button class="nb" data-sec="s-alg">Algebra</button>
+    <button class="nb" data-sec="s-eq">Equations</button>
+    <button class="nb" data-sec="s-dec">Decimals</button>
+    <button class="nb" data-sec="s-rat">Ratio</button>
+    <button class="nb" data-sec="s-quiz">Quiz</button>
+    <button class="nb" data-sec="s-check">Checklist</button>
+  </div>
+
+  <div id="s-overview" class="sec active">
+    <div class="card" style="border-left:4px solid #B8341F;background:#FBF3F0">
+      <h2 style="color:#7A1F1F">⚠️ This is a non-calculator test</h2>
+      <p style="color:#5c2020">Every conversion and calculation on the day has to be done by hand or in your head — so the goal of this guide isn't just knowing the rule, it's being fast enough at it without a calculator. The "try it" boxes in this guide are for <strong>checking your working</strong> at home, not something you'll have in the exam.</p>
+    </div>
+
+    <div class="card">
+      <h2>Memorise these — instant conversions</h2>
+      <p>These come up constantly and are much faster memorised than worked out on the day.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:8px">
+        <tr style="background:#EEF3F8"><th style="padding:6px 8px;text-align:left">Fraction</th><th style="padding:6px 8px;text-align:left">Decimal</th><th style="padding:6px 8px;text-align:left">Percentage</th></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/2</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.5</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">50%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/4</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.25</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">25%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">3/4</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.75</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">75%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/5</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.2</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">20%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/10</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.1</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">10%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/3</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.333…</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">33.3%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/8</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.125</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">12.5%</td></tr>
+        <tr><td style="padding:6px 8px;border-top:1px solid #e0dfd8">1/20</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">0.05</td><td style="padding:6px 8px;border-top:1px solid #e0dfd8">5%</td></tr>
+      </table>
+      <div class="eb amber" style="margin-top:10px"><strong>If it's not on this list</strong> (like sevenths or ninths), the exam will usually ask you to work it out from a "nicer" one instead of expecting an exact decimal — e.g. use 1/2 and 1/4 to estimate, or leave the answer as a fraction.</div>
+    </div>
+
+    <div class="card">
+      <h2>The 10% method — for any percentage, in your head</h2>
+      <div class="eb blue">Find 10% first (divide by 10 — just move the decimal point). Then build up or down from there.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Find 35% of $140 — without a calculator <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">10% of 140 = <span class="math">14</span> (move the decimal point one place)</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">30% = 3 × 14 = <span class="math">42</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">5% = half of 10% = <span class="math">7</span></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">35% = 30% + 5% = <span class="math">42 + 7</span></div></div>
+          <div class="answer">✓ $49</div>
+          <div class="tip">This is much faster than multiplying by 0.35 by hand — always build percentages from 10%, 5% and 1%.</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Find 17.5% of $80 — without a calculator (common "tricky" percentage) <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">10% of 80 = <span class="math">8</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">5% = half of 10% = <span class="math">4</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">2.5% = half of 5% = <span class="math">2</span></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">17.5% = 10% + 5% + 2.5% = <span class="math">8 + 4 + 2</span></div></div>
+          <div class="answer">✓ $14</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Multiplying &amp; dividing decimals by hand</h2>
+      <div class="eb green"><strong>Multiply:</strong> ignore the decimal points, multiply as whole numbers, then count the total decimal places and place the point back in.</div>
+      <div class="eb purple"><strong>Divide:</strong> multiply both numbers by 10 (or 100) until the number you're dividing <em>by</em> is a whole number — then divide as normal.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Petrol costs $1.85/L. Find the cost of 32.5 L — long multiplication, no calculator <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Ignore decimals, multiply whole numbers: <span class="math">185 × 325</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Break it up: <span class="math">185 × 300 = 55,500</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Then: <span class="math">185 × 25 = 4,625</span></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Add: <span class="math">55,500 + 4,625 = 60,125</span></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Count decimal places (2 + 1 = 3) and place the point: <span class="math">60.125</span></div></div>
+          <div class="answer">✓ $60.13 (rounded to the nearest cent)</div>
+          <div class="tip">Breaking a big multiplication into friendly chunks (like ×300 then ×25) is much easier to do in your head or on paper than one big sum.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Formulas at a glance</h2>
+      <div class="two">
+        <div class="formula-box"><div class="formula">% = frac × 100</div><div class="formula-name">fraction → percentage</div></div>
+        <div class="formula-box"><div class="formula">a/b ÷ c/d = a/b × d/c</div><div class="formula-name">dividing fractions</div></div>
+      </div>
+      <div class="two" style="margin-top:0.75rem">
+        <div class="formula-box"><div class="formula">do inverse, both sides</div><div class="formula-name">solving equations</div></div>
+        <div class="formula-box"><div class="formula">one part = total ÷ parts</div><div class="formula-name">sharing a ratio</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Key vocabulary</h2>
+      <div class="chips">
+        <span class="chip cb">Numerator</span><span class="chip cb">Denominator</span><span class="chip cb">Equivalent</span><span class="chip cb">Simplify</span>
+        <span class="chip cg">Like terms</span><span class="chip cg">Substitute</span><span class="chip cg">Expand</span><span class="chip cg">Expression</span>
+        <span class="chip ca">Inverse operation</span><span class="chip ca">Solve</span><span class="chip ca">Formula</span>
+        <span class="chip cp">Place value</span><span class="chip cp">Round</span><span class="chip cp">Ratio</span><span class="chip cp">HCF</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>How to use this guide</h2>
+      <ul>
+        <li>Work through one topic tab at a time — read the rule, work through it <strong>by hand first</strong>, then use the "try it" box only to check your answer.</li>
+        <li>Practise the 10% method and long multiplication/division until they're automatic — that's what actually saves time in a non-calculator exam.</li>
+        <li>Try the <b>Quiz</b> tab once you've read a topic, to check it's sunk in.</li>
+        <li>Tick off the <b>Checklist</b> tab as you go so you know what's left before the exam.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FRACTIONS & PERCENTAGES ═══════════════ -->
+  <div id="s-fp" class="sec">
+
+    <div class="card">
+      <h2>Improper fractions &amp; mixed numerals</h2>
+      <div class="eb blue"><strong>Improper → mixed:</strong> divide numerator by denominator. Whole number = the answer, remainder goes over the same denominator.</div>
+      <div class="eb blue"><strong>Mixed → improper:</strong> multiply the whole number by the denominator, add the numerator, keep the same denominator.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Convert 23/6 to a mixed numeral. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Divide: <span class="math">23 ÷ 6 = 3 remainder 5</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Remainder goes over the denominator: <span class="math">3⅚</span></div></div>
+          <div class="answer">✓ 23/6 = 3⅚</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Convert 4¾ to an improper fraction. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Multiply whole number by denominator: <span class="math">4 × 4 = 16</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add the numerator: <span class="math">16 + 3 = 19</span></div></div>
+          <div class="answer">✓ 4¾ = 19/4</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Equivalent fractions &amp; ordering</h2>
+      <div class="eb green">Multiply or divide the numerator and denominator by the <strong>same number</strong> to make an equivalent fraction.</div>
+      <div class="eb amber">To compare fractions, convert them to a <strong>common denominator</strong> first (or convert both to decimals).</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Which is larger: 5/6 or 7/9? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Common denominator is 18: <span class="math">5/6 = 15/18</span> and <span class="math">7/9 = 14/18</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Compare: <span class="math">15/18 &gt; 14/18</span></div></div>
+          <div class="answer">✓ 5/6 is larger</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Adding, subtracting, multiplying &amp; dividing</h2>
+      <div class="eb blue"><strong>Add/subtract:</strong> same denominator → combine numerators. Different denominators → find a common denominator first.</div>
+      <div class="eb purple"><strong>Multiply:</strong> multiply numerators together and denominators together. <strong>Divide:</strong> flip the second fraction (reciprocal), then multiply.</div>
+
+      <h3>Check your answer (work it out by hand first!)</h3>
+      <div class="calc-card">
+        <label>First fraction (numerator / denominator)</label>
+        <div style="display:flex;gap:8px">
+          <input type="number" id="f1n" placeholder="num" oninput="calcFrac()">
+          <input type="number" id="f1d" placeholder="denom" oninput="calcFrac()">
+        </div>
+        <label>Operation</label>
+        <select id="fop" onchange="calcFrac()" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px">
+          <option value="+">+ add</option>
+          <option value="-">− subtract</option>
+          <option value="*">× multiply</option>
+          <option value="/">÷ divide</option>
+        </select>
+        <label>Second fraction (numerator / denominator)</label>
+        <div style="display:flex;gap:8px">
+          <input type="number" id="f2n" placeholder="num" oninput="calcFrac()">
+          <input type="number" id="f2d" placeholder="denom" oninput="calcFrac()">
+        </div>
+        <div class="calc-result" id="frac-result">Enter both fractions above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Calculate 3/4 − 1/6 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Common denominator is 12: <span class="math">3/4 = 9/12</span>, <span class="math">1/6 = 2/12</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract: <span class="math">9/12 − 2/12 = 7/12</span></div></div>
+          <div class="answer">✓ 7/12</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Calculate 3/5 ÷ 2/7 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Flip the second fraction and multiply: <span class="math">3/5 × 7/2</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Multiply across: <span class="math">21/10</span></div></div>
+          <div class="answer">✓ 21/10 = 2 1/10</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Fractions, decimals &amp; percentages</h2>
+      <div class="eb green"><strong>Fraction → %:</strong> multiply by 100. <strong>% → fraction:</strong> write over 100 and simplify.</div>
+
+      <h3>Check your answer (use the 10% method first!)</h3>
+      <div class="calc-card">
+        <label>Percentage</label>
+        <input type="number" id="pct" placeholder="e.g. 35" oninput="calcPct()">
+        <label>Of amount</label>
+        <input type="number" id="pamt" placeholder="e.g. 140" oninput="calcPct()">
+        <div class="calc-result" id="pct-result">Enter both values above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Write 7/8 as a percentage. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Multiply by 100: <span class="math">7/8 × 100 = 87.5</span></div></div>
+          <div class="answer">✓ 87.5%</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Find 35% of $140. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Convert to decimal: <span class="math">35% = 0.35</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Multiply: <span class="math">0.35 × 140 = 49</span></div></div>
+          <div class="answer">✓ $49</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: A recipe needs 2¾ cups of flour for 12 muffins. How much for 18 muffins? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Scale factor: <span class="math">18 ÷ 12 = 1.5</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Multiply: <span class="math">2.75 × 1.5 = 4.125</span></div></div>
+          <div class="answer">✓ 4⅛ cups (4.125 cups)</div>
+          <div class="tip">Scaling a recipe works the same way as scaling any ratio — find the multiplier first.</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: 40% of a class of 30 play sport. 1/4 of those also play an instrument. How many play both? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">40% of 30: <span class="math">0.4 × 30 = 12</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">1/4 of 12: <span class="math">12 ÷ 4 = 3</span></div></div>
+          <div class="answer">✓ 3 students</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ALGEBRA ═══════════════ -->
+  <div id="s-alg" class="sec">
+
+    <div class="card">
+      <h2>Conventions &amp; substituting</h2>
+      <div class="eb blue"><strong>3n</strong> means 3 × n. A number next to a letter is always multiplied — no × sign needed. Write the number first: 5x, not x5.</div>
+      <div class="eb green"><strong>Substituting:</strong> replace each letter with its given value, then calculate following order of operations.</div>
+
+      <h3>Check your answer (work it out by hand first!)</h3>
+      <div class="calc-card">
+        <label>Expression: 3a − 2b</label>
+        <label>Value of a</label>
+        <input type="number" id="suba" placeholder="e.g. 6" oninput="calcSub()">
+        <label>Value of b</label>
+        <input type="number" id="subb" placeholder="e.g. 2" oninput="calcSub()">
+        <div class="calc-result" id="sub-result">Enter both values above</div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Find 3a − 2b when a = 6 and b = 2. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Substitute: <span class="math">3(6) − 2(2)</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Calculate: <span class="math">18 − 4 = 14</span></div></div>
+          <div class="answer">✓ 14</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Like terms, multiplying &amp; dividing</h2>
+      <div class="eb amber">Only terms with the exact same letter(s) and power can be combined. <strong>3a × 2b = 6ab</strong>. <strong>8ab ÷ 2a = 4b</strong>.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Simplify 7x + 4y − 3x − 2y + 5 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Group x terms: <span class="math">7x − 3x = 4x</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Group y terms: <span class="math">4y − 2y = 2y</span></div></div>
+          <div class="answer">✓ 4x + 2y + 5</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Simplify 15xy ÷ 5x <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Divide numbers: <span class="math">15 ÷ 5 = 3</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Cancel the common letter x, leaving y</div></div>
+          <div class="answer">✓ 3y</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Expanding brackets</h2>
+      <div class="eb purple">Multiply the term outside the bracket by <strong>every</strong> term inside it.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Expand 5(2x − 3) <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">5 × 2x = 10x</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><span class="math">5 × (−3) = −15</span></div></div>
+          <div class="answer">✓ 10x − 15</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Expand x(x + 6) <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">x × x = x²</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><span class="math">x × 6 = 6x</span></div></div>
+          <div class="answer">✓ x² + 6x</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: P = 2(l + w). Find P when l=9, w=4. Then find a general expression for length (x+2), width x. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">P = 2(9 + 4) = 2(13) = 26 cm</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">General: <span class="math">P = 2((x+2) + x) = 2(2x + 2)</span></div></div>
+          <div class="answer">✓ P = 26 cm; general P = 4x + 4</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: A plumber charges $50 call-out plus $35/hour. Write an expression for cost, find cost for 3 hours. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Expression: <span class="math">C = 50 + 35h</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">For h=3: <span class="math">50 + 35(3) = 50 + 105</span></div></div>
+          <div class="answer">✓ C = 50 + 35h; cost = $155</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ EQUATIONS ═══════════════ -->
+  <div id="s-eq" class="sec">
+
+    <div class="card">
+      <h2>One-step &amp; two-step equations</h2>
+      <div class="eb blue">Do the <strong>opposite (inverse) operation</strong> to both sides to isolate the letter. For two-step equations, undo addition/subtraction first, then multiplication/division.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Solve x/4 = 9 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Multiply both sides by 4: <span class="math">x = 9 × 4</span></div></div>
+          <div class="answer">✓ x = 36</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Solve 6x + 7 = 37 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Subtract 7: <span class="math">6x = 30</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Divide by 6: <span class="math">x = 5</span></div></div>
+          <div class="answer">✓ x = 5</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Solve x/3 − 2 = 5 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Add 2: <span class="math">x/3 = 7</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Multiply by 3: <span class="math">x = 21</span></div></div>
+          <div class="answer">✓ x = 21</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Substituting into formulas</h2>
+      <div class="eb green">Replace each variable in the formula with its given value, then calculate.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Use v = u + at to find v when u=5, a=2, t=4. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">v = 5 + (2 × 4) = 5 + 8</span></div></div>
+          <div class="answer">✓ v = 13</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Use A = ½bh to find A when b=10, h=6. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">A = ½ × 10 × 6 = ½ × 60</span></div></div>
+          <div class="answer">✓ A = 30</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Forming &amp; solving equations</h2>
+      <div class="eb amber">Turn the words into an equation using a letter for the unknown, then solve it.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">'Seven less than three times a number is 20.' Find the number. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Form the equation: <span class="math">3x − 7 = 20</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add 7: <span class="math">3x = 27</span>. Divide by 3: <span class="math">x = 9</span></div></div>
+          <div class="answer">✓ x = 9</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: Sarah is 4 years older than twice her brother's age. Sarah is 20. Find her brother's age. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Let b = brother's age: <span class="math">2b + 4 = 20</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract 4: <span class="math">2b = 16</span>. Divide by 2: <span class="math">b = 8</span></div></div>
+          <div class="answer">✓ Brother is 8 years old</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: F = (9/5)C + 32. If F = 77°F, form an equation and solve for C. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">77 = (9/5)C + 32</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract 32: <span class="math">45 = (9/5)C</span>. Multiply by 5/9: <span class="math">C = 25</span></div></div>
+          <div class="answer">✓ C = 25°C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DECIMALS ═══════════════ -->
+  <div id="s-dec" class="sec">
+
+    <div class="card">
+      <h2>Place value &amp; rounding</h2>
+      <div class="eb blue">Digits after the decimal point are tenths, hundredths, thousandths. To round, look at the digit <strong>after</strong> the place you're rounding to: 5 or more rounds up.</div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Round 8.0956 to 2 decimal places. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Third decimal digit is 5, which rounds up the hundredths digit (9 → 10, carries over)</div></div>
+          <div class="answer">✓ 8.10</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Adding, subtracting, multiplying, dividing</h2>
+      <div class="eb green"><strong>Add/subtract:</strong> line up the decimal points. <strong>Multiply:</strong> multiply as whole numbers, then count total decimal places. <strong>Divide:</strong> multiply both numbers to make the divisor a whole number first.</div>
+
+      <h3>Check your answer (long multiplication/division first!)</h3>
+      <div class="calc-card">
+        <label>First number</label>
+        <input type="number" step="any" id="d1" placeholder="e.g. 14.7" oninput="calcDec()">
+        <label>Operation</label>
+        <select id="dop" onchange="calcDec()" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px">
+          <option value="+">+ add</option>
+          <option value="-">− subtract</option>
+          <option value="*">× multiply</option>
+          <option value="/">÷ divide</option>
+        </select>
+        <label>Second number</label>
+        <input type="number" step="any" id="d2" placeholder="e.g. 8.36" oninput="calcDec()">
+        <div class="calc-result" id="dec-result">Enter both numbers above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Calculate 0.6 × 0.7 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Multiply as whole numbers: <span class="math">6 × 7 = 42</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">2 decimal places total → <span class="math">0.42</span></div></div>
+          <div class="answer">✓ 0.42</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Calculate 9.6 ÷ 0.4 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Multiply both by 10: <span class="math">96 ÷ 4 = 24</span></div></div>
+          <div class="answer">✓ 24</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: A 1.8 m plank is cut into 4 equal pieces. How long is each piece? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">1.8 ÷ 4 = 0.45</span></div></div>
+          <div class="answer">✓ 0.45 m</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: Petrol costs $1.85/L. Find the cost of 32.5 L to the nearest cent. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">1.85 × 32.5 = 60.125</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Round to nearest cent: third decimal digit is 5, rounds up</div></div>
+          <div class="answer">✓ $60.13</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Connecting decimals, fractions &amp; percentages</h2>
+      <div class="eb amber">All three describe the same value in different forms — convert between them as needed for the problem.</div>
+      <div class="chips">
+        <span class="chip cb">0.5 = 1/2 = 50%</span><span class="chip cg">0.25 = 1/4 = 25%</span><span class="chip ca">0.375 = 3/8 = 37.5%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ RATIO ═══════════════ -->
+  <div id="s-rat" class="sec">
+
+    <div class="card">
+      <h2>Writing &amp; simplifying ratios</h2>
+      <div class="eb blue">Simplify a ratio the same way as a fraction: divide all parts by their <strong>highest common factor</strong> (HCF).</div>
+
+      <h3>Check your answer (find the HCF by hand first!)</h3>
+      <div class="calc-card">
+        <label>First number</label>
+        <input type="number" id="r1" placeholder="e.g. 48" oninput="calcRatio()">
+        <label>Second number</label>
+        <input type="number" id="r2" placeholder="e.g. 36" oninput="calcRatio()">
+        <div class="calc-result" id="ratio-result">Enter both numbers above</div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Simplify 48 : 36 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">HCF of 48 and 36 is 12</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Divide both parts: <span class="math">48 ÷ 12 = 4</span>, <span class="math">36 ÷ 12 = 3</span></div></div>
+          <div class="answer">✓ 4 : 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Problem solving with ratios</h2>
+      <div class="eb green">Add the ratio parts to find the total shares. Divide the amount by the total to find <strong>one part</strong>. Multiply by each ratio number for that share.</div>
+
+      <h3>Check your answer (work it out by hand first!)</h3>
+      <div class="calc-card">
+        <label>Amount to share</label>
+        <input type="number" id="samt" placeholder="e.g. 90" oninput="calcShare()">
+        <label>Ratio (comma separated, e.g. 4,5)</label>
+        <input type="text" id="sratio" placeholder="e.g. 4,5" oninput="calcShare()">
+        <div class="calc-result" id="share-result">Enter amount and ratio above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Share $90 in the ratio 4:5 <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Total parts: <span class="math">4 + 5 = 9</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">One part: <span class="math">90 ÷ 9 = $10</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Shares: <span class="math">4×10=$40</span> and <span class="math">5×10=$50</span></div></div>
+          <div class="answer">✓ $40 : $50</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">A school has boys:girls in ratio 3:4. There are 21 boys. How many girls? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">3 parts = 21, so 1 part = <span class="math">21 ÷ 3 = 7</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Girls = 4 parts = <span class="math">4 × 7 = 28</span></div></div>
+          <div class="answer">✓ 28 girls</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: Cordial and water mixed 1:4. Make 2.5 L in total — how much of each? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Total parts: <span class="math">1 + 4 = 5</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">One part: <span class="math">2.5 ÷ 5 = 0.5 L</span></div></div>
+          <div class="answer">✓ Cordial = 0.5 L, Water = 2 L</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">WRITTEN: Blue:white paint mixed 3:7. 14 L of white is used. Find blue paint and total volume. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">White = 7 parts = 14 L, so 1 part = <span class="math">14 ÷ 7 = 2 L</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Blue = 3 parts = <span class="math">3 × 2 = 6 L</span>. Total parts = 10 → <span class="math">10 × 2 = 20 L</span></div></div>
+          <div class="answer">✓ Blue = 6 L; Total = 20 L</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ QUIZ ═══════════════ -->
+  <div id="s-quiz" class="sec">
+    <div class="scorebar">
+      <span>Score: <b id="qscore">0</b> / <span id="qtotal">15</span></span>
+      <button class="reset-btn" onclick="resetQuiz()">Reset quiz</button>
+    </div>
+    <div id="quizhost"></div>
+  </div>
+
+  <!-- ═══════════════ CHECKLIST ═══════════════ -->
+  <div id="s-check" class="sec">
+    <div class="card">
+      <div class="cl-progress" id="cl-progress">0 / 15 checked off</div>
+      <div id="cl-list"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Year 7 Maths · Term 3 Revision · Queensland Curriculum
+  </div>
+</div>
+
+<script>
+// ===== NAV =====
+document.querySelectorAll('.nb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.sec).classList.add('active');
+  });
+});
+
+// ===== WORKED EXAMPLE TOGGLE =====
+function toggleWorked(el){
+  el.parentElement.classList.toggle('open');
+}
+
+// ===== FRACTION CALCULATOR =====
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
+function simplifyFrac(n,d){
+  if(d<0){n=-n;d=-d}
+  const g=gcd(n,d);
+  return [n/g,d/g];
+}
+function calcFrac(){
+  const n1=parseFloat(document.getElementById('f1n').value);
+  const d1=parseFloat(document.getElementById('f1d').value);
+  const n2=parseFloat(document.getElementById('f2n').value);
+  const d2=parseFloat(document.getElementById('f2d').value);
+  const op=document.getElementById('fop').value;
+  const el=document.getElementById('frac-result');
+  if(isNaN(n1)||isNaN(d1)||isNaN(n2)||isNaN(d2)||d1===0||d2===0){el.textContent='Enter both fractions above';return}
+  let rn,rd;
+  if(op==='+'){rn=n1*d2+n2*d1;rd=d1*d2}
+  else if(op==='-'){rn=n1*d2-n2*d1;rd=d1*d2}
+  else if(op==='*'){rn=n1*n2;rd=d1*d2}
+  else {rn=n1*d2;rd=d1*n2}
+  const [sn,sd]=simplifyFrac(rn,rd);
+  let display = sd===1 ? `${sn}` : `${sn}/${sd}`;
+  if(Math.abs(sn)>=Math.abs(sd) && sd!==1 && sd!==0){
+    const whole=Math.trunc(sn/sd);
+    const rem=Math.abs(sn-whole*sd);
+    if(rem>0) display += `  =  ${whole} ${rem}/${Math.abs(sd)}`;
+  }
+  el.textContent = `${n1}/${d1} ${op} ${n2}/${d2} = ${display}`;
+}
+
+// ===== PERCENTAGE CALCULATOR =====
+function calcPct(){
+  const p=parseFloat(document.getElementById('pct').value);
+  const a=parseFloat(document.getElementById('pamt').value);
+  const el=document.getElementById('pct-result');
+  if(isNaN(p)||isNaN(a)){el.textContent='Enter both values above';return}
+  el.textContent = `${p}% of ${a} = ${(p/100*a).toLocaleString(undefined,{maximumFractionDigits:3})}`;
+}
+
+// ===== SUBSTITUTION CALCULATOR =====
+function calcSub(){
+  const a=parseFloat(document.getElementById('suba').value);
+  const b=parseFloat(document.getElementById('subb').value);
+  const el=document.getElementById('sub-result');
+  if(isNaN(a)||isNaN(b)){el.textContent='Enter both values above';return}
+  el.textContent = `3(${a}) − 2(${b}) = ${3*a-2*b}`;
+}
+
+// ===== DECIMAL CALCULATOR =====
+function calcDec(){
+  const a=parseFloat(document.getElementById('d1').value);
+  const b=parseFloat(document.getElementById('d2').value);
+  const op=document.getElementById('dop').value;
+  const el=document.getElementById('dec-result');
+  if(isNaN(a)||isNaN(b)){el.textContent='Enter both numbers above';return}
+  let r;
+  if(op==='+')r=a+b; else if(op==='-')r=a-b; else if(op==='*')r=a*b; else r=b!==0?a/b:NaN;
+  el.textContent = isNaN(r) ? 'Cannot divide by zero' : `${a} ${op} ${b} = ${Math.round(r*10000)/10000}`;
+}
+
+// ===== RATIO SIMPLIFIER =====
+function calcRatio(){
+  const a=parseInt(document.getElementById('r1').value);
+  const b=parseInt(document.getElementById('r2').value);
+  const el=document.getElementById('ratio-result');
+  if(isNaN(a)||isNaN(b)||a<=0||b<=0){el.textContent='Enter both numbers above';return}
+  const g=gcd(a,b);
+  el.textContent = `${a} : ${b}  simplifies to  ${a/g} : ${b/g}`;
+}
+
+// ===== SHARE CALCULATOR =====
+function calcShare(){
+  const amt=parseFloat(document.getElementById('samt').value);
+  const ratioStr=document.getElementById('sratio').value;
+  const el=document.getElementById('share-result');
+  if(isNaN(amt)||!ratioStr){el.textContent='Enter amount and ratio above';return}
+  const parts=ratioStr.split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n)&&n>0);
+  if(parts.length<2){el.textContent='Enter a valid ratio like 4,5';return}
+  const total=parts.reduce((s,n)=>s+n,0);
+  const one=amt/total;
+  const shares=parts.map(p=>Math.round(p*one*100)/100);
+  el.textContent = `${ratioStr} of ${amt} → ` + shares.join(' : ');
+}
+
+// ===== QUIZ =====
+const Qs=[
+{q:'Convert 23/6 to a mixed numeral.',opts:['3⅚','3⅔','4⅚','2⅚'],a:0,exp:'23 ÷ 6 = 3 remainder 5, so 3⅚.'},
+{q:'Which fraction is equivalent to 5/8?',opts:['10/16','6/9','10/18','15/22'],a:0,exp:'Multiply top and bottom by 2: 10/16.'},
+{q:'What is 2/5 + 1/3?',opts:['3/8','11/15','6/15','3/15'],a:1,exp:'Common denominator 15: 6/15 + 5/15 = 11/15.'},
+{q:"Find 35% of $140.",opts:['$49','$45','$35','$42'],a:0,exp:'0.35 × 140 = 49.'},
+{q:'Simplify: 5a + 2b − 3a + b',opts:['2a + 3b','8a + 3b','2a + b','8a − b'],a:0,exp:'(5a−3a)+(2b+b) = 2a+3b.'},
+{q:'Expand: 4(x + 5)',opts:['4x + 5','4x + 20','x + 20','9x'],a:1,exp:'4×x=4x, 4×5=20.'},
+{q:'Solve: x − 9 = 14',opts:['x = 5','x = 23','x = −5','x = 126'],a:1,exp:'Add 9 to both sides: x=23.'},
+{q:'Solve: 5x − 3 = 27',opts:['x = 5','x = 6','x = 4.8','x = 30'],a:1,exp:'5x=30, x=6.'},
+{q:"'Twice a number plus 9 equals 31.' Find the number.",opts:['11','20','15.5','40'],a:0,exp:'2x+9=31, 2x=22, x=11.'},
+{q:'Round 6.847 to 1 decimal place.',opts:['6.8','6.9','6.85','7.0'],a:0,exp:'Hundredths digit is 4 (<5), so round down: 6.8.'},
+{q:'What is 3.6 × 0.4?',opts:['1.44','14.4','0.144','4.0'],a:0,exp:'36×4=144, 2 decimal places total: 1.44.'},
+{q:'Simplify the ratio 24 : 36',opts:['4 : 6','2 : 3','3 : 4','12 : 18'],a:1,exp:'HCF is 12: 24÷12=2, 36÷12=3.'},
+{q:'Share $60 in the ratio 2:4. Find the larger share.',opts:['$20','$30','$40','$50'],a:2,exp:'6 parts total, 1 part=$10, larger share=4×10=$40.'},
+{q:'Write 7/8 as a percentage.',opts:['87.5%','78%','875%','8.75%'],a:0,exp:'7/8 × 100 = 87.5%.'},
+{q:'Use A = ½bh to find A when b=10, h=6.',opts:['A = 30','A = 60','A = 16','A = 8'],a:0,exp:'½×10×6=30.'}
+];
+let answered=new Array(Qs.length).fill(null);
+
+function buildQuiz(){
+  const host=document.getElementById('quizhost');
+  host.innerHTML='';
+  document.getElementById('qtotal').textContent=Qs.length;
+  Qs.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard';
+    card.innerHTML=`<div class="qn">${i+1}. ${q.q}</div>`+
+      q.opts.map((o,j)=>`<button class="opt" data-i="${i}" data-j="${j}" onclick="answerQ(${i},${j})">${o}</button>`).join('')+
+      `<div class="qfb" id="qfb-${i}"></div>`;
+    host.appendChild(card);
+  });
+  updateScore();
+}
+function answerQ(i,j){
+  if(answered[i]!==null)return;
+  answered[i]=(j===Qs[i].a);
+  const btns=document.querySelectorAll(`[data-i="${i}"]`);
+  btns.forEach(b=>{
+    b.classList.add('disabled');
+    const bj=parseInt(b.dataset.j);
+    if(bj===Qs[i].a)b.classList.add('correct');
+    else if(bj===j)b.classList.add('wrong');
+  });
+  document.getElementById(`qfb-${i}`).textContent=(answered[i]?'✓ Correct! ':'✗ Not quite. ')+Qs[i].exp;
+  updateScore();
+}
+function updateScore(){
+  document.getElementById('qscore').textContent=answered.filter(a=>a===true).length;
+}
+function resetQuiz(){answered=new Array(Qs.length).fill(null);buildQuiz()}
+buildQuiz();
+
+// ===== CHECKLIST =====
+const CL=[
+'Convert between improper fractions and mixed numerals',
+'Find equivalent fractions and order fractions by size',
+'Add, subtract, multiply and divide fractions',
+'Convert fractions to/from percentages, and find a percentage of an amount',
+'Understand algebraic conventions (3n, n²) and substitute values into expressions',
+'Simplify expressions by collecting like terms',
+'Multiply and divide algebraic terms',
+'Expand brackets',
+'Solve one-step and two-step equations',
+'Substitute values into formulas',
+'Form an equation from a worded problem and solve it',
+'Round decimals and identify place value',
+'Add, subtract, multiply and divide decimals',
+'Simplify ratios using the HCF',
+'Share an amount in a given ratio'
+];
+function loadCL(){
+  try{return JSON.parse(localStorage.getItem('yr7t3_checklist')||'{}')}catch(e){return {}}
+}
+function saveCL(state){
+  try{localStorage.setItem('yr7t3_checklist',JSON.stringify(state))}catch(e){}
+}
+function buildChecklist(){
+  const state=loadCL();
+  const host=document.getElementById('cl-list');
+  host.innerHTML='';
+  CL.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='cl-item'+(state[i]?' done':'');
+    row.innerHTML=`<input type="checkbox" id="cl-${i}" ${state[i]?'checked':''} onchange="toggleCL(${i})"><label for="cl-${i}">${item}</label>`;
+    host.appendChild(row);
+  });
+  updateCLProgress(state);
+}
+function toggleCL(i){
+  const state=loadCL();
+  state[i]=!state[i];
+  saveCL(state);
+  buildChecklist();
+}
+function updateCLProgress(state){
+  const done=CL.filter((_,i)=>state[i]).length;
+  document.getElementById('cl-progress').textContent=`${done} / ${CL.length} checked off`;
+}
+buildChecklist();
+</script>
+</body>
+</html>

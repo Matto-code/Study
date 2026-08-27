@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Maths — Term 3 Flashcards</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:600px;margin:0 auto;padding-bottom:3rem}
+
+.hero{background:#1a3a5c;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.ac{display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:500;margin-bottom:8px}
+
+.fc-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-chip{padding:6px 13px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.filter-chip.active{background:#1a3a5c;color:white;border-color:#1a3a5c}
+
+.fc-progress{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:10px 16px;margin-bottom:1rem;display:flex;justify-content:space-between;font-size:13px;color:#5f5e5a}
+.fc-stat-good{color:#1a7a4a;font-weight:700}
+.fc-stat-again{color:#B8341F;font-weight:700}
+
+.card-area{position:relative;margin-bottom:1rem}
+.card-face{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:1.5rem;min-height:220px}
+.card-face.hidden{display:none}
+.card-topic{display:inline-block;background:#EBF3FB;color:#1a3a5c;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;margin-bottom:12px}
+.card-q{font-size:16px;font-weight:500;color:#2c2c2a;line-height:1.5;margin-bottom:16px}
+.answer-input-label{font-size:12px;color:#5f5e5a;margin-bottom:6px;font-weight:500}
+.answer-input{width:100%;min-height:70px;padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-bottom:14px}
+.flip-btn{width:100%;padding:12px;border:none;border-radius:8px;background:#1a3a5c;color:white;font-size:14px;font-weight:600;cursor:pointer}
+.flip-btn:hover{background:#12283f}
+
+.back-section{margin-bottom:14px}
+.back-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px}
+.your-answer-box{background:#FAFAF8;border:1px solid #e0dfd8;border-radius:8px;padding:10px 12px;font-size:13px;color:#5f5e5a;min-height:20px}
+.correct-answer-box{background:#E6F5EE;border:1px solid #b7e0c8;border-radius:8px;padding:10px 12px;font-size:13px;color:#0d3d25;line-height:1.6}
+.rating-hint{font-size:12px;color:#5f5e5a;margin-bottom:8px;text-align:center}
+.rating-row{display:flex;gap:10px;margin-bottom:10px}
+.rating-btn{flex:1;padding:11px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.rating-btn.again{background:#FBEAEA;color:#B8341F}
+.rating-btn.again:hover{background:#f7d9d9}
+.rating-btn.good{background:#E6F5EE;color:#1a7a4a}
+.rating-btn.good:hover{background:#d3ecdf}
+.flip-back-btn{width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;background:white;color:#5f5e5a;font-size:12.5px;cursor:pointer}
+
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:1rem}
+.nav-btn{flex:1;padding:10px;border:1px solid #ccc;border-radius:8px;background:white;color:#2c2c2a;font-size:13px;font-weight:500;cursor:pointer}
+.nav-btn:hover{border-color:#1a3a5c}
+.nav-btn:disabled{opacity:0.4;cursor:default}
+
+.card-position{text-align:center;font-size:12px;color:#999;margin-bottom:0.5rem}
+
+.footer{text-align:center;margin-top:2rem;font-size:11px;color:#bbb;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="ac">Queensland Curriculum · Year 7 Maths</div>
+    <h1>Term 3 Revision — Flashcards</h1>
+    <p>Write your answer, flip to compare, rate as "Needs work" or "Know it!" — this is a non-calculator test, so work every card out by hand.</p>
+  </div>
+
+  <div class="fc-filters" id="fc-filters"></div>
+
+  <div class="fc-progress">
+    <span>Card <b id="fc-position">1</b> of <b id="fc-total">50</b></span>
+    <span><span class="fc-stat-good" id="fc-good-count">0</span> know it · <span class="fc-stat-again" id="fc-again-count">0</span> needs work</span>
+  </div>
+
+  <div class="card-area">
+    <div class="card-face" id="fc-front">
+      <span class="card-topic" id="fc-topic-front"></span>
+      <div class="card-q" id="fc-question"></div>
+      <div class="answer-input-label">Your answer</div>
+      <textarea class="answer-input" id="fc-input" placeholder="Type your answer here before flipping…"></textarea>
+      <button class="flip-btn" onclick="flipCard()">Flip to check answer →</button>
+    </div>
+
+    <div class="card-face hidden" id="fc-back">
+      <span class="card-topic" id="fc-topic-back"></span>
+      <div class="back-section">
+        <div class="back-section-label" style="color:#5f5e5a">Your answer</div>
+        <div class="your-answer-box" id="fc-your-answer"></div>
+      </div>
+      <div class="back-section">
+        <div class="back-section-label" style="color:#1a7a4a">Correct answer &amp; working</div>
+        <div class="correct-answer-box" id="fc-correct-answer"></div>
+      </div>
+      <div class="rating-hint">How did you go?</div>
+      <div class="rating-row">
+        <button class="rating-btn again" onclick="rateCard('again')">Needs work</button>
+        <button class="rating-btn good" onclick="rateCard('good')">Know it!</button>
+      </div>
+      <button class="flip-back-btn" onclick="flipBack()">← Flip back</button>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="fc-prev" onclick="navCard(-1)">← Previous</button>
+    <button class="nav-btn" id="fc-next" onclick="navCard(1)">Next →</button>
+  </div>
+
+  <div class="footer">
+    Year 7 Maths · Term 3 Revision · Queensland Curriculum
+  </div>
+</div>
+
+<script>
+const FCARDS=[
+// ===== FRACTIONS & PERCENTAGES =====
+{id:'fp1',topic:'Fractions & Percentages',q:'Convert 23/6 to a mixed numeral.',a:'3⅚ — Working: 23 ÷ 6 = 3 remainder 5, so the mixed numeral is 3⅚.'},
+{id:'fp2',topic:'Fractions & Percentages',q:'Convert 4¾ to an improper fraction.',a:'19/4 — Working: (4 × 4) + 3 = 19, keep the same denominator: 19/4.'},
+{id:'fp3',topic:'Fractions & Percentages',q:'Which fraction is equivalent to 5/8?',a:'10/16 — Working: multiply numerator and denominator by 2: 5×2=10, 8×2=16.'},
+{id:'fp4',topic:'Fractions & Percentages',q:'Which is larger: 5/6 or 7/9?',a:'5/6 — Working: common denominator 18: 5/6=15/18, 7/9=14/18. 15/18 > 14/18.'},
+{id:'fp5',topic:'Fractions & Percentages',q:'Calculate 3/4 − 1/6.',a:'7/12 — Working: common denominator 12: 9/12 − 2/12 = 7/12.'},
+{id:'fp6',topic:'Fractions & Percentages',q:'Calculate 3/5 ÷ 2/7.',a:'2 1/10 — Working: flip and multiply: 3/5 × 7/2 = 21/10 = 2 1/10.'},
+{id:'fp7',topic:'Fractions & Percentages',q:'Write 7/8 as a percentage.',a:'87.5% — Working: 7/8 × 100 = 87.5.'},
+{id:'fp8',topic:'Fractions & Percentages',q:'Find 35% of $140.',a:'$49 — 10% method: 10%=$14, 30%=$42, 5%=half of 10%=$7. 35%=30%+5%=$42+$7=$49.'},
+{id:'fp9',topic:'Fractions & Percentages',q:'Write 45% as a simplified fraction.',a:'9/20 — Working: 45/100, divide top and bottom by 5: 9/20.'},
+{id:'fp10',topic:'Fractions & Percentages',q:'Calculate 2/5 + 1/3.',a:'11/15 — Working: common denominator 15: 6/15 + 5/15 = 11/15.'},
+{id:'fpw1',topic:'Fractions & Percentages',q:'WRITTEN: A recipe needs 2¾ cups of flour for 12 muffins. How much flour for 18 muffins?',a:'4⅛ cups (4.125 cups) — Working: scale factor = 18÷12 = 1.5. 2.75 × 1.5 = 4.125 cups.'},
+{id:'fpw2',topic:'Fractions & Percentages',q:'WRITTEN: In a class of 30, 40% play a sport. Of those, 1/4 also play an instrument. How many play both?',a:'3 students — Working: 40% of 30 = 12. 1/4 of 12 = 3.'},
+
+// ===== ALGEBRA =====
+{id:'alg1',topic:'Algebra',q:"Write an expression for '5 times a number n'.",a:'5n — a number written next to a letter always means multiplication.'},
+{id:'alg2',topic:'Algebra',q:'Find the value of 3a − 2b when a = 6 and b = 2.',a:'14 — Working: 3(6) − 2(2) = 18 − 4 = 14.'},
+{id:'alg3',topic:'Algebra',q:'Simplify: 7x + 4y − 3x − 2y + 5',a:'4x + 2y + 5 — Working: group like terms: (7x−3x)+(4y−2y)+5.'},
+{id:'alg4',topic:'Algebra',q:'Simplify: 4p × 3q',a:'12pq — Working: multiply numbers (4×3=12), multiply letters (p×q=pq).'},
+{id:'alg5',topic:'Algebra',q:'Simplify: 15xy ÷ 5x',a:'3y — Working: 15÷5=3, cancel the common x, leaving y.'},
+{id:'alg6',topic:'Algebra',q:'Expand: 5(2x − 3)',a:'10x − 15 — Working: 5×2x=10x, 5×(−3)=−15.'},
+{id:'alg7',topic:'Algebra',q:'Expand: x(x + 6)',a:'x² + 6x — Working: x×x=x², x×6=6x.'},
+{id:'alg8',topic:'Algebra',q:"Write an expression for 'the cost of n tickets at $8 each plus a $5 booking fee'.",a:'8n + 5 — n tickets at $8 each is 8n, plus the fixed $5 fee.'},
+{id:'algw1',topic:'Algebra',q:'WRITTEN: P = 2(l+w). Find P when l=9cm, w=4cm. Then write a general expression for length (x+2), width x.',a:'P = 26 cm; general P = 4x + 4 — Working: P=2(9+4)=26. General: 2((x+2)+x)=2(2x+2)=4x+4.'},
+{id:'algw2',topic:'Algebra',q:'WRITTEN: A plumber charges a $50 call-out fee plus $35/hour. Write an expression for the cost, then find the cost for 3 hours.',a:'C = 50 + 35h; cost = $155 — Working: 50 + 35(3) = 50 + 105 = 155.'},
+
+// ===== EQUATIONS =====
+{id:'eq1',topic:'Equations',q:'Solve: x/4 = 9',a:'x = 36 — Working: multiply both sides by 4.'},
+{id:'eq2',topic:'Equations',q:'Solve: x − 15 = 8',a:'x = 23 — Working: add 15 to both sides.'},
+{id:'eq3',topic:'Equations',q:'Solve: 6x + 7 = 37',a:'x = 5 — Working: subtract 7 → 6x=30, divide by 6 → x=5.'},
+{id:'eq4',topic:'Equations',q:'Solve: x/3 − 2 = 5',a:'x = 21 — Working: add 2 → x/3=7, multiply by 3 → x=21.'},
+{id:'eq5',topic:'Equations',q:'Use v = u + at to find v when u=5, a=2, t=4.',a:'v = 13 — Working: v = 5 + (2×4) = 5+8 = 13.'},
+{id:'eq6',topic:'Equations',q:'Use A = ½bh to find A when b=10, h=6.',a:'A = 30 — Working: ½ × 10 × 6 = 30.'},
+{id:'eq7',topic:'Equations',q:"'Seven less than three times a number is 20.' Find the number.",a:'x = 9 — Working: 3x−7=20 → 3x=27 → x=9.'},
+{id:'eq8',topic:'Equations',q:"'Twice a number plus 9 equals 31.' Find the number.",a:'x = 11 — Working: 2x+9=31 → 2x=22 → x=11.'},
+{id:'eqw1',topic:'Equations',q:"WRITTEN: Sarah is 4 years older than twice her brother's age. Sarah is 20. Find her brother's age.",a:'8 years — Working: 2b+4=20 → 2b=16 → b=8.'},
+{id:'eqw2',topic:'Equations',q:'WRITTEN: F = (9/5)C + 32. If F = 77°F, form an equation and solve for C.',a:'C = 25°C — Working: 77=(9/5)C+32 → 45=(9/5)C → C=25.'},
+
+// ===== DECIMALS =====
+{id:'dec1',topic:'Decimals',q:'What digit is in the hundredths place of 5.638?',a:'3 — the places after the decimal point are tenths(6), hundredths(3), thousandths(8).'},
+{id:'dec2',topic:'Decimals',q:'Round 8.0956 to 2 decimal places.',a:'8.10 — Working: third decimal digit is 5, rounds up the hundredths (9→10, carries).'},
+{id:'dec3',topic:'Decimals',q:'Calculate 14.7 + 8.36',a:'23.06 — Working: line up decimal points: 14.70 + 8.36 = 23.06.'},
+{id:'dec4',topic:'Decimals',q:'Calculate 20 − 6.45',a:'13.55 — Working: 20.00 − 6.45 = 13.55.'},
+{id:'dec5',topic:'Decimals',q:'Calculate 0.6 × 0.7',a:'0.42 — Working: 6×7=42, 2 decimal places total → 0.42.'},
+{id:'dec6',topic:'Decimals',q:'Calculate 9.6 ÷ 0.4',a:'24 — Working: multiply both by 10: 96 ÷ 4 = 24.'},
+{id:'dec7',topic:'Decimals',q:'Write 0.375 as a simplified fraction.',a:'3/8 — Working: 375/1000, divide by HCF 125: 3/8.'},
+{id:'dec8',topic:'Decimals',q:'Express 7/25 as a decimal and a percentage.',a:'0.28 = 28% — Working: 7/25 = 28/100 = 0.28.'},
+{id:'decw1',topic:'Decimals',q:'WRITTEN: A 1.8 m plank is cut into 4 equal pieces. How long is each piece?',a:'0.45 m — Working: 1.8 ÷ 4 = 0.45.'},
+{id:'decw2',topic:'Decimals',q:'WRITTEN: Petrol costs $1.85/L. Find the cost of 32.5 L to the nearest cent.',a:'$60.13 — Working (no calculator): 185×325 = 185×300 + 185×25 = 55,500 + 4,625 = 60,125. Place decimal point (3 places): 60.125 → rounds to $60.13.'},
+
+// ===== RATIO =====
+{id:'rat1',topic:'Ratio',q:'Simplify the ratio 15 : 25',a:'3 : 5 — Working: HCF is 5, 15÷5=3, 25÷5=5.'},
+{id:'rat2',topic:'Ratio',q:'Simplify the ratio 48 : 36',a:'4 : 3 — Working: HCF is 12, 48÷12=4, 36÷12=3.'},
+{id:'rat3',topic:'Ratio',q:'A fruit bowl has 6 apples and 9 oranges. Write the ratio of apples to oranges in simplest form.',a:'2 : 3 — Working: 6:9, divide by HCF 3: 2:3.'},
+{id:'rat4',topic:'Ratio',q:'Share $90 in the ratio 4 : 5.',a:'$40 : $50 — Working: total parts 9, one part=$10, shares 4×10 and 5×10.'},
+{id:'rat5',topic:'Ratio',q:'Share $72 in the ratio 2 : 3 : 4.',a:'$16 : $24 : $32 — Working: total parts 9, one part=$8, shares 2×8, 3×8, 4×8.'},
+{id:'rat6',topic:'Ratio',q:'Boys:girls ratio is 3:4. There are 21 boys. How many girls?',a:'28 girls — Working: 1 part = 21÷3 = 7. Girls = 4×7 = 28.'},
+{id:'rat7',topic:'Ratio',q:'A map scale is 1:20 000. 3.5 cm on the map — what real distance in metres?',a:'700 m — Working: 3.5 × 20000 = 70000 cm = 700 m.'},
+{id:'rat8',topic:'Ratio',q:'In the ratio 2:5, what fraction of the total does the smaller part represent?',a:'2/7 — Working: total parts = 2+5 = 7. Smaller part = 2/7.'},
+{id:'ratw1',topic:'Ratio',q:'WRITTEN: Cordial and water mixed 1:4. Make 2.5 L total — how much of each?',a:'Cordial = 0.5 L, Water = 2 L — Working: total parts 5, one part=0.5L, cordial=1×0.5, water=4×0.5.'},
+{id:'ratw2',topic:'Ratio',q:'WRITTEN: Blue:white paint mixed 3:7. 14L of white used. Find blue paint and total volume.',a:'Blue = 6 L; Total = 20 L — Working: white=7 parts=14L, 1 part=2L. Blue=3×2=6L. Total=10×2=20L.'}
+];
+
+const TOPICS=['All',...new Set(FCARDS.map(c=>c.topic))];
+let deck=[...FCARDS];
+let currentIdx=0;
+let isFlipped=false;
+let currentFilter='All';
+let cardRatings={};
+
+function loadRatings(){
+  try{cardRatings=JSON.parse(localStorage.getItem('yr7t3_fc_ratings')||'{}')}catch(e){cardRatings={}}
+}
+function saveRatings(){
+  try{localStorage.setItem('yr7t3_fc_ratings',JSON.stringify(cardRatings))}catch(e){}
+}
+
+function buildFilters(){
+  const host=document.getElementById('fc-filters');
+  host.innerHTML='';
+  TOPICS.forEach(t=>{
+    const chip=document.createElement('button');
+    chip.className='filter-chip'+(t===currentFilter?' active':'');
+    chip.textContent=t;
+    chip.onclick=()=>{
+      currentFilter=t;
+      deck = t==='All' ? [...FCARDS] : FCARDS.filter(c=>c.topic===t);
+      currentIdx=0;
+      buildFilters();
+      resetToFront();
+    };
+    host.appendChild(chip);
+  });
+}
+
+function showCard(){
+  const c=deck[currentIdx];
+  document.getElementById('fc-topic-front').textContent=c.topic;
+  document.getElementById('fc-topic-back').textContent=c.topic;
+  document.getElementById('fc-question').textContent=c.q;
+  document.getElementById('fc-position').textContent=currentIdx+1;
+  document.getElementById('fc-total').textContent=deck.length;
+  document.getElementById('fc-prev').disabled=(currentIdx===0);
+  document.getElementById('fc-next').disabled=(currentIdx===deck.length-1);
+  updateCounts();
+}
+function updateCounts(){
+  let good=0,again=0;
+  deck.forEach(c=>{
+    if(cardRatings[c.id]==='good')good++;
+    if(cardRatings[c.id]==='again')again++;
+  });
+  document.getElementById('fc-good-count').textContent=good;
+  document.getElementById('fc-again-count').textContent=again;
+}
+function flipCard(){
+  const c=deck[currentIdx];
+  document.getElementById('fc-your-answer').textContent=document.getElementById('fc-input').value.trim()||'(no answer entered)';
+  document.getElementById('fc-correct-answer').textContent=c.a;
+  document.getElementById('fc-front').classList.add('hidden');
+  document.getElementById('fc-back').classList.remove('hidden');
+  isFlipped=true;
+}
+function flipBack(){
+  document.getElementById('fc-front').classList.remove('hidden');
+  document.getElementById('fc-back').classList.add('hidden');
+  isFlipped=false;
+}
+function rateCard(rating){
+  const c=deck[currentIdx];
+  cardRatings[c.id]=rating;
+  saveRatings();
+  updateCounts();
+  setTimeout(()=>{
+    if(currentIdx<deck.length-1){currentIdx++;resetToFront()}
+  },250);
+}
+function navCard(dir){
+  const newIdx=currentIdx+dir;
+  if(newIdx>=0 && newIdx<deck.length){
+    currentIdx=newIdx;
+    resetToFront();
+  }
+}
+function resetToFront(){
+  isFlipped=false;
+  document.getElementById('fc-input').value='';
+  flipBack();
+  showCard();
+}
+
+async function init(){
+  loadRatings();
+  buildFilters();
+  showCard();
+}
+init();
+</script>
+</body>
+</html>
