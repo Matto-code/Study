@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Maths — Term 4 Revision</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f0;color:#2c2c2a;padding:1rem}
+.wrap{max-width:700px;margin:0 auto;padding-bottom:3rem}
+
+.hero{background:#1a3a5c;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+.hero h1{font-size:20px;font-weight:500;color:white;margin-bottom:4px}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8)}
+.hero .bs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hero .b{background:rgba(255,255,255,0.18);border-radius:20px;padding:3px 10px;font-size:11px;color:white}
+.ac{display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:500;margin-bottom:8px}
+
+.nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem}
+.nb{padding:6px 14px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.nb.active,.nb:hover{background:#1a3a5c;color:white;border-color:#1a3a5c}
+
+.sec{display:none}.sec.active{display:block}
+
+.card{background:white;border:1px solid #e0dfd8;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card h2{font-size:15px;font-weight:500;color:#2c2c2a;margin-bottom:0.75rem}
+.card h3{font-size:13px;font-weight:500;color:#2c2c2a;margin-top:0.75rem;margin-bottom:0.4rem}
+.card p,.card li{font-size:13px;color:#5f5e5a;line-height:1.65}
+.card p{margin-bottom:0.5rem}
+.card ul,.card ol{padding-left:1.2rem;margin-bottom:0.5rem}
+.card li{margin-bottom:3px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem}
+@media(max-width:500px){.two,.three{grid-template-columns:1fr}}
+
+.formula-box{background:#EEF3F8;border-radius:10px;padding:14px 18px;margin-bottom:10px;text-align:center}
+.formula{font-size:17px;font-weight:700;color:#1a3a5c;font-family:'Courier New',monospace}
+.formula-name{font-size:11px;color:#5f5e5a;margin-top:4px;text-transform:uppercase;letter-spacing:0.3px}
+
+.eb{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:13px;line-height:1.6;border-left:4px solid}
+.eb.blue{background:#EBF3FB;border-color:#1a3a5c;color:#0d2438}
+.eb.green{background:#E6F5EE;border-color:#1a7a4a;color:#0d3d25}
+.eb.amber{background:#FDF3E3;border-color:#B8721E;color:#5c380f}
+.eb.purple{background:#F0EDFB;border-color:#5B3FA8;color:#2e1f54}
+.eb.red{background:#FBF3F0;border-color:#B8341F;color:#5c2020}
+.eb strong{color:inherit}
+
+.calc-card{background:#FAFAF8;border:1px solid #e0dfd8;border-radius:10px;padding:14px;margin-bottom:8px}
+.calc-card label{display:block;font-size:12px;color:#5f5e5a;margin-bottom:4px;margin-top:8px;font-weight:500}
+.calc-card label:first-child{margin-top:0}
+.calc-card input,.calc-card select{width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:14px;background:white}
+.calc-result{margin-top:10px;padding:10px;background:#E6F5EE;border-radius:8px;font-size:13px;font-weight:600;color:#0d3d25;text-align:center;line-height:1.5}
+.row{display:flex;gap:8px}
+.row>div{flex:1}
+
+.worked{border:1px solid #e0dfd8;border-radius:8px;margin-bottom:8px;overflow:hidden}
+.worked-q{padding:10px 14px;background:#FAFAF8;font-size:13px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;color:#2c2c2a}
+.worked-q:hover{background:#f0efe9}
+.chevron{transition:transform 0.2s;font-size:11px;color:#999;flex-shrink:0}
+.worked.open .chevron{transform:rotate(180deg)}
+.worked-body{display:none;padding:12px 14px;border-top:1px solid #e0dfd8}
+.worked.open .worked-body{display:block}
+.step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:#1a3a5c;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:#3d3d3a;line-height:1.5}
+.math{font-family:'Courier New',monospace;font-weight:700;color:#1a3a5c}
+.answer{background:#E6F5EE;color:#0d3d25;font-weight:600;font-size:13px;padding:8px 10px;border-radius:6px;margin-top:6px}
+.tip{background:#FDF3E3;color:#5c380f;font-size:12px;padding:8px 10px;border-radius:6px;margin-top:6px}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{display:inline-block;border-radius:20px;padding:4px 12px;font-size:11.5px;font-weight:500}
+.cb{background:#EBF3FB;color:#1a3a5c}
+.cg{background:#E6F5EE;color:#0d3d25}
+.ca{background:#FDF3E3;color:#5c380f}
+.cp{background:#F0EDFB;color:#2e1f54}
+
+table.t{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 10px}
+table.t th{background:#EEF3F8;color:#1a3a5c;font-weight:600;text-align:left;padding:7px 8px;border-bottom:1px solid #d6dfe8}
+table.t td{padding:7px 8px;border-bottom:1px solid #eeece6;color:#3d3d3a;vertical-align:top}
+table.t td.code{font-family:'Courier New',monospace;font-weight:700;color:#1a3a5c;white-space:nowrap}
+.tscroll{overflow-x:auto}
+
+.diagrams{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 10px}
+@media(max-width:500px){.diagrams{grid-template-columns:1fr}}
+.dg{background:#FAFAF8;border:1px solid #e0dfd8;border-radius:10px;padding:8px;text-align:center}
+.dg svg{width:100%;max-width:180px;height:auto}
+.dg .dl{font-size:12px;font-weight:600;color:#1a3a5c;margin-top:4px}
+.dg .ds{font-size:11px;color:#5f5e5a}
+
+.pq{border:1px solid #e0dfd8;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.pq-q{font-size:13px;font-weight:500;color:#2c2c2a;margin-bottom:8px;line-height:1.5}
+.pq-row{display:flex;gap:8px;flex-wrap:wrap}
+.pq input{flex:1;min-width:140px;max-width:240px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;font-size:13px}
+.pq button{padding:7px 14px;border:none;border-radius:6px;background:#1a3a5c;color:white;font-size:12px;font-weight:600;cursor:pointer}
+.pq button.ghost{background:white;color:#1a3a5c;border:1px solid #1a3a5c}
+.pq-fb{margin-top:8px;font-size:12.5px;padding:8px 10px;border-radius:6px;display:none;line-height:1.5}
+.pq-fb.correct{background:#E6F5EE;color:#0d3d25;display:block}
+.pq-fb.wrong{background:#FBEAEA;color:#7A1F1F;display:block}
+.pq-fb.reveal{background:#EBF3FB;color:#0d2438;display:block}
+
+.qcard{border:1px solid #e0dfd8;border-radius:10px;padding:14px;margin-bottom:10px;background:white}
+.qcard .qn{font-size:13px;font-weight:500;color:#2c2c2a;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;padding:9px 12px;border:1px solid #ccc;border-radius:8px;background:white;font-size:13px;color:#2c2c2a;margin-bottom:6px;cursor:pointer}
+.opt:hover{border-color:#1a3a5c}
+.opt.correct{background:#E6F5EE;border-color:#1a7a4a;color:#0d3d25;font-weight:600}
+.opt.wrong{background:#FBEAEA;border-color:#B8341F;color:#7A1F1F}
+.opt.disabled{pointer-events:none}
+.qfb{font-size:12.5px;color:#5f5e5a;margin-top:6px;line-height:1.5}
+.scorebar{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.scorebar b{color:#1a3a5c;font-size:16px}
+.reset-btn{padding:6px 14px;border:1px solid #1a3a5c;border-radius:20px;background:white;color:#1a3a5c;font-size:12px;cursor:pointer;font-weight:600}
+
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #eeece6}
+.cl-item:last-child{border-bottom:none}
+.cl-item input{margin-top:2px;width:16px;height:16px;flex-shrink:0}
+.cl-item label{font-size:13px;color:#3d3d3a;line-height:1.5}
+.cl-item.done label{text-decoration:line-through;color:#aaa}
+.cl-progress{background:#EBF3FB;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#1a3a5c;font-weight:600}
+
+.footer{text-align:center;margin-top:2rem;font-size:11px;color:#bbb;line-height:1.5}
+
+/* Flashcards */
+.fc-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-chip{padding:6px 13px;border:1px solid #ccc;border-radius:20px;font-size:12px;cursor:pointer;background:white;color:#5f5e5a;transition:all 0.15s}
+.filter-chip.active{background:#1a3a5c;color:white;border-color:#1a3a5c}
+
+.fc-progress{background:white;border:1px solid #e0dfd8;border-radius:10px;padding:10px 16px;margin-bottom:1rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:#5f5e5a}
+.fc-stat-good{color:#1a7a4a;font-weight:700}
+.fc-stat-again{color:#B8341F;font-weight:700}
+
+.card-area{position:relative;margin-bottom:1rem}
+.card-face{background:white;border:1px solid #e0dfd8;border-radius:14px;padding:1.5rem;min-height:220px}
+.card-face.hidden{display:none}
+.card-topic{display:inline-block;background:#EBF3FB;color:#1a3a5c;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;margin-bottom:12px}
+.card-q{font-size:16px;font-weight:500;color:#2c2c2a;line-height:1.5;margin-bottom:16px}
+.answer-input-label{font-size:12px;color:#5f5e5a;margin-bottom:6px;font-weight:500}
+.answer-input{width:100%;min-height:70px;padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-bottom:14px}
+.flip-btn{width:100%;padding:12px;border:none;border-radius:8px;background:#1a3a5c;color:white;font-size:14px;font-weight:600;cursor:pointer}
+.flip-btn:hover{background:#12283f}
+
+.back-section{margin-bottom:14px}
+.back-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px}
+.your-answer-box{background:#FAFAF8;border:1px solid #e0dfd8;border-radius:8px;padding:10px 12px;font-size:13px;color:#5f5e5a;min-height:20px;white-space:pre-wrap}
+.correct-answer-box{background:#E6F5EE;border:1px solid #b7e0c8;border-radius:8px;padding:10px 12px;font-size:13px;color:#0d3d25;line-height:1.6}
+.rating-hint{font-size:12px;color:#5f5e5a;margin-bottom:8px;text-align:center}
+.rating-row{display:flex;gap:10px;margin-bottom:10px}
+.rating-btn{flex:1;padding:11px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.rating-btn.again{background:#FBEAEA;color:#B8341F}
+.rating-btn.again:hover{background:#f7d9d9}
+.rating-btn.good{background:#E6F5EE;color:#1a7a4a}
+.rating-btn.good:hover{background:#d3ecdf}
+.flip-back-btn{width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;background:white;color:#5f5e5a;font-size:12.5px;cursor:pointer}
+
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:1rem}
+.nav-btn{flex:1;padding:10px;border:1px solid #ccc;border-radius:8px;background:white;color:#2c2c2a;font-size:13px;font-weight:500;cursor:pointer}
+.nav-btn:hover{border-color:#1a3a5c}
+.nav-btn:disabled{opacity:0.4;cursor:default}
+
+.tools-row{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.tool-btn{flex:1;padding:9px;border:1px solid #ccc;border-radius:8px;background:white;color:#5f5e5a;font-size:12.5px;cursor:pointer}
+.tool-btn:hover{border-color:#1a3a5c;color:#1a3a5c}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="ac">Queensland Curriculum · Year 7 Maths</div>
+    <h1>Term 4 Revision</h1>
+    <p>Angles &amp; Parallel Lines · Triangles · Symmetry &amp; Transformations · Patterns &amp; Rules · Cartesian Plane</p>
+    <div class="bs">
+      <span class="b">Angle-rule codes</span>
+      <span class="b">Diagrams</span>
+      <span class="b">Calculators</span>
+      <span class="b">Worked examples</span>
+      <span class="b">Practice</span>
+      <span class="b">63 flashcards</span>
+      <span class="b">Quiz</span>
+      <span class="b">Checklist</span>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nb active" data-sec="s-overview">Overview</button>
+    <button class="nb" data-sec="s-par">Parallel lines</button>
+    <button class="nb" data-sec="s-tri">Triangles</button>
+    <button class="nb" data-sec="s-sym">Symmetry &amp; moves</button>
+    <button class="nb" data-sec="s-pat">Patterns &amp; rules</button>
+    <button class="nb" data-sec="s-cart">Cartesian plane</button>
+    <button class="nb" data-sec="s-fc">Flashcards</button>
+    <button class="nb" data-sec="s-quiz">Quiz</button>
+    <button class="nb" data-sec="s-check">Checklist</button>
+  </div>
+
+  <!-- ═══════════════ OVERVIEW ═══════════════ -->
+  <div id="s-overview" class="sec active">
+    <div class="card">
+      <h2>Rules at a glance</h2>
+      <div class="two">
+        <div class="formula-box"><div class="formula">L: a + b = 90°</div><div class="formula-name">complementary</div></div>
+        <div class="formula-box"><div class="formula">line: a + b = 180°</div><div class="formula-name">angles on a straight line</div></div>
+      </div>
+      <div class="two">
+        <div class="formula-box"><div class="formula">point: total 360°</div><div class="formula-name">revolution</div></div>
+        <div class="formula-box"><div class="formula">△: a + b + c = 180°</div><div class="formula-name">angle sum of a triangle</div></div>
+      </div>
+      <div class="two">
+        <div class="formula-box"><div class="formula">F = &nbsp; Z = &nbsp; C → 180°</div><div class="formula-name">parallel line shapes</div></div>
+        <div class="formula-box"><div class="formula">rule = jump × n + extra</div><div class="formula-name">patterns &amp; tables</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>The angle-rule codes used in class</h2>
+      <p>Write a reason in brackets after every angle step, e.g. <span class="math">a = 115° (Z)</span>. The last question on the Angle Rules Consolidation sheet asks for all ten from memory — learn this table cold.</p>
+      <div class="tscroll">
+      <table class="t">
+        <tr><th>Rule</th><th>Code</th><th>What it means</th></tr>
+        <tr><td>Complementary</td><td class="code">(L)</td><td>Two angles making a right angle add to 90°</td></tr>
+        <tr><td>Supplementary</td><td class="code">(∠ on a line)</td><td>Angles on a straight line add to 180°</td></tr>
+        <tr><td>Revolution</td><td class="code">(⊖ circle)</td><td>Angles all the way around a point add to 360°</td></tr>
+        <tr><td>Vertically opposite</td><td class="code">(X)</td><td>Opposite angles where two lines cross are equal</td></tr>
+        <tr><td>Perpendicular</td><td class="code">(⊥)</td><td>Lines meeting at 90°</td></tr>
+        <tr><td>Corresponding</td><td class="code">(F)</td><td>Same position at each crossing — equal</td></tr>
+        <tr><td>Alternate</td><td class="code">(Z)</td><td>Inside the parallel lines, opposite sides of the transversal — equal</td></tr>
+        <tr><td>Cointerior</td><td class="code">(C or U)</td><td>Inside the parallel lines, same side — add to 180°</td></tr>
+        <tr><td>Angle sum of a triangle</td><td class="code">(△)</td><td>Three inside angles add to 180°</td></tr>
+        <tr><td>Exterior angle of a triangle</td><td class="code">(△ ext)</td><td>Outside angle = the two opposite inside angles added</td></tr>
+      </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Key vocabulary</h2>
+      <div class="chips">
+        <span class="chip cb">Transversal</span><span class="chip cb">Parallel</span><span class="chip cb">Corresponding</span><span class="chip cb">Alternate</span><span class="chip cb">Cointerior</span><span class="chip cb">Reflex angle</span>
+        <span class="chip cg">Isosceles</span><span class="chip cg">Scalene</span><span class="chip cg">Equilateral</span><span class="chip cg">Exterior angle</span>
+        <span class="chip ca">Line of symmetry</span><span class="chip ca">Order of rotation</span><span class="chip ca">Reflection</span><span class="chip ca">Rotation</span><span class="chip ca">Translation</span><span class="chip ca">Image (A′)</span>
+        <span class="chip cp">Table of values</span><span class="chip cp">Rule</span><span class="chip cp">Substitution</span><span class="chip cp">Origin</span><span class="chip cp">Quadrant</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>How to use this guide</h2>
+      <ul>
+        <li>Work through one topic tab at a time — each has the rule, a calculator to play with, worked examples you can click open, and practice questions you can check.</li>
+        <li>Say each step out loud before writing the number: <b>"which rule am I using?"</b> Most marks are lost by skipping the reason, not by bad arithmetic.</li>
+        <li>Try the <b>Quiz</b> tab once you've read a topic, and tick off the <b>Checklist</b> as you go.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PARALLEL LINES ═══════════════ -->
+  <div id="s-par" class="sec">
+
+    <div class="card">
+      <h2>Angles and parallel lines (7C)</h2>
+      <div class="eb blue">A <strong>transversal</strong> is a line crossing two others. When it cuts two <strong>parallel</strong> lines (marked with matching arrows), matching angle pairs are either <strong>equal</strong> or <strong>add to 180°</strong>.</div>
+      <div class="diagrams">
+        <div class="dg"><svg id="dg-F" viewBox="0 0 170 130"></svg><div class="dl">F — corresponding</div><div class="ds">Same position · equal</div></div>
+        <div class="dg"><svg id="dg-Z" viewBox="0 0 170 130"></svg><div class="dl">Z — alternate</div><div class="ds">Inside, opposite sides · equal</div></div>
+        <div class="dg"><svg id="dg-C" viewBox="0 0 170 130"></svg><div class="dl">C/U — cointerior</div><div class="ds">Inside, same side · add to 180°</div></div>
+      </div>
+      <div class="eb green"><strong>Checking if lines are parallel</strong> works backwards: if corresponding or alternate angles are equal, or cointerior angles add to 180°, the lines are parallel. If not, they aren't.</div>
+      <div class="eb purple"><strong>Naming angles:</strong> ∠ABF means the angle at <strong>B</strong> (the middle letter), between arms BA and BF. The middle letter is always the corner.</div>
+      <div class="eb red"><strong>Careful:</strong> only use F, Z or C when the lines are marked parallel. Trace the letter shape with a finger before deciding "equal" or "add to 180°".</div>
+
+      <h3>Try it — Angle finder</h3>
+      <div class="calc-card">
+        <label>Known angle (degrees)</label>
+        <input type="number" id="ang-in" placeholder="e.g. 64" oninput="calcAngle()">
+        <label>How is the unknown angle related to it?</label>
+        <select id="ang-rel" onchange="calcAngle()">
+          <option value="comp">Makes a right angle with it (complementary)</option>
+          <option value="supp">On a straight line with it (supplementary)</option>
+          <option value="rev">Makes a full revolution with it</option>
+          <option value="vert">Vertically opposite</option>
+          <option value="F">Corresponding (F)</option>
+          <option value="Z">Alternate (Z)</option>
+          <option value="C">Cointerior (C)</option>
+        </select>
+        <div class="calc-result" id="ang-result">Enter an angle above</div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Two parallel lines are cut by a transversal. One angle is 110° and a is cointerior to it. Find a. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Cointerior angles add to 180°: <span class="math">a + 110 = 180 (C)</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract: <span class="math">a = 180 − 110</span></div></div>
+          <div class="answer">✓ a = 70°</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-par1"></div>
+    </div>
+
+    <div class="card">
+      <h2>Multi-step problems (7D)</h2>
+      <div class="eb blue">Find an angle you <strong>can</strong> work out, label it (x or y), then use it to reach a. Write a reason on every line.</div>
+      <ol>
+        <li>Mark the parallel lines and the angles you know.</li>
+        <li>Look for an F, Z or C shape linking a known angle to a new one. Label it.</li>
+        <li>Finish with a straight line (180°), revolution (360°) or triangle (180°).</li>
+      </ol>
+      <div class="eb amber"><strong>The zig-zag trick:</strong> when a corner sits between two parallel lines (like a "&lt;" pointing into the gap), draw a dashed line through the corner parallel to the others. The corner angle = the two outer angles added together (two Z's).</div>
+      <div class="eb purple"><strong>Algebra angles:</strong> use the rule to write an equation, then solve. Remember 2x means 2 × x, so divide at the end.</div>
+      <div class="eb green"><strong>Reflex angles</strong> (bigger than 180°): use the revolution rule — 360 − the smaller angle.</div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Zig-zag: a corner B sits between two parallel lines. The angle at the top line is 37° and at the bottom line is 42°. Find ∠ABC. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Draw a dashed parallel line through B, splitting the corner into x and y.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><span class="math">x = 37° (Z)</span> and <span class="math">y = 42° (Z)</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><span class="math">∠ABC = 37 + 42</span></div></div>
+          <div class="answer">✓ ∠ABC = 79°</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">(5a)° and 120° are cointerior angles. Find a. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Cointerior add to 180°: <span class="math">5a + 120 = 180 (C)</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract 120: <span class="math">5a = 60</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Divide by 5: <span class="math">a = 12</span></div></div>
+          <div class="answer">✓ a = 12</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-par2"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TRIANGLES ═══════════════ -->
+  <div id="s-tri" class="sec">
+    <div class="card">
+      <h2>Angle sum and exterior angles (7G)</h2>
+      <div class="eb blue">The three inside angles of any triangle add to <strong>180°</strong>. An <strong>exterior angle</strong> is made by extending one side — it sits on a straight line with the inside angle next to it.</div>
+      <div class="dg" style="margin-bottom:10px">
+        <svg viewBox="0 0 300 140" style="max-width:320px">
+          <polygon points="40,115 200,115 120,25" fill="#EEF3F8" stroke="#1a3a5c" stroke-width="2"/>
+          <line x1="200" y1="115" x2="280" y2="115" stroke="#1a3a5c" stroke-width="2" stroke-dasharray="5,4"/>
+          <path d="M40,115 L53.4,100.1 A20,20 0 0 1 60,115 Z" fill="#B8721E" opacity="0.6"/>
+          <path d="M120,25 L130,36.2 A15,15 0 0 1 110,36.2 Z" fill="#B8721E" opacity="0.6"/>
+          <path d="M200,115 L184.1,97.1 A24,24 0 0 1 224,115 Z" fill="#1a7a4a" opacity="0.45"/>
+          <text x="64" y="110" font-size="12" fill="#5c380f">a</text>
+          <text x="115" y="56" font-size="12" fill="#5c380f">b</text>
+          <text x="212" y="100" font-size="12" fill="#0d3d25" font-weight="700">x</text>
+          <text x="150" y="134" font-size="11" fill="#5f5e5a" text-anchor="middle">exterior angle  x = a + b</text>
+        </svg>
+      </div>
+
+      <h3>Classifying triangles (two names each)</h3>
+      <div class="tscroll">
+      <table class="t">
+        <tr><th>By sides</th><th>Meaning</th><th>By angles</th><th>Meaning</th></tr>
+        <tr><td>Equilateral</td><td>3 equal sides (all angles 60°)</td><td>Acute</td><td>All angles under 90°</td></tr>
+        <tr><td>Isosceles</td><td>2 equal sides (2 equal base angles)</td><td>Right</td><td>One angle exactly 90°</td></tr>
+        <tr><td>Scalene</td><td>No equal sides</td><td>Obtuse</td><td>One angle over 90°</td></tr>
+      </table>
+      </div>
+      <div class="eb green">Matching dash marks on sides mean those sides are equal. In an isosceles triangle, the two angles <strong>at the ends of the odd side</strong> (opposite the equal sides) are equal.</div>
+      <div class="eb amber"><strong>Two ways to find an exterior angle:</strong> find the inside angle next to it and subtract from 180°, or use the shortcut — exterior angle = the two <strong>opposite</strong> inside angles added together.</div>
+      <div class="eb purple"><strong>Bigger shapes:</strong> split from one corner into triangles. 4 sides → 2 triangles (360°); 5 sides → 3 triangles (540°); 6 sides → 4 triangles (720°).</div>
+      <div class="eb red"><strong>Careful:</strong> the little square in a corner means 90° — don't forget to include it.</div>
+
+      <h3>Try it — Third angle finder</h3>
+      <div class="calc-card">
+        <div class="row">
+          <div><label>Angle 1</label><input type="number" id="tri-a" placeholder="e.g. 20" oninput="calcTri()"></div>
+          <div><label>Angle 2</label><input type="number" id="tri-b" placeholder="e.g. 132" oninput="calcTri()"></div>
+        </div>
+        <div class="calc-result" id="tri-result">Enter two angles above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">A triangle has angles 20°, 132° and a. The side next to a is extended to make exterior angle x. Find a and x. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><span class="math">20 + 132 + a = 180 (△)</span> → <span class="math">a = 28°</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><span class="math">x + 28 = 180 (∠ on a line)</span> → <span class="math">x = 152°</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Check with the shortcut: <span class="math">20 + 132 = 152 ✓</span></div></div>
+          <div class="answer">✓ a = 28°, x = 152°</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">An isosceles triangle has base angles (2x + 1)° and 75°. Find x. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Base angles are equal: <span class="math">2x + 1 = 75</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Subtract 1: <span class="math">2x = 74</span>. Divide by 2: <span class="math">x = 37</span></div></div>
+          <div class="answer">✓ x = 37</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-tri"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SYMMETRY & TRANSFORMATIONS ═══════════════ -->
+  <div id="s-sym" class="sec">
+    <div class="card">
+      <h2>Symmetry (7H)</h2>
+      <div class="eb blue">A <strong>line of symmetry</strong> folds a shape into two matching halves. The <strong>order of rotational symmetry</strong> is how many times a shape looks the same in one full turn (order 1 = no rotational symmetry).</div>
+      <div class="tscroll">
+      <table class="t">
+        <tr><th>Shape</th><th>Lines of symmetry</th><th>Order of rotation</th></tr>
+        <tr><td>Square</td><td>4</td><td>4</td></tr>
+        <tr><td>Rectangle</td><td>2</td><td>2</td></tr>
+        <tr><td>Rhombus</td><td>2</td><td>2</td></tr>
+        <tr><td>Parallelogram</td><td>0</td><td>2</td></tr>
+        <tr><td>Kite</td><td>1</td><td>1 (none)</td></tr>
+        <tr><td>Isosceles trapezium</td><td>1</td><td>1 (none)</td></tr>
+        <tr><td>Equilateral triangle</td><td>3</td><td>3</td></tr>
+        <tr><td>Isosceles triangle</td><td>1</td><td>1 (none)</td></tr>
+        <tr><td>Scalene triangle</td><td>0</td><td>1 (none)</td></tr>
+        <tr><td>Regular pentagon / hexagon / octagon</td><td>5 / 6 / 8</td><td>5 / 6 / 8</td></tr>
+      </table>
+      </div>
+      <div class="eb green">For any <strong>regular</strong> shape: lines of symmetry = order of rotation = number of sides.</div>
+      <div class="eb red"><strong>Careful:</strong> a parallelogram has <strong>no</strong> lines of symmetry — folding along a diagonal doesn't match.</div>
+    </div>
+
+    <div class="card">
+      <h2>Reflection, rotation and translation (7I)</h2>
+      <p>The image of point A is called <b>A′</b> (said "A dash").</p>
+      <div class="tscroll">
+      <table class="t">
+        <tr><th>Transformation</th><th>What happens</th><th>Shortcut</th></tr>
+        <tr><td>Reflect in the y-axis</td><td>Flip left–right</td><td class="code">(x, y) → (−x, y)</td></tr>
+        <tr><td>Reflect in the x-axis</td><td>Flip up–down</td><td class="code">(x, y) → (x, −y)</td></tr>
+        <tr><td>Rotate 180° about O</td><td>Half turn</td><td class="code">(x, y) → (−x, −y)</td></tr>
+        <tr><td>Rotate 90° clockwise about O</td><td>Quarter turn right</td><td class="code">(x, y) → (y, −x)</td></tr>
+        <tr><td>Rotate 90° anticlockwise about O</td><td>Quarter turn left</td><td class="code">(x, y) → (−y, x)</td></tr>
+        <tr><td>Translation</td><td>Slide, no turning</td><td>Left/right changes x, up/down changes y</td></tr>
+      </table>
+      </div>
+      <div class="eb amber">270° clockwise = 90° anticlockwise. 360° puts a point back where it started.</div>
+      <div class="eb purple"><strong>Mirror lines that aren't an axis:</strong> count squares from the point to the mirror, then the same number past it. <strong>Diagonal mirrors:</strong> each corner moves straight across the mirror at right angles, the same distance on the other side.</div>
+      <div class="eb blue"><strong>Rotations on paper:</strong> each point stays on its own dashed circle and moves a quarter (90°) or half (180°) of the way round. Tracing paper helps a lot. Clockwise = the way clock hands move.</div>
+
+      <h3>Try it — Transformation machine</h3>
+      <div class="calc-card">
+        <div class="row">
+          <div><label>x</label><input type="number" id="tr-x" placeholder="e.g. 3" oninput="calcTrans()"></div>
+          <div><label>y</label><input type="number" id="tr-y" placeholder="e.g. 3" oninput="calcTrans()"></div>
+        </div>
+        <label>Transformation</label>
+        <select id="tr-type" onchange="calcTrans()">
+          <option value="ry">Reflect in the y-axis</option>
+          <option value="rx">Reflect in the x-axis</option>
+          <option value="r180">Rotate 180° about the origin</option>
+          <option value="r90c">Rotate 90° clockwise about the origin</option>
+          <option value="r90a">Rotate 90° anticlockwise about the origin</option>
+          <option value="tr">Translate</option>
+        </select>
+        <div id="tr-move" style="display:none">
+          <div class="row">
+            <div><label>Right (+) / left (−)</label><input type="number" id="tr-dx" placeholder="e.g. 4" oninput="calcTrans()"></div>
+            <div><label>Up (+) / down (−)</label><input type="number" id="tr-dy" placeholder="e.g. −2" oninput="calcTrans()"></div>
+          </div>
+        </div>
+        <div class="calc-result" id="tr-result">Enter a point above</div>
+      </div>
+
+      <h3>Worked examples</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Reflect A(−1, 3) in the y-axis. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">A is 1 unit <b>left</b> of the mirror (the y-axis).</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">So A′ is 1 unit <b>right</b> of it, same height.</div></div>
+          <div class="answer">✓ A′(1, 3)</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Reflect (−2, −2) in the vertical line x = 1. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">From x = −2 to the mirror at x = 1 is <span class="math">3</span> units right.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Go another 3 units past it: <span class="math">1 + 3 = 4</span>. The y-value stays the same.</div></div>
+          <div class="answer">✓ (4, −2)</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-sym"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PATTERNS & RULES ═══════════════ -->
+  <div id="s-pat" class="sec">
+    <div class="card">
+      <h2>Spatial patterns (2I)</h2>
+      <div class="eb blue">A spatial pattern is a row of growing shapes (usually matchsticks). Every pattern has a <strong>starting design</strong> and a <strong>repeating design</strong> that gets added each time.</div>
+      <ol>
+        <li><b>Draw the next two shapes.</b></li>
+        <li><b>Make a table of values:</b> number of shapes vs number of sticks.</li>
+        <li><b>Find the rule:</b> sticks = (the jump each time) × shapes + (whatever is left over).</li>
+        <li><b>Predict:</b> substitute the number of shapes asked for (often 20 or 30).</li>
+      </ol>
+      <div class="eb amber"><strong>Shared edges matter.</strong> If shapes share a side, the jump is smaller than the full shape. If they only touch at a corner, nothing is shared: sticks = sides × shapes.</div>
+      <div class="eb red"><strong>Careful:</strong> "+5" describes the pattern but isn't a rule. A rule works for <em>any</em> shape number, e.g. m = 5h + 1. Always check it against the first two shapes.</div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Hexagons sharing a side use 6, 11, 16, 21 sticks. Find the rule, the sticks for 20 hexagons, and how many hexagons 76 sticks makes. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Goes up by 5 each time → start with <span class="math">5 × h</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">For 1 hexagon: <span class="math">5 × 1 = 5</span>, but we need 6 → add 1. Rule: <span class="math">m = 5h + 1</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">20 hexagons: <span class="math">5 × 20 + 1 = 101</span></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Backwards: <span class="math">5h + 1 = 76</span> → <span class="math">5h = 75</span> → <span class="math">h = 15</span></div></div>
+          <div class="answer">✓ m = 5h + 1 · 101 sticks · 15 hexagons</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-pat1"></div>
+    </div>
+
+    <div class="card">
+      <h2>Tables and rules (2J)</h2>
+      <div class="eb blue">A rule like <strong>output = (3 × input) + 1</strong> works like a machine: put a number in, follow the steps, get a number out. Replacing the input with a number is called <strong>substitution</strong>. Do the brackets first.</div>
+      <h3>Finding a rule from a table</h3>
+      <ol>
+        <li>Check the inputs go up by 1. How much does the output go up each time? That's what you multiply by.</li>
+        <li>Multiply the first input by it and compare with the first output. The difference is what you add or subtract.</li>
+        <li>Test the rule on another column.</li>
+      </ol>
+      <div class="eb green"><strong>Check simple rules first:</strong> 3 → 12, 4 → 13 is just + 9; 1 → 7, 2 → 14 is just × 7.</div>
+      <div class="eb amber"><strong>Inputs jump by 2?</strong> e.g. 2, 4, 6, 8 → 11, 17, 23, 29. The output rises 6 for every 2, which is 3 per 1. So 3 × input; 3 × 2 = 6 and 11 − 6 = 5 → output = (3 × input) + 5.</div>
+      <div class="eb purple"><strong>Outputs go down?</strong> e.g. 20, 18, 16 for inputs 1, 2, 3 → output = 22 − (2 × input).</div>
+      <div class="eb blue"><strong>Working backwards:</strong> undo the steps in reverse. If (3 × input) + 5 = 35: take 5 off (30), then divide by 3 (10).</div>
+
+      <h3>Try it — Rule finder</h3>
+      <div class="calc-card">
+        <label>Outputs for inputs 1, 2, 3, 4… (comma separated)</label>
+        <input type="text" id="rule-in" placeholder="e.g. 5, 8, 11, 14" oninput="calcRule()">
+        <label>Predict the output for input…</label>
+        <input type="number" id="rule-n" placeholder="e.g. 20" oninput="calcRule()">
+        <div class="calc-result" id="rule-result">Enter at least 3 outputs above</div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Inputs 1, 2, 3, 4 → outputs 5, 8, 11, 14. Find the rule. <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Output goes up by 3 → start with <span class="math">3 × input</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><span class="math">3 × 1 = 3</span>, but output is 5 → add 2</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Check: <span class="math">3 × 4 + 2 = 14 ✓</span></div></div>
+          <div class="answer">✓ output = (3 × input) + 2</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-pat2"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CARTESIAN PLANE ═══════════════ -->
+  <div id="s-cart" class="sec">
+    <div class="card">
+      <h2>The Cartesian plane (2K)</h2>
+      <div class="eb blue">A point is written <strong>(x, y)</strong>: x first (across), y second (up or down). "Along the corridor, then up the stairs." The centre (0, 0) is the <strong>origin</strong>, O.</div>
+      <div class="dg" style="margin-bottom:10px"><svg id="dg-plane" viewBox="0 0 260 260" style="max-width:280px"></svg></div>
+      <div class="tscroll">
+      <table class="t">
+        <tr><th>Quadrant</th><th>Where</th><th>Signs</th></tr>
+        <tr><td>1st</td><td>Top right</td><td class="code">(+, +)</td></tr>
+        <tr><td>2nd</td><td>Top left</td><td class="code">(−, +)</td></tr>
+        <tr><td>3rd</td><td>Bottom left</td><td class="code">(−, −)</td></tr>
+        <tr><td>4th</td><td>Bottom right</td><td class="code">(+, −)</td></tr>
+      </table>
+      </div>
+      <div class="eb green">Quadrants are numbered <strong>anticlockwise</strong> from top right. A point with a 0 in it, like (0, 4), sits on an axis and isn't in any quadrant.</div>
+      <div class="eb red"><strong>Most common mistake:</strong> plotting (y, x) instead of (x, y). Also count from the origin, not from 1.</div>
+
+      <h3>Try it — Where is my point?</h3>
+      <div class="calc-card">
+        <div class="row">
+          <div><label>x</label><input type="number" id="q-x" placeholder="e.g. −3" oninput="calcQuad()"></div>
+          <div><label>y</label><input type="number" id="q-y" placeholder="e.g. 2" oninput="calcQuad()"></div>
+        </div>
+        <div class="calc-result" id="q-result">Enter a point above</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Graphing rules (6G)</h2>
+      <ol>
+        <li>Fill in the table of values using the rule.</li>
+        <li>Turn each column into a point (input, output).</li>
+        <li>Plot them. If they line up, the rule makes a straight line.</li>
+      </ol>
+      <div class="eb amber">Rules that only add, subtract or multiply by a number (like output = input + 3) give <strong>straight lines</strong>. Rules like output = input × input give a <strong>curve</strong>.</div>
+      <div class="eb purple"><strong>Missing values on a straight line:</strong> the outputs go up by the same amount each step. In 3, 5, A, 9, 11 the jump is 2, so A = 7.</div>
+      <div class="eb blue"><strong>Reading a rule off a graph:</strong> read each point into a table, then find the rule like in Patterns &amp; rules. (0, 2), (1, 3), (2, 4) → output = input + 2.</div>
+
+      <h3>Worked example</h3>
+      <div class="worked">
+        <div class="worked-q" onclick="toggleWorked(this)">Graph output = (2 × input) + 1 for inputs 0 to 3. Is it a straight line? <span class="chevron">▼</span></div>
+        <div class="worked-body">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Outputs: <span class="math">1, 3, 5, 7</span></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Points: <span class="math">(0, 1), (1, 3), (2, 5), (3, 7)</span></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">The outputs go up by 2 every time, so the points line up.</div></div>
+          <div class="answer">✓ Yes — a straight line</div>
+        </div>
+      </div>
+
+      <h3>Practice</h3>
+      <div id="pq-cart"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FLASHCARDS ═══════════════ -->
+  <div id="s-fc" class="sec">
+    <div class="eb blue" style="margin-bottom:1rem">Write your answer, flip to compare, then rate it <strong>"Needs work"</strong> or <strong>"Know it!"</strong> — progress saves between sessions. Use the topic chips to focus on one area.</div>
+    <div class="fc-filters" id="fc-filters"></div>
+
+  <div class="fc-progress">
+    <span>Card <b id="fc-position">1</b> of <b id="fc-total">50</b></span>
+    <span><span class="fc-stat-good" id="fc-good-count">0</span> know it · <span class="fc-stat-again" id="fc-again-count">0</span> needs work</span>
+  </div>
+
+  <div class="card-area">
+    <div class="card-face" id="fc-front">
+      <span class="card-topic" id="fc-topic-front"></span>
+      <div class="card-q" id="fc-question"></div>
+      <div class="answer-input-label">Your answer</div>
+      <textarea class="answer-input" id="fc-input" placeholder="Type your answer here before flipping…"></textarea>
+      <button class="flip-btn" onclick="flipCard()">Flip to check answer →</button>
+    </div>
+
+    <div class="card-face hidden" id="fc-back">
+      <span class="card-topic" id="fc-topic-back"></span>
+      <div class="back-section">
+        <div class="back-section-label" style="color:#5f5e5a">Your answer</div>
+        <div class="your-answer-box" id="fc-your-answer"></div>
+      </div>
+      <div class="back-section">
+        <div class="back-section-label" style="color:#1a7a4a">Correct answer &amp; working</div>
+        <div class="correct-answer-box" id="fc-correct-answer"></div>
+      </div>
+      <div class="rating-hint">How did you go?</div>
+      <div class="rating-row">
+        <button class="rating-btn again" onclick="rateCard('again')">Needs work</button>
+        <button class="rating-btn good" onclick="rateCard('good')">Know it!</button>
+      </div>
+      <button class="flip-back-btn" onclick="flipBack()">← Flip back</button>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="fc-prev" onclick="navCard(-1)">← Previous</button>
+    <button class="nav-btn" id="fc-next" onclick="navCard(1)">Next →</button>
+  </div>
+
+  <div class="tools-row">
+    <button class="tool-btn" onclick="practiseWeak()">Only "Needs work" cards</button>
+    <button class="tool-btn" onclick="shuffleDeck()">Shuffle</button>
+    <button class="tool-btn" onclick="resetProgress()">Reset progress</button>
+  </div>
+  </div>
+
+  <!-- ═══════════════ QUIZ ═══════════════ -->
+  <div id="s-quiz" class="sec">
+    <div class="scorebar">
+      <span>Score: <b id="qscore">0</b> / <span id="qtotal">16</span></span>
+      <button class="reset-btn" onclick="resetQuiz()">Reset quiz</button>
+    </div>
+    <div id="quizhost"></div>
+  </div>
+
+  <!-- ═══════════════ CHECKLIST ═══════════════ -->
+  <div id="s-check" class="sec">
+    <div class="card">
+      <div class="cl-progress" id="cl-progress">0 / 16 checked off</div>
+      <div id="cl-list"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Year 7 Maths · Term 4 Revision · Queensland Curriculum
+  </div>
+</div>
+
+<script>
+// ===== NAV =====
+document.querySelectorAll('.nb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.sec).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+function toggleWorked(el){el.parentElement.classList.toggle('open')}
+const neg=n=>String(n).replace('-','−');
+const pt=(x,y)=>`(${neg(x)}, ${neg(y)})`;
+
+// ===== PARALLEL LINE DIAGRAMS =====
+function drawParallel(id,type){
+  const svg=document.getElementById(id);
+  const y1=40,y2=95, p1=[72,y1], p2=[94,y2];
+  const up=Math.atan2(-(y2-y1),-(p2[0]-p1[0]))*180/Math.PI+360; // ~248
+  const dn=up-180;                                              // ~68
+  const sector=(c,a1,a2,col)=>{
+    const r=15, rad=a=>a*Math.PI/180;
+    const x1=c[0]+r*Math.cos(rad(a1)), yy1=c[1]+r*Math.sin(rad(a1));
+    const x2=c[0]+r*Math.cos(rad(a2)), yy2=c[1]+r*Math.sin(rad(a2));
+    return `<path d="M${c[0]},${c[1]} L${x1.toFixed(1)},${yy1.toFixed(1)} A${r},${r} 0 0 1 ${x2.toFixed(1)},${yy2.toFixed(1)} Z" fill="${col}" opacity="0.75"/>`;
+  };
+  const AR=[up,360],BR=[0,dn],AL=[180,up];
+  let s=`<line x1="10" y1="${y1}" x2="160" y2="${y1}" stroke="#2c2c2a" stroke-width="2"/>
+  <line x1="10" y1="${y2}" x2="160" y2="${y2}" stroke="#2c2c2a" stroke-width="2"/>
+  <path d="M120,${y1-4} l6,4 l-6,4" fill="none" stroke="#2c2c2a" stroke-width="1.6"/>
+  <path d="M120,${y2-4} l6,4 l-6,4" fill="none" stroke="#2c2c2a" stroke-width="1.6"/>
+  <line x1="60" y1="10" x2="106" y2="125" stroke="#5f5e5a" stroke-width="1.6"/>`;
+  const col='#1a7a4a', col2='#B8721E';
+  if(type==='F'){s+=sector(p1,...AR,col)+sector(p2,...AR,col)}
+  if(type==='Z'){s+=sector(p1,...BR,col)+sector(p2,...AL,col)}
+  if(type==='C'){s+=sector(p1,...BR,col)+sector(p2,...AR,col2)}
+  svg.innerHTML=s;
+}
+drawParallel('dg-F','F');drawParallel('dg-Z','Z');drawParallel('dg-C','C');
+
+// ===== CARTESIAN PLANE DIAGRAM =====
+(function(){
+  const svg=document.getElementById('dg-plane');
+  const c=130,u=22; let s='';
+  for(let i=-5;i<=5;i++){
+    s+=`<line x1="${c+i*u}" y1="${c-5*u}" x2="${c+i*u}" y2="${c+5*u}" stroke="#e0dfd8"/>`;
+    s+=`<line x1="${c-5*u}" y1="${c+i*u}" x2="${c+5*u}" y2="${c+i*u}" stroke="#e0dfd8"/>`;
+  }
+  s+=`<line x1="${c-5.5*u}" y1="${c}" x2="${c+5.5*u}" y2="${c}" stroke="#1a3a5c" stroke-width="2"/>`;
+  s+=`<line x1="${c}" y1="${c+5.5*u}" x2="${c}" y2="${c-5.5*u}" stroke="#1a3a5c" stroke-width="2"/>`;
+  s+=`<text x="${c+5.6*u}" y="${c-4}" font-size="12" fill="#1a3a5c" font-weight="700">x</text>`;
+  s+=`<text x="${c+5}" y="${c-5.6*u+8}" font-size="12" fill="#1a3a5c" font-weight="700">y</text>`;
+  s+=`<text x="${c-12}" y="${c+14}" font-size="11" fill="#5f5e5a">O</text>`;
+  const q=[[1,'1st','(+, +)',2.5,-2.5],[2,'2nd','(−, +)',-2.5,-2.5],[3,'3rd','(−, −)',-2.5,2.5],[4,'4th','(+, −)',2.5,2.5]];
+  q.forEach(([n,l,sg,x,y])=>{
+    s+=`<text x="${c+x*u}" y="${c+y*u}" font-size="13" fill="#1a3a5c" font-weight="700" text-anchor="middle">${l}</text>`;
+    s+=`<text x="${c+x*u}" y="${c+y*u+15}" font-size="11" fill="#5f5e5a" text-anchor="middle">${sg}</text>`;
+  });
+  [[3,4,'#1a7a4a'],[-3,-4,'#B8341F']].forEach(([x,y,col])=>{
+    s+=`<circle cx="${c+x*u}" cy="${c-y*u}" r="4.5" fill="${col}"/>`;
+    s+=`<text x="${c+x*u+(x>0?7:-7)}" y="${c-y*u+(y>0?-6:14)}" font-size="11" fill="${col}" text-anchor="${x>0?'start':'end'}" font-weight="600">${pt(x,y)}</text>`;
+  });
+  svg.innerHTML=s;
+})();
+
+// ===== CALCULATORS =====
+function calcAngle(){
+  const v=parseFloat(document.getElementById('ang-in').value);
+  const r=document.getElementById('ang-rel').value;
+  const el=document.getElementById('ang-result');
+  if(isNaN(v)){el.textContent='Enter an angle above';return}
+  const map={
+    comp:[90-v,`${90}° − ${v}°`,'(L)',v<90],
+    supp:[180-v,`180° − ${v}°`,'(∠ on a line)',v<180],
+    rev:[360-v,`360° − ${v}°`,'(⊖ circle)',v<360],
+    vert:[v,'equal','(X)',v<180],
+    F:[v,'equal','(F)',v<180],
+    Z:[v,'equal','(Z)',v<180],
+    C:[180-v,`180° − ${v}°`,'(C)',v<180]
+  };
+  const [ans,how,code,ok]=map[r];
+  if(!ok||v<=0){el.textContent='That angle is too big (or small) for this rule — check the diagram again.';return}
+  el.textContent = how==='equal' ? `Equal: a = ${ans}° ${code}` : `a = ${how} = ${Math.round(ans*100)/100}° ${code}`;
+}
+function calcTri(){
+  const a=parseFloat(document.getElementById('tri-a').value);
+  const b=parseFloat(document.getElementById('tri-b').value);
+  const el=document.getElementById('tri-result');
+  if(isNaN(a)||isNaN(b)){el.textContent='Enter two angles above';return}
+  const c=180-a-b;
+  if(a<=0||b<=0||c<=0){el.textContent='Those two angles already make 180° or more — not a triangle!';return}
+  const m=Math.max(a,b,c);
+  const type=m>90?'obtuse':(m===90?'right-angled':'acute');
+  el.innerHTML=`Third angle = 180° − ${a}° − ${b}° = ${c}° (△)<br>Exterior angle next to it = ${a}° + ${b}° = ${a+b}° (△ ext)<br>This is an ${type} triangle.`;
+}
+document.getElementById('tr-type').addEventListener('change',()=>{
+  document.getElementById('tr-move').style.display=document.getElementById('tr-type').value==='tr'?'block':'none';
+});
+function calcTrans(){
+  const x=parseFloat(document.getElementById('tr-x').value);
+  const y=parseFloat(document.getElementById('tr-y').value);
+  const t=document.getElementById('tr-type').value;
+  const el=document.getElementById('tr-result');
+  if(isNaN(x)||isNaN(y)){el.textContent='Enter a point above';return}
+  let nx,ny,how;
+  if(t==='ry'){nx=-x;ny=y;how='x changes sign, y stays'}
+  if(t==='rx'){nx=x;ny=-y;how='y changes sign, x stays'}
+  if(t==='r180'){nx=-x;ny=-y;how='both signs change'}
+  if(t==='r90c'){nx=y;ny=-x;how='(x, y) → (y, −x)'}
+  if(t==='r90a'){nx=-y;ny=x;how='(x, y) → (−y, x)'}
+  if(t==='tr'){
+    const dx=parseFloat(document.getElementById('tr-dx').value)||0;
+    const dy=parseFloat(document.getElementById('tr-dy').value)||0;
+    nx=x+dx;ny=y+dy;how=`x ${dx>=0?'+':'−'} ${Math.abs(dx)}, y ${dy>=0?'+':'−'} ${Math.abs(dy)}`;
+  }
+  nx=nx+0;ny=ny+0;
+  el.textContent=`${pt(x,y)} → ${pt(nx,ny)}   (${how})`;
+}
+function calcRule(){
+  const raw=document.getElementById('rule-in').value;
+  const n=parseFloat(document.getElementById('rule-n').value);
+  const el=document.getElementById('rule-result');
+  const v=raw.split(',').map(s=>parseFloat(s.trim().replace('−','-'))).filter(x=>!isNaN(x));
+  if(v.length<3){el.textContent='Enter at least 3 outputs above';return}
+  const d=v[1]-v[0];
+  for(let i=2;i<v.length;i++){ if(Math.abs((v[i]-v[i-1])-d)>1e-9){el.textContent="The jumps aren't all the same — this isn't a simple 'multiply then add' rule.";return} }
+  const k=v[0]-d;
+  let rule;
+  if(d===0) rule=`output = ${k}`;
+  else{
+    const mult = d===1?'input':(d===-1?'':`(${neg(d)} × input)`);
+    if(d<0){ rule=`output = ${k} − ${Math.abs(d)===1?'input':`(${Math.abs(d)} × input)`}`; }
+    else if(k===0) rule=`output = ${d===1?'input':`${d} × input`}`;
+    else rule=`output = ${mult} ${k>0?'+':'−'} ${Math.abs(k)}`;
+  }
+  let msg=`Jump = ${neg(d)} each time → ${rule}`;
+  if(!isNaN(n)) msg+=`<br>Input ${n} → output ${neg(d*n+k)}`;
+  el.innerHTML=msg;
+}
+function calcQuad(){
+  const x=parseFloat(document.getElementById('q-x').value);
+  const y=parseFloat(document.getElementById('q-y').value);
+  const el=document.getElementById('q-result');
+  if(isNaN(x)||isNaN(y)){el.textContent='Enter a point above';return}
+  const h = x===0?'stay on the y-axis':`${Math.abs(x)} ${x>0?'right':'left'}`;
+  const v = y===0?'stay on the x-axis':`${Math.abs(y)} ${y>0?'up':'down'}`;
+  let q;
+  if(x===0&&y===0) q='the origin';
+  else if(x===0) q='on the y-axis (no quadrant)';
+  else if(y===0) q='on the x-axis (no quadrant)';
+  else q = x>0&&y>0?'1st quadrant (top right)':x<0&&y>0?'2nd quadrant (top left)':x<0?'3rd quadrant (bottom left)':'4th quadrant (bottom right)';
+  el.textContent=`${pt(x,y)}: go ${h}, then ${v} → ${q}`;
+}
+
+// ===== PRACTICE QUESTIONS =====
+// acc = accepted answers (normalised); blank acc = "show answer" only
+const PQ={
+'pq-par1':[
+ {q:'An angle is 72°. What is its corresponding angle?',acc:['72'],ans:'72° (F)'},
+ {q:'An angle is 115°. What is its alternate angle?',acc:['115'],ans:'115° (Z)'},
+ {q:'An angle is 64°. What is its cointerior angle?',acc:['116'],ans:'180 − 64 = 116° (C)'},
+ {q:'Two lines cross and one angle is 38°. What is the vertically opposite angle?',acc:['38'],ans:'38° (X)'},
+ {q:'Two cointerior angles are 109° and 71°. Are the lines parallel? Give a reason.',acc:[],ans:'Yes — cointerior angles add to 180° (109 + 71 = 180).'},
+ {q:'Two corresponding angles are 79° and 77°. Are the lines parallel? Give a reason.',acc:[],ans:'No — corresponding angles are not equal (79° ≠ 77°).'},
+ {q:'a and 40° make a right angle. Find a.',acc:['50'],ans:'50° (L)'},
+ {q:'a and 120° sit on a straight line. Find a.',acc:['60'],ans:'60° (∠ on a line)'},
+ {q:'a and 120° make a full revolution. Find a.',acc:['240'],ans:'240° (⊖ circle)'}
+],
+'pq-par2':[
+ {q:'(2x)° and 80° are corresponding angles. Find x.',acc:['40'],ans:'2x = 80 (F) → x = 40'},
+ {q:'(3x)° and 60° are cointerior angles. Find x.',acc:['40'],ans:'3x + 60 = 180 (C) → 3x = 120 → x = 40'},
+ {q:'(x + 20)° and 50° are alternate angles. Find x.',acc:['30'],ans:'x + 20 = 50 (Z) → x = 30'},
+ {q:'A zig-zag corner between parallel lines has outer angles 25° and 50°. Find the corner angle.',acc:['75'],ans:'25 + 50 = 75° (Z, Z)'},
+ {q:'The angle inside a corner is 75°. Find the reflex angle going the other way around the point.',acc:['285'],ans:'360 − 75 = 285° (revolution)'},
+ {q:'A parallelogram has angles a°, (2a)°, a° and (2a)°. Find a (angles in a four-sided shape add to 360°).',acc:['60'],ans:'a + 2a + a + 2a = 360 → 6a = 360 → a = 60'}
+],
+'pq-tri':[
+ {q:'A triangle has angles 20°, 115° and a. Find a.',acc:['45'],ans:'180 − 135 = 45°'},
+ {q:'A right-angled triangle has another angle of 35°. Find the third angle.',acc:['55'],ans:'180 − 90 − 35 = 55°'},
+ {q:'An isosceles triangle has base angles of 65° each. Find the top angle.',acc:['50'],ans:'180 − 130 = 50°'},
+ {q:'An isosceles triangle has a top angle of 40°. Find each base angle.',acc:['70'],ans:'(180 − 40) ÷ 2 = 70° each'},
+ {q:'A triangle has inside angles 23° and 117°. Find the third angle a, then the exterior angle x next to it.',acc:[],ans:'a = 180 − 140 = 40°, x = 180 − 40 = 140° (or 23 + 117 = 140°)'},
+ {q:'An exterior angle is 130°, and one opposite inside angle is 50°. Find the other opposite inside angle.',acc:['80'],ans:'130 − 50 = 80°'},
+ {q:'Classify a triangle with sides 5 cm, 5 cm, 8 cm and an angle of 106°.',acc:[],ans:'Isosceles (two equal sides) and obtuse (one angle over 90°)'},
+ {q:'What is the angle sum of a hexagon (6 sides)?',acc:['720'],ans:'4 triangles × 180° = 720°'}
+],
+'pq-sym':[
+ {q:'Lines of symmetry and order of rotation for a kite?',acc:[],ans:'1 line, order 1 (no rotational symmetry)'},
+ {q:'Lines of symmetry and order of rotation for a parallelogram?',acc:[],ans:'0 lines, order 2'},
+ {q:'Lines of symmetry and order of rotation for a regular hexagon?',acc:[],ans:'6 lines, order 6'},
+ {q:'Reflect D(−3, 3), A(−1, 3), B(−1, 1), C(−2, 1) in the y-axis. Give D′, A′, B′, C′.',acc:[],ans:'D′(3, 3), A′(1, 3), B′(1, 1), C′(2, 1)'},
+ {q:'Reflect (2, −5) in the x-axis.',acc:['2,5'],ans:'(2, 5)'},
+ {q:'Rotate A(3, 3) 180° about (0, 0).',acc:['-3,-3'],ans:'(−3, −3)'},
+ {q:'Rotate A(3, 3) 90° clockwise about (0, 0).',acc:['3,-3'],ans:'(3, −3)'},
+ {q:'Rotate A(3, 3) 90° anticlockwise about (0, 0).',acc:['-3,3'],ans:'(−3, 3)'},
+ {q:'Rotate A(3, 3) 270° clockwise about (0, 0).',acc:['-3,3'],ans:'(−3, 3) — same as 90° anticlockwise'},
+ {q:'Translate (−2, 3) four units right and two units down.',acc:['2,1'],ans:'(2, 1)'},
+ {q:'Describe the translation (−1, −1) → (2, 5).',acc:[],ans:'3 units right and 6 units up'},
+ {q:'Reflect (−2, −2) in the vertical line x = 2.',acc:['6,-2'],ans:'(6, −2) — 4 units left of the line, so 4 units right of it'},
+ {q:'Start at (2, 3). Reflect in the x-axis, then in the y-axis, then translate 2 left and 2 up. Where does it end?',acc:['-4,-1'],ans:'(2, −3) → (−2, −3) → (−4, −1)'}
+],
+'pq-pat1':[
+ {q:'Squares in a row sharing sides use 4, 7, 10, 13 sticks. Write the rule.',acc:['3n+1'],ans:'sticks = 3 × squares + 1'},
+ {q:'…and how many sticks for 20 squares?',acc:['61'],ans:'3 × 20 + 1 = 61 sticks'},
+ {q:'Squares that only touch at corners use 4, 8, 12 sticks. How many sticks for 30 squares?',acc:['120'],ans:'sticks = 4 × squares → 4 × 30 = 120'},
+ {q:'A pattern uses 5, 9, 13, 17 sticks. How many for 20 shapes?',acc:['81'],ans:'sticks = 4 × shapes + 1 → 81'},
+ {q:'A pattern uses 7, 12, 17 sticks. How many for 20 shapes?',acc:['102'],ans:'sticks = 5 × shapes + 2 → 102'},
+ {q:'Tables pushed in a row seat 4, 6, 8, 10 people. How many tables are needed for 30 people?',acc:['14'],ans:'people = 2 × tables + 2 → 2t + 2 = 30 → t = 14'},
+ {q:'The rule is sticks = 3 × shapes + 1. How many shapes can be made with 46 sticks?',acc:['15'],ans:'3s + 1 = 46 → 3s = 45 → s = 15'}
+],
+'pq-pat2':[
+ {q:'output = input + 6. Find the outputs for inputs 2, 5, 9.',acc:['8,11,15'],ans:'8, 11, 15'},
+ {q:'output = (3 × input) − 2. Find the outputs for inputs 1, 4, 10.',acc:['1,10,28'],ans:'1, 10, 28'},
+ {q:'output = (input ÷ 2) + 4. Find the outputs for inputs 6, 10, 20.',acc:['7,9,14'],ans:'7, 9, 14'},
+ {q:'Find the rule: inputs 1, 2, 3, 4 → outputs 5, 10, 15, 20.',acc:['5n'],ans:'output = 5 × input'},
+ {q:'Find the rule: inputs 1, 2, 3, 4 → outputs 7, 9, 11, 13.',acc:['2n+5'],ans:'output = (2 × input) + 5'},
+ {q:'Find the rule: inputs 1, 2, 3, 4 → outputs 12, 11, 10, 9.',acc:['13-n'],ans:'output = 13 − input'},
+ {q:'Inputs 1, 2, 3 → outputs 6, 10, 14. Find the output for input 10.',acc:['42'],ans:'Rule: output = (4 × input) + 2 → 4 × 10 + 2 = 42'},
+ {q:'Same rule — which input gives output 50?',acc:['12'],ans:'50 − 2 = 48, 48 ÷ 4 = 12'},
+ {q:'Find the rule: inputs 2, 4, 6 → outputs 9, 15, 21.',acc:['3n+3'],ans:'output = (3 × input) + 3'}
+],
+'pq-cart':[
+ {q:'Which quadrant is (−4, 5) in?',acc:['2','2nd','second'],ans:'2nd (top left)'},
+ {q:'Which quadrant is (3, −7) in?',acc:['4','4th','fourth'],ans:'4th (bottom right)'},
+ {q:'Which quadrant is (−1, −1) in?',acc:['3','3rd','third'],ans:'3rd (bottom left)'},
+ {q:'Which quadrant is (0, 4) in?',acc:[],ans:'None — it sits on the y-axis'},
+ {q:'Describe how to move from the origin to (−3, 2).',acc:[],ans:'3 units left, then 2 units up'},
+ {q:'For output = input + 2, list the outputs for inputs 0 to 4. Straight line?',acc:[],ans:'2, 3, 4, 5, 6 — yes, a straight line'},
+ {q:'For output = input × input, list the outputs for inputs 0 to 3. Straight line?',acc:[],ans:'0, 1, 4, 9 — no, it curves'},
+ {q:'A graph shows (0, 1), (1, 4), (2, 7), (3, 10). Find the rule.',acc:['3n+1'],ans:'output = (3 × input) + 1'},
+ {q:'Same rule — find the output when the input is 12.',acc:['37'],ans:'3 × 12 + 1 = 37'},
+ {q:'Same rule — find the input when the output is 31.',acc:['10'],ans:'31 − 1 = 30, 30 ÷ 3 = 10'},
+ {q:'A straight-line table has inputs 0–4 and outputs 4, 7, A, 13, B. Find A and B.',acc:[],ans:'A = 10, B = 16 (outputs go up by 3)'}
+]};
+function prep(s){
+  s=s.toLowerCase().replace(/[−–]/g,'-');
+  if(s.includes('=')) s=s.split('=').pop();
+  return s.replace(/°|degrees?|[\s()×*]/g,'');
+}
+function normNum(s){return prep(s).replace(/[a-z]+/g,'')}
+function normRule(s){return prep(s).replace(/[a-z]+/g,'n')}
+function buildPQ(){
+  Object.entries(PQ).forEach(([host,qs])=>{
+    const h=document.getElementById(host);
+    qs.forEach((q,i)=>{
+      const id=`${host}-${i}`;
+      const d=document.createElement('div');
+      d.className='pq';
+      d.innerHTML=`<div class="pq-q">${i+1}. ${q.q}</div>`+
+        (q.acc.length
+          ? `<div class="pq-row"><input id="${id}-in" placeholder="Your answer" onkeydown="if(event.key==='Enter')checkPQ('${host}',${i})"><button onclick="checkPQ('${host}',${i})">Check</button><button class="ghost" onclick="revealPQ('${host}',${i})">Show answer</button></div>`
+          : `<div class="pq-row"><button class="ghost" onclick="revealPQ('${host}',${i})">Work it out, then show answer</button></div>`)+
+        `<div class="pq-fb" id="${id}-fb"></div>`;
+      h.appendChild(d);
+    });
+  });
+}
+function checkPQ(host,i){
+  const q=PQ[host][i], id=`${host}-${i}`;
+  const v=document.getElementById(`${id}-in`).value;
+  const fb=document.getElementById(`${id}-fb`);
+  if(!v.trim()){fb.className='pq-fb wrong';fb.textContent='Type an answer first.';return}
+  const ok=q.acc.some(a=>a===normNum(v)||a===normRule(v)||a===v.trim().toLowerCase());
+  fb.className='pq-fb '+(ok?'correct':'wrong');
+  fb.textContent=ok?`✓ Correct! ${q.ans}`:'✗ Not quite — check your working and try again, or tap "Show answer".';
+}
+function revealPQ(host,i){
+  const fb=document.getElementById(`${host}-${i}-fb`);
+  fb.className='pq-fb reveal';
+  fb.textContent='Answer: '+PQ[host][i].ans;
+}
+buildPQ();
+
+// ===== QUIZ =====
+const Qs=[
+{q:'Alternate (Z) angles on parallel lines are…',opts:['Equal','Add to 180°','Add to 90°','Add to 360°'],a:0,exp:'Alternate angles are equal — trace the Z.'},
+{q:'An angle is 64°. What is its cointerior angle?',opts:['64°','26°','116°','296°'],a:2,exp:'Cointerior angles add to 180°: 180 − 64 = 116°.'},
+{q:'Which code goes with corresponding angles?',opts:['(Z)','(F)','(C)','(X)'],a:1,exp:'Corresponding = F shape.'},
+{q:'Two corresponding angles are 79° and 77°. Are the lines parallel?',opts:['Yes','No','Only if they add to 180°','Can\'t tell'],a:1,exp:'Corresponding angles must be equal for parallel lines. 79° ≠ 77°.'},
+{q:'(2x)° and 80° are corresponding angles. Find x.',opts:['x = 80','x = 160','x = 40','x = 50'],a:2,exp:'2x = 80, so x = 40.'},
+{q:'A zig-zag corner between parallel lines has outer angles 25° and 50°. The corner angle is…',opts:['25°','75°','105°','155°'],a:1,exp:'Draw a parallel line through the corner: 25 + 50 = 75°.'},
+{q:'A triangle has angles 20° and 115°. The third angle is…',opts:['45°','55°','65°','135°'],a:0,exp:'180 − 20 − 115 = 45°.'},
+{q:'An isosceles triangle has a top angle of 40°. Each base angle is…',opts:['40°','70°','140°','50°'],a:1,exp:'(180 − 40) ÷ 2 = 70°.'},
+{q:'An exterior angle is 130° and one opposite inside angle is 50°. The other opposite inside angle is…',opts:['50°','80°','130°','180°'],a:1,exp:'Exterior = sum of the two opposite inside angles: 130 − 50 = 80°.'},
+{q:'How many lines of symmetry does a parallelogram have?',opts:['0','1','2','4'],a:0,exp:'None — but it does have rotational symmetry of order 2.'},
+{q:'Reflect (2, −5) in the x-axis.',opts:['(−2, −5)','(2, 5)','(−2, 5)','(5, 2)'],a:1,exp:'Reflecting in the x-axis changes the sign of y.'},
+{q:'Rotate (3, 3) 90° clockwise about the origin.',opts:['(−3, 3)','(−3, −3)','(3, −3)','(3, 3)'],a:2,exp:'(x, y) → (y, −x) gives (3, −3).'},
+{q:'Squares sharing sides use 4, 7, 10, 13 sticks. The rule is…',opts:['sticks = squares + 3','sticks = 4 × squares','sticks = 3 × squares + 1','sticks = 3 × squares'],a:2,exp:'Jump of 3 → 3 × squares; 3 × 1 = 3, need 4 → +1.'},
+{q:'Inputs 1, 2, 3, 4 → outputs 7, 9, 11, 13. The rule is…',opts:['output = input + 6','output = (2 × input) + 5','output = (3 × input) + 4','output = 7 × input'],a:1,exp:'Jump of 2 → 2 × input; 2 × 1 = 2, need 7 → +5.'},
+{q:'Which quadrant is (−4, 5) in?',opts:['1st','2nd','3rd','4th'],a:1,exp:'x negative (left), y positive (up) → 2nd quadrant, top left.'},
+{q:'What is the angle sum of a hexagon?',opts:['540°','360°','720°','1080°'],a:2,exp:'A hexagon splits into 4 triangles: 4 × 180 = 720°.'}
+];
+let answered=new Array(Qs.length).fill(null);
+function buildQuiz(){
+  const host=document.getElementById('quizhost');
+  host.innerHTML='';
+  document.getElementById('qtotal').textContent=Qs.length;
+  Qs.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard';
+    card.innerHTML=`<div class="qn">${i+1}. ${q.q}</div>`+
+      q.opts.map((o,j)=>`<button class="opt" data-i="${i}" data-j="${j}" onclick="answerQ(${i},${j})">${o}</button>`).join('')+
+      `<div class="qfb" id="qfb-${i}"></div>`;
+    host.appendChild(card);
+  });
+  updateScore();
+}
+function answerQ(i,j){
+  if(answered[i]!==null)return;
+  answered[i]=(j===Qs[i].a);
+  document.querySelectorAll(`[data-i="${i}"]`).forEach(b=>{
+    b.classList.add('disabled');
+    const bj=parseInt(b.dataset.j);
+    if(bj===Qs[i].a)b.classList.add('correct');
+    else if(bj===j)b.classList.add('wrong');
+  });
+  document.getElementById(`qfb-${i}`).textContent=(answered[i]?'✓ Correct! ':'✗ Not quite. ')+Qs[i].exp;
+  updateScore();
+}
+function updateScore(){document.getElementById('qscore').textContent=answered.filter(a=>a===true).length}
+function resetQuiz(){answered=new Array(Qs.length).fill(null);buildQuiz()}
+buildQuiz();
+
+// ===== CHECKLIST =====
+const CL=[
+'Write all 10 angle-rule codes from memory',
+'Find complementary, supplementary, revolution and vertically opposite angles',
+'Spot F, Z and C shapes and use them on parallel lines',
+'Decide whether two lines are parallel, with a reason',
+'Name an angle with three letters (middle letter = corner)',
+'Solve multi-step and algebra angle problems (e.g. 2x = 80)',
+'Use the zig-zag trick for a corner between parallel lines',
+'Classify triangles by sides and by angles',
+'Find a missing angle using the triangle angle sum',
+'Find an exterior angle (and check with the shortcut)',
+'Give lines of symmetry and order of rotation for common shapes',
+'Reflect, rotate and translate points on the Cartesian plane',
+'Find the rule for a matchstick pattern and predict the 20th shape',
+'Complete a table from a rule, and find a rule from a table',
+'Plot points and name the quadrant',
+'Graph a rule and say whether it makes a straight line'
+];
+function loadCL(){try{return JSON.parse(localStorage.getItem('yr7t4_checklist')||'{}')}catch(e){return {}}}
+function saveCL(s){try{localStorage.setItem('yr7t4_checklist',JSON.stringify(s))}catch(e){}}
+function buildChecklist(){
+  const state=loadCL(), host=document.getElementById('cl-list');
+  host.innerHTML='';
+  CL.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='cl-item'+(state[i]?' done':'');
+    row.innerHTML=`<input type="checkbox" id="cl-${i}" ${state[i]?'checked':''} onchange="toggleCL(${i})"><label for="cl-${i}">${item}</label>`;
+    host.appendChild(row);
+  });
+  document.getElementById('cl-progress').textContent=`${CL.filter((_,i)=>state[i]).length} / ${CL.length} checked off`;
+}
+function toggleCL(i){const s=loadCL();s[i]=!s[i];saveCL(s);buildChecklist()}
+buildChecklist();
+
+// ===== FLASHCARDS =====
+
+const FCARDS=[
+// ===== ANGLE RULES =====
+{id:'ar1',topic:'Angle Rules',q:'What do complementary angles add to, and what code do you write?',a:'90° — code (L). Two angles that make a right angle add to 90°.'},
+{id:'ar2',topic:'Angle Rules',q:'What do angles on a straight line add to, and what code do you write?',a:'180° — code (∠ on a line). These are supplementary angles.'},
+{id:'ar3',topic:'Angle Rules',q:'What do angles all the way around a point add to, and what code do you write?',a:'360° — code (⊖ circle). This is the revolution rule.'},
+{id:'ar4',topic:'Angle Rules',q:'Two lines cross. What is true about vertically opposite angles, and what code do you write?',a:'They are equal — code (X).'},
+{id:'ar5',topic:'Angle Rules',q:'What does perpendicular mean, and what code do you write?',a:'Lines meeting at 90° — code (⊥).'},
+{id:'ar6',topic:'Angle Rules',q:'Name the three parallel-line rules, their codes and whether the angles are equal or add to 180°.',a:'Corresponding (F) — equal. Alternate (Z) — equal. Cointerior (C or U) — add to 180°.'},
+{id:'ar7',topic:'Angle Rules',q:'Name the two triangle rules and their codes.',a:'Angle sum of a triangle (△) — the three inside angles add to 180°. Exterior angle (△ ext) — the outside angle equals the two opposite inside angles added together.'},
+{id:'ar8',topic:'Angle Rules',q:'a and 40° make a right angle. Find a, with a reason.',a:'a = 50° (L) — Working: 90 − 40 = 50.'},
+{id:'ar9',topic:'Angle Rules',q:'a and 120° sit on a straight line. Find a, with a reason.',a:'a = 60° (∠ on a line) — Working: 180 − 120 = 60.'},
+{id:'ar10',topic:'Angle Rules',q:'a and 120° make a full revolution. Find a, with a reason.',a:'a = 240° (⊖ circle) — Working: 360 − 120 = 240.'},
+{id:'ar11',topic:'Angle Rules',q:'What does ∠ABF mean? Which point is the corner?',a:'The angle at B, between arms BA and BF. The middle letter is always the corner.'},
+
+// ===== PARALLEL LINES =====
+{id:'pl1',topic:'Parallel Lines',q:'What is a transversal?',a:'A line that crosses two (or more) other lines. Parallel lines are marked with matching arrows.'},
+{id:'pl2',topic:'Parallel Lines',q:'Parallel lines: an angle is 72°. What is its corresponding angle?',a:'72° (F) — corresponding angles are equal (same position at each crossing).'},
+{id:'pl3',topic:'Parallel Lines',q:'Parallel lines: an angle is 115°. What is its alternate angle?',a:'115° (Z) — alternate angles are equal (inside the parallel lines, opposite sides of the transversal).'},
+{id:'pl4',topic:'Parallel Lines',q:'Parallel lines: an angle is 64°. What is its cointerior angle?',a:'116° (C) — Working: cointerior angles add to 180°, so 180 − 64 = 116.'},
+{id:'pl5',topic:'Parallel Lines',q:'Two cointerior angles are 109° and 71°. Are the lines parallel? Give a reason.',a:'Yes — cointerior angles add to 180° (109 + 71 = 180).'},
+{id:'pl6',topic:'Parallel Lines',q:'Two corresponding angles are 79° and 77°. Are the lines parallel? Give a reason.',a:'No — corresponding angles would be equal if the lines were parallel, and 79° ≠ 77°.'},
+{id:'pl7',topic:'Parallel Lines',q:'(2x)° and 80° are corresponding angles. Find x.',a:'x = 40 — Working: 2x = 80 (F), so x = 80 ÷ 2 = 40.'},
+{id:'pl8',topic:'Parallel Lines',q:'(3x)° and 60° are cointerior angles. Find x.',a:'x = 40 — Working: 3x + 60 = 180 (C) → 3x = 120 → x = 40.'},
+{id:'pl9',topic:'Parallel Lines',q:'(x + 20)° and 50° are alternate angles. Find x.',a:'x = 30 — Working: x + 20 = 50 (Z) → x = 30.'},
+{id:'pl10',topic:'Parallel Lines',q:'A zig-zag corner sits between two parallel lines. The outer angles are 25° and 50°. Find the corner angle.',a:'75° — Working: draw a dashed parallel line through the corner. It splits into two alternate angles: 25° (Z) + 50° (Z) = 75°.'},
+{id:'pl11',topic:'Parallel Lines',q:'The angle inside a corner is 75°. Find the reflex angle going the other way around the point.',a:'285° — Working: 360 − 75 = 285 (⊖ circle).'},
+{id:'pl12',topic:'Parallel Lines',q:'A parallelogram has angles a°, (2a)°, a° and (2a)°. Find a.',a:'a = 60 — Working: angles in a four-sided shape add to 360°. a + 2a + a + 2a = 6a = 360 → a = 60.'},
+
+// ===== TRIANGLES =====
+{id:'tr1',topic:'Triangles',q:'A triangle has angles 20°, 115° and a. Find a.',a:'a = 45° (△) — Working: 180 − 20 − 115 = 45.'},
+{id:'tr2',topic:'Triangles',q:'A right-angled triangle has another angle of 35°. Find the third angle.',a:'55° (△) — Working: 180 − 90 − 35 = 55.'},
+{id:'tr3',topic:'Triangles',q:'An isosceles triangle has base angles of 65° each. Find the top angle.',a:'50° — Working: 180 − 65 − 65 = 50.'},
+{id:'tr4',topic:'Triangles',q:'An isosceles triangle has a top angle of 40°. Find each base angle.',a:'70° each — Working: (180 − 40) ÷ 2 = 70.'},
+{id:'tr5',topic:'Triangles',q:'A triangle has inside angles 23° and 117°. Find the third angle a and the exterior angle x next to it.',a:'a = 40°, x = 140° — Working: 180 − 23 − 117 = 40 (△). x = 180 − 40 = 140 (∠ on a line). Check: 23 + 117 = 140 ✓'},
+{id:'tr6',topic:'Triangles',q:'An exterior angle is 130°. One opposite inside angle is 50°. Find the other opposite inside angle.',a:'80° — Working: exterior angle = sum of the two opposite inside angles, so 130 − 50 = 80 (△ ext).'},
+{id:'tr7',topic:'Triangles',q:'Name the three types of triangle by sides and the three by angles.',a:'Sides: equilateral (3 equal), isosceles (2 equal), scalene (none equal). Angles: acute (all under 90°), right (one 90°), obtuse (one over 90°).'},
+{id:'tr8',topic:'Triangles',q:'Classify a triangle with sides 5 cm, 5 cm, 8 cm and an angle of 106°.',a:'Isosceles and obtuse — two equal sides, and one angle over 90°.'},
+{id:'tr9',topic:'Triangles',q:'An isosceles triangle has base angles (2x + 1)° and 75°. Find x.',a:'x = 37 — Working: base angles are equal, so 2x + 1 = 75 → 2x = 74 → x = 37.'},
+{id:'tr10',topic:'Triangles',q:'What is the angle sum of a hexagon (6 sides)?',a:'720° — Working: split from one corner into 4 triangles. 4 × 180 = 720.'},
+
+// ===== SYMMETRY & TRANSFORMATIONS =====
+{id:'sy1',topic:'Symmetry & Transformations',q:'What is the order of rotational symmetry?',a:'How many times a shape looks the same in one full turn. Order 1 means no rotational symmetry.'},
+{id:'sy2',topic:'Symmetry & Transformations',q:'Lines of symmetry and order of rotation: (a) kite, (b) parallelogram, (c) regular hexagon.',a:'(a) 1 line, order 1. (b) 0 lines, order 2. (c) 6 lines, order 6.'},
+{id:'sy3',topic:'Symmetry & Transformations',q:'Lines of symmetry and order of rotation: (a) square, (b) rectangle, (c) equilateral triangle.',a:'(a) 4 lines, order 4. (b) 2 lines, order 2. (c) 3 lines, order 3.'},
+{id:'sy4',topic:'Symmetry & Transformations',q:'Reflect (2, −5) in the x-axis.',a:'(2, 5) — reflecting in the x-axis changes the sign of y: (x, y) → (x, −y).'},
+{id:'sy5',topic:'Symmetry & Transformations',q:'Reflect A(−1, 3) in the y-axis.',a:'A′(1, 3) — A is 1 unit left of the y-axis, so A′ is 1 unit right. (x, y) → (−x, y).'},
+{id:'sy6',topic:'Symmetry & Transformations',q:'Rotate A(3, 3) 180° about the origin.',a:'(−3, −3) — a half turn changes both signs: (x, y) → (−x, −y).'},
+{id:'sy7',topic:'Symmetry & Transformations',q:'Rotate A(3, 3) 90° clockwise about the origin.',a:'(3, −3) — Rule: (x, y) → (y, −x).'},
+{id:'sy8',topic:'Symmetry & Transformations',q:'Rotate A(3, 3) 270° clockwise about the origin.',a:'(−3, 3) — 270° clockwise is the same as 90° anticlockwise: (x, y) → (−y, x).'},
+{id:'sy9',topic:'Symmetry & Transformations',q:'Translate (−2, 3) four units right and two units down.',a:'(2, 1) — Working: x: −2 + 4 = 2. y: 3 − 2 = 1.'},
+{id:'sy10',topic:'Symmetry & Transformations',q:'Describe the translation (−1, −1) → (2, 5).',a:'3 units right and 6 units up — Working: x goes −1 → 2 (+3), y goes −1 → 5 (+6).'},
+{id:'sy11',topic:'Symmetry & Transformations',q:'Reflect (−2, −2) in the vertical line x = 2.',a:'(6, −2) — Working: the point is 4 units left of the line, so the image is 4 units right of it: 2 + 4 = 6. y stays the same.'},
+{id:'sy12',topic:'Symmetry & Transformations',q:'Start at (2, 3). Reflect in the x-axis, then in the y-axis, then translate 2 left and 2 up. Where does it end?',a:'(−4, −1) — Working: (2, 3) → (2, −3) → (−2, −3) → (−4, −1).'},
+
+// ===== PATTERNS & RULES =====
+{id:'pr1',topic:'Patterns & Rules',q:'What are the four steps for a spatial (matchstick) pattern?',a:'1. Draw the next two shapes. 2. Make a table of values. 3. Find the rule: sticks = jump × shapes + leftover. 4. Predict by substituting.'},
+{id:'pr2',topic:'Patterns & Rules',q:'Squares in a row sharing sides use 4, 7, 10, 13 sticks. Write the rule and find the sticks for 20 squares.',a:'sticks = 3 × squares + 1; 61 sticks — Working: jump of 3 → 3 × squares. 3 × 1 = 3, need 4 → +1. 3 × 20 + 1 = 61.'},
+{id:'pr3',topic:'Patterns & Rules',q:'Hexagons sharing a side use 6, 11, 16, 21 sticks. Write the rule and find the sticks for 20 hexagons.',a:'m = 5h + 1; 101 sticks — Working: jump of 5. 5 × 1 = 5, need 6 → +1. 5 × 20 + 1 = 101.'},
+{id:'pr4',topic:'Patterns & Rules',q:'Tables in a row seat 4, 6, 8, 10 people. How many tables for 30 people?',a:'14 tables — Working: people = 2 × tables + 2. 2t + 2 = 30 → 2t = 28 → t = 14.'},
+{id:'pr5',topic:'Patterns & Rules',q:'The rule is sticks = 3 × shapes + 1. How many shapes can be made with 46 sticks?',a:'15 shapes — Working: 3s + 1 = 46 → 3s = 45 → s = 15.'},
+{id:'pr6',topic:'Patterns & Rules',q:'output = (3 × input) − 2. Find the outputs for inputs 1, 4 and 10.',a:'1, 10, 28 — Working: 3×1−2 = 1, 3×4−2 = 10, 3×10−2 = 28.'},
+{id:'pr7',topic:'Patterns & Rules',q:'Find the rule: inputs 1, 2, 3, 4 → outputs 7, 9, 11, 13.',a:'output = (2 × input) + 5 — Working: outputs go up by 2 → 2 × input. 2 × 1 = 2, need 7 → +5.'},
+{id:'pr8',topic:'Patterns & Rules',q:'Find the rule: inputs 1, 2, 3, 4 → outputs 12, 11, 10, 9.',a:'output = 13 − input — Working: outputs go down by 1 each time. 12 + 1 = 13, so start at 13 and take away the input.'},
+{id:'pr9',topic:'Patterns & Rules',q:'Inputs 1, 2, 3 → outputs 6, 10, 14. Find the rule, then the input that gives output 50.',a:'output = (4 × input) + 2; input 12 — Working: work backwards: 50 − 2 = 48, 48 ÷ 4 = 12.'},
+{id:'pr10',topic:'Patterns & Rules',q:'Find the rule: inputs 2, 4, 6 → outputs 9, 15, 21.',a:'output = (3 × input) + 3 — Working: output rises 6 for every 2 → 3 per 1. 3 × 2 = 6, need 9 → +3.'},
+
+// ===== CARTESIAN PLANE =====
+{id:'cp1',topic:'Cartesian Plane',q:'In the point (x, y), which number comes first and which way does it go?',a:'x comes first — across (left/right). Then y — up/down. "Along the corridor, then up the stairs."'},
+{id:'cp2',topic:'Cartesian Plane',q:'Name the four quadrants, where they are, and their signs.',a:'1st: top right (+, +). 2nd: top left (−, +). 3rd: bottom left (−, −). 4th: bottom right (+, −). Numbered anticlockwise from top right.'},
+{id:'cp3',topic:'Cartesian Plane',q:'Which quadrant is each in? (a) (−4, 5) (b) (3, −7) (c) (−1, −1) (d) (0, 4)',a:'(a) 2nd (b) 4th (c) 3rd (d) none — it sits on the y-axis.'},
+{id:'cp4',topic:'Cartesian Plane',q:'Describe how to move from the origin to (−3, 2).',a:'3 units left, then 2 units up.'},
+{id:'cp5',topic:'Cartesian Plane',q:'For output = input × input, find the outputs for inputs 0–3. Do the points make a straight line?',a:'0, 1, 4, 9 — no, it curves. The outputs don\'t go up by the same amount each time.'},
+{id:'cp6',topic:'Cartesian Plane',q:'A graph shows (0, 1), (1, 4), (2, 7), (3, 10). Find the rule and the output when the input is 12.',a:'output = (3 × input) + 1; output 37 — Working: outputs go up by 3, start at 1. 3 × 12 + 1 = 37.'},
+{id:'cp7',topic:'Cartesian Plane',q:'A straight-line table has inputs 0, 1, 2, 3, 4 and outputs 4, 7, A, 13, B. Find A and B.',a:'A = 10, B = 16 — Working: outputs go up by 3 each step. 7 + 3 = 10, 13 + 3 = 16.'},
+{id:'cp8',topic:'Cartesian Plane',q:'What is the most common mistake when plotting points?',a:'Plotting (y, x) instead of (x, y). Also counting grid lines from 1 instead of from the origin.'}
+];
+
+const TOPICS=['All',...new Set(FCARDS.map(c=>c.topic))];
+let deck=[...FCARDS];
+let currentIdx=0;
+let currentFilter='All';
+let cardRatings={};
+const KEY='yr7t4_fc_ratings';
+
+function loadRatings(){try{cardRatings=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){cardRatings={}}}
+function saveRatings(){try{localStorage.setItem(KEY,JSON.stringify(cardRatings))}catch(e){}}
+
+function buildFilters(){
+  const host=document.getElementById('fc-filters');
+  host.innerHTML='';
+  TOPICS.forEach(t=>{
+    const chip=document.createElement('button');
+    chip.className='filter-chip'+(t===currentFilter?' active':'');
+    chip.textContent=t;
+    chip.onclick=()=>{
+      currentFilter=t;
+      deck = t==='All' ? [...FCARDS] : FCARDS.filter(c=>c.topic===t);
+      currentIdx=0;
+      buildFilters();
+      resetToFront();
+    };
+    host.appendChild(chip);
+  });
+}
+function showCard(){
+  const c=deck[currentIdx];
+  document.getElementById('fc-topic-front').textContent=c.topic;
+  document.getElementById('fc-topic-back').textContent=c.topic;
+  document.getElementById('fc-question').textContent=c.q;
+  document.getElementById('fc-position').textContent=currentIdx+1;
+  document.getElementById('fc-total').textContent=deck.length;
+  document.getElementById('fc-prev').disabled=(currentIdx===0);
+  document.getElementById('fc-next').disabled=(currentIdx===deck.length-1);
+  updateCounts();
+}
+function updateCounts(){
+  let good=0,again=0;
+  deck.forEach(c=>{
+    if(cardRatings[c.id]==='good')good++;
+    if(cardRatings[c.id]==='again')again++;
+  });
+  document.getElementById('fc-good-count').textContent=good;
+  document.getElementById('fc-again-count').textContent=again;
+}
+function flipCard(){
+  const c=deck[currentIdx];
+  document.getElementById('fc-your-answer').textContent=document.getElementById('fc-input').value.trim()||'(no answer entered)';
+  document.getElementById('fc-correct-answer').textContent=c.a;
+  document.getElementById('fc-front').classList.add('hidden');
+  document.getElementById('fc-back').classList.remove('hidden');
+}
+function flipBack(){
+  document.getElementById('fc-front').classList.remove('hidden');
+  document.getElementById('fc-back').classList.add('hidden');
+}
+function rateCard(rating){
+  cardRatings[deck[currentIdx].id]=rating;
+  saveRatings();
+  updateCounts();
+  setTimeout(()=>{ if(currentIdx<deck.length-1){currentIdx++;resetToFront()} },250);
+}
+function navCard(dir){
+  const n=currentIdx+dir;
+  if(n>=0&&n<deck.length){currentIdx=n;resetToFront()}
+}
+function resetToFront(){
+  document.getElementById('fc-input').value='';
+  flipBack();
+  showCard();
+}
+function practiseWeak(){
+  const base = currentFilter==='All' ? FCARDS : FCARDS.filter(c=>c.topic===currentFilter);
+  const weak = base.filter(c=>cardRatings[c.id]==='again');
+  if(!weak.length){alert('No "Needs work" cards here yet — nice!');return}
+  deck=weak; currentIdx=0; resetToFront();
+}
+function shuffleDeck(){
+  for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}
+  currentIdx=0; resetToFront();
+}
+function resetProgress(){
+  if(!confirm('Clear all "Know it" / "Needs work" ratings?'))return;
+  cardRatings={}; saveRatings(); updateCounts();
+}
+loadRatings();
+buildFilters();
+showCard();
+</script>
+</body>
+</html>
